@@ -14,6 +14,7 @@ Criador de fichas de **Tormenta20** gratuito e em português. Funciona direto no
 - [Primeiros passos](#primeiros-passos)
 - [Criando o personagem](#criando-o-personagem)
 - [Subindo de nível](#subindo-de-nível)
+- [Distinções](#distinções)
 - [Na mesa de jogo](#na-mesa-de-jogo)
 - [Onde ficam as fichas (importante!)](#onde-ficam-as-fichas-importante)
 - [Imprimir ou gerar PDF](#imprimir-ou-gerar-pdf)
@@ -30,7 +31,7 @@ Criador de fichas de **Tormenta20** gratuito e em português. Funciona direto no
 
 - Guia a criação passo a passo e avisa o que ainda falta escolher.
 - Calcula atributos, perícias, PV, PM, Defesa, deslocamento, carga, CD de magias e ataques.
-- Inclui 18 classes, 19 classes variantes, 60 raças, 132 origens, poderes, deuses, magias e equipamentos (detalhes em [Conteúdo incluído](#conteúdo-incluído)).
+- Inclui 18 classes, 19 classes variantes, 79 raças, 142 origens, 12 distinções, poderes, deuses, magias e equipamentos (detalhes em [Conteúdo incluído](#conteúdo-incluído)).
 - Tem multiclasse, retrato do personagem, rolagem de dados com um clique, controle de PV e PM, condições e inventário.
 - Guarda vários personagens, salva sozinha e exporta e importa fichas em arquivo.
 - Tem tema claro e escuro e versão para imprimir ou salvar em PDF.
@@ -67,6 +68,8 @@ As **classes variantes** (Necromante, Duelista, Usurpador, Atleta, Burguês e as
 ### Divindade
 
 Ser devoto é opcional para a maioria das classes e dá **1 poder concedido**. Clérigos, druidas, paladinos e frades ganham 2 (e algumas variantes também). A ficha avisa quando a classe exige ou proíbe certos deuses.
+
+Com o livro **Dragão Brasil** ligado, a lista traz também 10 **deuses menores** da revista: as deusas de *Legend of Zelda* (Din, Farore, Nayru e Hylia), os Perpétuos de *Sandman* (Desejo, Desespero, Morte e Sonho), Eucharion e a Santa Bola de Fogo.
 
 ### Atributos
 
@@ -110,11 +113,22 @@ Clique no quadro **Retrato**, ao lado do nome, ou arraste uma imagem até ele. D
 3. Para **multiclasse**, clique em **Adicionar outra classe**, no fim do painel da classe. O nível total não passa de 20.
 4. Criando um personagem acima do 1º nível? O botão **Dinheiro do Nº nível** coloca o dinheiro inicial certo para o nível.
 
+## Distinções
+
+Distinções são caminhos especiais publicados na revista *Dragão Brasil*: ordens, tradições e pactos que o personagem conquista **dentro da história**, combinando com o mestre. Cada uma tem uma admissão, uma marca (habilidade que vem na hora) e poderes exclusivos.
+
+1. Em **Habilidades e poderes**, clique em **Distinções** (o botão aparece com o livro Dragão Brasil ligado).
+2. Toque numa distinção para ler a admissão, a marca e os poderes. Quando o personagem a conquistar na mesa, clique em **Conquistar**.
+3. A marca entra na ficha. Quando o efeito dela é um número (como o bônus em Sobrevivência do Explorador Destemido), a ficha soma sozinha.
+4. A partir do **5º nível**, os poderes da distinção aparecem na aba **Distinções** ao escolher um poder, no lugar de um poder de classe ou em **Adicionar poder**. A ficha confere os pré-requisitos, inclusive os que pedem outros poderes da mesma distinção.
+
+As 12 distinções incluídas: Andarilho do Ocaso, Campeão das Guildas, Cavaleiro Silvestre, Centurião, Explorador Destemido, Furioso Cinzento, Irmão Inseparável, Lobo Lunar, Menestrel Maldito, Mestre da Fúria Fria, Presa de Coral e Xerife de Azgher.
+
 ## Na mesa de jogo
 
 - **Rolar dados:** clique no nome de uma perícia ou resistência. Nos ataques, clique na linha para rolar o ataque e o dano juntos. O resultado aparece no canto da tela.
 - **PV e PM:** digite a quantidade no campo do meio e use **−** (dano, gasto) ou **+** (cura, recuperação). Há também campos para pontos temporários. **Recuperar tudo** devolve PV e PM ao máximo.
-- **Condições:** abra **Condições** e marque as que estão valendo (abalado, caído etc.).
+- **Condições:** abra **Condições** e marque as que estão valendo (abalado, caído etc.). Com o livro Dragão Brasil ligado, aparecem também as condições novas da revista (molhado, arrefecido, eletrificado, abençoado...), e a ficha mostra a regra de cada uma que estiver marcada.
 - **Anotações:** a seção do fim da ficha guarda aparência, personalidade, história e anotações livres.
 
 ## Onde ficam as fichas (importante!)
@@ -147,6 +161,7 @@ Clique em **Imprimir**. A ficha gera uma versão limpa, sem botões, em páginas
 
 - **Bônus condicionais** (contra certo inimigo, em certo terreno, enquanto uma habilidade está ativa) aparecem só no texto. Use os **Ajustes manuais** se quiser somá-los.
 - Alguns **pré-requisitos** aparecem como "confira". Nesses casos, quem decide é você e o mestre.
+- A **admissão** numa distinção acontece na história: a ficha só registra a distinção que você marcar.
 - Algumas escolhas livres, como os pontos de atributo do Vassalo nos níveis altos, entram pelos **Ajustes manuais**.
 - Os textos são **resumos** das regras. Para o texto completo, consulte os livros oficiais.
 
@@ -156,13 +171,14 @@ Clique em **Imprimir**. A ficha gera uma versão limpa, sem botões, em páginas
 | --- | --- |
 | **Classes** | 18: Arcanista, Bárbaro, Bardo, Bucaneiro, Caçador, Cavaleiro, Clérigo, Druida, Guerreiro, Inventor, Ladino, Lutador, Nobre, Paladino, Frade, Treinador, Místico e Samurai |
 | **Classes variantes** | 19: Necromante, Sentinela, Machado de Pedra, Magimarcialista, Duelista, Miragem, Seteiro, Vassalo, Usurpador, Cruzado, Ermitão, Inovador, Alquimista, Ventanista, Capanga, Atleta, Burguês, Comandante e Santo |
-| **Raças** | 60 |
-| **Origens** | 132 (97 regionais) |
-| **Poderes** | 147 gerais, 749 de classe, 148 concedidos e 77 de raça |
-| **Deuses** | 20 |
-| **Magias** | 256, do 1º ao 5º círculo |
-| **Equipamento** | 96 armas, 23 armaduras, 7 escudos e 261 itens |
-| **Condições** | 34 |
+| **Raças** | 79 |
+| **Origens** | 142 (101 regionais) |
+| **Distinções** | 12, com 69 poderes |
+| **Poderes** | 230 gerais, 749 de classe, 161 concedidos e 96 de raça |
+| **Deuses** | 30 (20 maiores e 10 menores) |
+| **Magias** | 273, do 1º ao 5º círculo |
+| **Equipamento** | 106 armas, 23 armaduras, 7 escudos e 293 itens |
+| **Condições** | 34, mais 28 da Dragão Brasil |
 
 Livros e fontes: *Tormenta20 (Edição Jogo do Ano)*, *Ameaças de Arton*, *Atlas de Arton*, *Deuses & Heróis de Arton* e a revista *Dragão Brasil*.
 

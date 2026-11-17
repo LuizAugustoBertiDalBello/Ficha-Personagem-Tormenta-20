@@ -399,6 +399,9 @@ button { cursor: pointer; }
 .cond .chips { margin-top: 8px; }
 .cond .chip { padding: 3px 8px; font-size: 13px; }
 .cond-ativas { font-size: 13.5px; margin-top: 6px; }
+.cond-sub { font-size: 12.5px; color: var(--grafite); margin: 10px 0 0; }
+.cond-desc { margin: 4px 0 0; padding-left: 18px; font-size: 13px; line-height: 1.45; }
+.cond-desc li { margin: 2px 0; }
 
 /* ===== Tabelas ===== */
 .tab { width: 100%; border-collapse: collapse; font-size: 14px; }
@@ -657,7 +660,50 @@ window.T20 = {
   // custo em PM por círculo
   custoCirculo: { 1: 1, 2: 3, 3: 6, 4: 10, 5: 15 },
   condicoes: ['Abalado', 'Agarrado', 'Alquebrado', 'Apavorado', 'Atordoado', 'Caído', 'Cego', 'Confuso', 'Debilitado', 'Desprevenido', 'Enjoado', 'Enfeitiçado', 'Enredado', 'Envenenado', 'Esmorecido', 'Exausto', 'Fascinado', 'Fatigado', 'Fraco', 'Frustrado', 'Imóvel', 'Inconsciente', 'Indefeso', 'Lento', 'Ofuscado', 'Paralisado', 'Pasmo', 'Petrificado', 'Sangrando', 'Sobrecarregado', 'Surdo', 'Surpreendido', 'Vulnerável', 'Em chamas'],
-  racas: [], classes: [], origens: [], poderes: [], deuses: [], magias: [], armas: [], armaduras: [], escudos: [], itens: []
+  // condições novas da Dragão Brasil (aparecem com o livro DB ligado); "Em chamas" ganha interações novas
+  condicoesDB: [
+    ['Abençoado', 'Tocado por uma força divina: imune a metabolismo, metamorfose, trevas e veneno. Se ficar decaído, perde as duas condições.'],
+    ['Absorvendo', 'Recupera PV iguais à metade de todo o dano que causa (limitado pelo nível).'],
+    ['Alentado', '+5 em testes de Inteligência, Sabedoria e Carisma e nas perícias baseadas neles (mental).'],
+    ['Amordaçado', 'Não consegue falar (mas faz sons) e fica em condição ruim para lançar magias.'],
+    ['Aquecido', 'Perto de calor forte ou em clima de 34 °C ou mais: resistência a frio 5, mas vulnerável a fogo.'],
+    ['Arrefecido', '–1,5m de deslocamento, sem habilidades que exijam liberdade de movimentos, vulnerável a frio e resistência a fogo +2. Molhado ou arrefecido de novo: congelado. Em chamas: perde as duas condições (metabolismo).'],
+    ['Audacioso', '+2 em testes de perícia; audacioso de novo: intrépido (mental).'],
+    ['Bêbado', 'Deslocamento pela metade e –2 na Defesa, nos ataques e em Reflexos.'],
+    ['Congelado', 'Paralisado sob uma camada de gelo e vulnerável a frio; resistência a fogo +2 e imune a arrefecido, cansaço, eletrizado, enfeitiçado, medo, sangrando e veneno. Em chamas: perde as duas condições e fica arrefecido.'],
+    ['Contundido', '–2 em testes de Força ou Destreza (conforme a contusão) e nas perícias desse atributo; só acaba com uma semana de tratamento ou cura mágica.'],
+    ['Decaído', 'Curas mágicas de luz o ferem e dano de trevas o cura (o inverso em mortos-vivos). Se ficar abençoado, perde as duas condições.'],
+    ['Desnorteado', '–2 em testes de perícia (mental).'],
+    ['Disposto', '+2 em testes de Inteligência, Sabedoria e Carisma e nas perícias baseadas neles; disposto de novo: alentado (mental).'],
+    ['Eletrificado', '1d6 de dano de eletricidade no início de cada turno; ação padrão para descarregar tocando metal ou chão de terra. Molhado ou eletrificado de novo: eletrizado.'],
+    ['Eletrizado', 'Paralisado por uma corrente elétrica e vulnerável a eletricidade; resistência a ácido +2 e imune a cansaço, congelado, eletrificado, enfeitiçado, medo, sangrando e veneno. Acaba no fim da cena ou ao tocar um objeto sem metal, ou óleo.'],
+    ['Em chamas', '1d6 de dano de fogo no início de cada turno; ação padrão para apagar. Arrefecido ou molhado: perde as duas condições; congelado: perde as duas e fica arrefecido.'],
+    ['Fedido', '–5 em testes de Carisma e nas perícias baseadas nele.'],
+    ['Fortalecido', '+2 em testes de Força, Destreza e Constituição e nas perícias baseadas neles; fortalecido de novo: vigoroso.'],
+    ['Intrépido', '+5 em testes de perícia e imune a medo.'],
+    ['Leve', 'Sem penalidade de armadura em Acrobacia e Furtividade e +3m de deslocamento (movimento).'],
+    ['Molhado', 'Vulnerável a eletricidade e frio, mas resistente a fogo. Arrefecido: congelado; eletrificado: eletrizado; em chamas: perde as duas condições.'],
+    ['Poderoso', 'As suas habilidades custam –1 PM (mental).'],
+    ['Prevenido', '+2 na Defesa durante a primeira rodada de combate.'],
+    ['Relaxado', 'Fortalecido, prevenido e veloz por uma rodada.'],
+    ['Restaurando', 'Cura acelerada igual aos PV por nível da sua classe com mais níveis.'],
+    ['Sonolento', '–2 nos testes contra efeitos mentais.'],
+    ['Sufocado', 'Não respira nem emite sons; depois de rodadas iguais à sua Constituição fica inconsciente, e ao dobro disso morre.'],
+    ['Veloz', 'Todos os deslocamentos dobram e fica imune a efeitos negativos de movimento (movimento).'],
+    ['Vigoroso', '+5 em testes de Força, Destreza e Constituição e nas perícias baseadas neles.']
+  ],
+  racas: [], classes: [], origens: [], poderes: [], deuses: [], magias: [], armas: [], armaduras: [], escudos: [], itens: [], distincoes: []
+};
+// distinção (Dragão Brasil): admissão narrativa, marca (habilidade automática ao conquistar) e poderes exclusivos.
+// Os poderes são escolhidos como poderes gerais, só a partir do 5º nível; "outro poder da distinção" e
+// "N outros poderes da distinção" viram pré-requisitos que a ficha confere.
+window.DIST = d => {
+  T20.distincoes.push(d);
+  (d.pod || []).forEach(([n, pre, r, ef, x]) => {
+    const preTxt = (pre || '').trim();
+    const canon = preTxt.replace(/\b(\d+) outros poderes da distinção\b/g, '$1 outros poderes de ' + d.n).replace(/\boutro poder da distinção\b/g, 'outro poder de ' + d.n);
+    T20.poderes.push(Object.assign({ n, tipo: 'Distinção', f: d.f, dist: d.id, distN: d.n, preTxt, pre: ['Distinção: ' + d.n, '5º nível de personagem', canon].filter(Boolean).join(', '), r, ef }, x || {}));
+  });
 };
 // atalho para registrar classes, raças etc.
 window.C = c => T20.classes.push(c);
@@ -3069,6 +3115,207 @@ R({
 });
 
 ;
+// ---- 22_racas_db.js
+// Raças da revista Dragão Brasil (DB), incluindo as adaptações de outras franquias publicadas na revista. Resumos com palavras próprias.
+(() => {
+  const ARMA = (n, d, t, crit) => ({ n, dano: d, crit: crit || 'x2', tipo: t, natural: true });
+  const SENT_ELF = ['Sentidos Élficos', 'Visão na penumbra; +2 em Misticismo e Percepção.', () => ({ per: { Misticismo: 2, Percepção: 2 }, marca: ['Visão na penumbra'] })];
+  const DB = r => R(Object.assign({ f: 'DB' }, r));
+  const rp = (lista) => lista.forEach(([n, racas, pre, r, ef, atr]) => T20.poderes.push({ n, tipo: 'Raça', f: 'DB', racas, pre: 'Raça: ' + racas.join(', ') + (pre ? '; ' + pre : ''), r, ef, atr }));
+
+  DB({ id: 'anao-superficie', n: 'Anão da Superfície', attr: { con: 2, int: 1, des: -1 }, desl: 6,
+    desc: 'Anão criado longe de Doherimm, prático e sempre preparado para a estrada.',
+    hab: [
+      ['Somente o Necessário', '1x/sessão, ação completa e 1 PM: encontra na bagagem um item de até T$ 1d10 + nível (ou material de fabricação de até T$ 1d6 + nível).'],
+      ['Devagar e Sempre', 'Deslocamento 6m, nunca reduzido por armadura ou carga.', () => ({ marca: ['Deslocamento não reduzido por armadura/carga'], naoReduz: true })],
+      ['Duro como Pedra', '+3 PV no 1º nível e +1 por nível seguinte.', c => ({ pv: c.nt + 2 })],
+      ['Tradição de Heredrimm', 'Machados, martelos, marretas e picaretas são armas simples para você; +2 nos ataques com elas.']
+    ] });
+  DB({ id: 'anao-tolo', n: 'Anão Tolo', attr: { con: 2, des: 1, int: -2, car: -2 }, tam: 'Pequeno', desl: 6,
+    desc: 'Adaptação de Dragonlance: anões desleixados, cheios de cicatrizes e pouco higiênicos, mestres em sobreviver.',
+    nota: 'A revista avisa que a raça é mais fraca que as outras; o mestre pode dar um ou dois poderes extras.',
+    hab: [
+      ['Tamanho Pequeno', 'Deslocamento 6m; +2 em Furtividade e –2 em manobras; usa armas Pequenas.'],
+      ['Instinto de Sobrevivência', '+2 em Furtividade e Sobrevivência; usa Sobrevivência em cidades (CD 15).', () => ({ per: { Furtividade: 2, Sobrevivência: 2 } })],
+      ['Resiliente', '+2 em Fortitude contra doenças e venenos; não precisa testar Fortitude por comida estragada.'],
+      ['Covardia', '–2 em Vontade contra intimidação e medo; se falhar, 1 PM como reação para fugir até seu deslocamento.']
+    ] });
+  DB({ id: 'anao-svartalfheim', n: 'Anão de Svartalfheim', attr: { int: 2, con: 1, car: -1 },
+    desc: 'Adaptação de God of War: os artesãos e alquimistas mais talentosos dos Nove Reinos.',
+    hab: [
+      ['Caminhar entre os Reinos', 'Lança Salto Dimensional só em si mesmo (Int); se aprender a magia, custa –1 PM.'],
+      ['Pacifista', '+5 em Diplomacia e Furtividade, mas fica abalado no 1º turno de cada combate.', () => ({ per: { Diplomacia: 5, Furtividade: 5 } })],
+      ['Tecelão do Improvável', 'Usa materiais "impossíveis" (canto de pássaros, aroma do orvalho): fabricar itens mundanos custa 1/5 do preço, em vez de 1/3.']
+    ] });
+  DB({ id: 'danim', n: 'Danim', attr: { sab: 2 }, livre: [1], exceto: ['for', 'sab'], tam: 'Pequeno', desl: 6,
+    desc: 'Humanoides de três olhos das Montanhas Sanguinárias.',
+    hab: [
+      ['Natureza Mística', 'Resistência a efeitos mentais e de metabolismo +2; +1 PM por nível.', c => ({ pm: c.nt, marca: ['Resistência a mental e metabolismo +2'] })],
+      ['Pequeno e Apressado', 'Tamanho Pequeno, deslocamento 6m; +2 em Iniciativa e –2 em Diplomacia (fala rápido demais).', () => ({ per: { Iniciativa: 2, Diplomacia: -2 } })],
+      ['Visão Tripla', 'Visão no escuro e +2 em Percepção; lança Visão Mística (se aprender a magia, custa –1 PM).', () => ({ per: { Percepção: 2 }, marca: ['Visão no escuro'] })]
+    ] });
+  DB({ id: 'elfo-alfheim', n: 'Elfo de Alfheim', attr: {},
+    desc: 'Adaptação de God of War: elfos luminosos (Ljósálfar) e elfos negros (Dökkalfar), de mesma origem.',
+    esc: [{ id: 'povo', n: 'Povo', op: [
+      ['Ljósálfar', 'Des +2, Int +1. Armas luminosas (movimento e 1 PM: arma de luz sólida que sabe usar, mágica, +1 no ataque, até o fim da cena) e Filho da Luz (+2 em Percepção, visão no escuro, imune a cego e ofuscado).', { attr: { des: 2, int: 1 }, ef: () => ({ per: { Percepção: 2 }, marca: ['Visão no escuro', 'Imune a cego e ofuscado'] }) }],
+      ['Dökkalfar', 'For +2, Car +1. Armamento das Sombras (1 PM: próxima rolagem de dano com a arma na cena +1d6 de trevas) e Ser das Sombras (visão no escuro, escalada 9m, redução de trevas 10).', { attr: { for: 2, car: 1 }, ef: () => ({ marca: ['Visão no escuro', 'Escalada 9m', 'Redução de trevas 10'] }) }]
+    ] }],
+    hab: [
+      ['Povo', 'Escolha Ljósálfar ou Dökkalfar (atributos e habilidades na escolha).'],
+      ['Voo', '1 PM por rodada: voa com deslocamento 12m.']
+    ] });
+  DB({ id: 'elfo-gelo', n: 'Elfo-do-Gelo', attr: { sab: 2, des: 1, con: -1 }, desl: 12,
+    desc: 'Elfos das terras geladas, à vontade no frio extremo.',
+    hab: [
+      ['Graça de Glórienn', 'Deslocamento 12m.'],
+      ['Herança Gélida', 'Redução de frio 10 e resistência a frio +5.', () => ({ marca: ['Redução de frio 10', 'Resistência a frio +5'] })],
+      SENT_ELF
+    ] });
+  DB({ id: 'elfo-sombrio', n: 'Elfo-Sombrio', attr: { int: 2, des: 1, con: -1 },
+    desc: 'Elfos ligados a Tenebra, que evitam a luz do sol.',
+    hab: [
+      ['Arsenal de Tenebra', 'Proficiência com florete, gadanho e mosquete e +2 nos ataques com eles (se já for proficiente, a arma conta como leve).', () => ({ prof: ['Florete', 'Gadanho', 'Mosquete'] })],
+      ['Manto das Sombras', 'Lança Invisibilidade só em si mesmo (se aprender a magia, custa –1 PM).'],
+      ['Sensibilidade ao Sol', 'Sob luz solar direta fica ofuscado e perde 2d6 PV por patamar a cada rodada.'],
+      SENT_ELF
+    ] });
+  DB({ id: 'goron', n: 'Goron', attr: { for: 2, con: 1, des: -1 }, tam: 'Grande', desl: 6,
+    desc: 'Adaptação de Legend of Zelda: o povo das rochas, corpulento, mineiro e comedor de pedras.',
+    hab: [
+      ['Dieta Rochosa', 'Só se alimenta comendo pedras; um dia sem elas exige teste de Fortitude.'],
+      ['Grande como a Montanha', 'Tamanho Grande e deslocamento 6m.'],
+      ['Filho da Montanha', 'Imune a dano de fogo e ao calor.', () => ({ marca: ['Imune a fogo'] })],
+      ['Rolar como uma Pedra', '2 PM: vira um pedregulho por 1 rodada (deslocamento 9m, ignora terreno difícil não mágico, investida sem –2 na Defesa).']
+    ] });
+
+  // Humano Feérico: bênçãos das fadas (4 na criação; outras no lugar de poderes de classe)
+  const BENCAOS = [
+    ['Ardiloso como uma Cobra', 'Lança Disfarce Ilusório (Car).'],
+    ['Duro como Pedra', 'Con +1 e resistência a magia +2.', { con: 1 }, () => ({ marca: ['Resistência a magia +2'] })],
+    ['Falante como um Grilo', '+2 em Adestramento e Sobrevivência; fala com animais e plantas (como Voz Divina).', null, () => ({ per: { Adestramento: 2, Sobrevivência: 2 } })],
+    ['Forte como um Touro', 'For +1 e +5 espaços de carga.', { for: 1 }, () => ({ carga: 5 })],
+    ['Mágico como uma Borboleta', 'Lança uma magia arcana de 1º círculo à escolha (Car); se aprender a magia, custa –1 PM.'],
+    ['Raivoso como um Carcaju', 'Mordida (1d6, x2, perfuração); 1x/rodada, ao agredir com outra arma, 1 PM para um ataque extra com ela.', null, () => ({ arma: ARMA('Mordida', '1d6', 'Perfuração') })],
+    ['Rápido como um Coelho', 'Des +1 e +3m de deslocamento.', { des: 1 }, () => ({ desl: 3 })],
+    ['Sábio como uma Coruja', 'Sab +1 e +3 PM.', { sab: 1 }, () => ({ pm: 3 })],
+    ['Sagaz como um Falcão', 'Visão na penumbra e Visão Mística permanente, vendo criaturas e objetos invisíveis.', null, () => ({ marca: ['Visão na penumbra', 'Vê o invisível'] })]
+  ];
+  DB({ id: 'humano-feerico', n: 'Humano Feérico', attr: {},
+    desc: 'Humano abençoado pelas fadas, com dons tirados dos animais.',
+    esc: [{ id: 'bencaos', n: 'Bênçãos das Fadas (escolha 4)', multi: 4, op: BENCAOS.map(([n, t, atr, ef]) => [n, t, { attr: atr || undefined, ef, nomes: ['Bênção: ' + n] }]) }],
+    hab: [['Bênção das Fadas', 'Escolha 4 bênçãos (os atributos vêm delas). Cada nova bênção pode substituir um poder de classe (aba Raça, ao escolher poderes); cada uma só uma vez.']] });
+  rp(BENCAOS.map(([n, t, atr, ef]) => ['Bênção: ' + n, ['Humano Feérico'], '', t + ' (Bênção das Fadas extra, no lugar de um poder de classe.)', ef, atr || undefined]));
+
+  DB({ id: 'jotunn', n: 'Jotunn', attr: {}, tam: 'Grande',
+    desc: 'Adaptação de God of War: gigantes ancestrais de Jötunheim e Muspelheim.',
+    esc: [{ id: 'tipo', n: 'Linhagem', op: [
+      ['Fogo', 'For +2, Des +1, Sab –1. Explosão de Chamas; redução de fogo 10.', { attr: { for: 2, des: 1, sab: -1 }, ef: () => ({ marca: ['Redução de fogo 10'] }) }],
+      ['Gelo', 'For +2, Int +1, Car –1. Névoa; redução de frio 10.', { attr: { for: 2, int: 1, car: -1 }, ef: () => ({ marca: ['Redução de frio 10'] }) }],
+      ['Rocha', 'Con +2, For +1, Int –1. Transmutar Objetos; redução de ácido 10.', { attr: { con: 2, for: 1, int: -1 }, ef: () => ({ marca: ['Redução de ácido 10'] }) }]
+    ] }],
+    hab: [
+      ['Gigante', 'Tamanho Grande; 3 espaços de carga por ponto de Força (em vez de 2).', c => ({ carga: Math.max(0, c.at.for) })],
+      ['Manipulação Elemental', 'Lança Explosão de Chamas (fogo), Névoa (gelo) ou Transmutar Objetos (rocha), com For; se aprender a magia, custa –1 PM.'],
+      ['Percepção Paracronal', 'Lança Augúrio, com execução de 1 minuto.'],
+      ['Resistência Superior', '+2 na Defesa e redução 10 contra o dano da linhagem.', () => ({ def: 2 })]
+    ] });
+  DB({ id: 'korok', n: 'Korok', attr: { sab: 2, car: 1, for: -1 }, tam: 'Pequeno', desl: 6,
+    desc: 'Adaptação de Legend of Zelda: troquinhos vivos de máscara de folha, reclusos e brincalhões.',
+    hab: [
+      ['Pequeno Notável', 'Tamanho Pequeno e deslocamento 6m.'],
+      ['Boiar de Boas', 'Nunca se afoga nem testa Atletismo para evitar afogamento.'],
+      ['Fogo, Não!', 'Vulnerável a dano de fogo.', () => ({ marca: ['Vulnerável a fogo'] })],
+      ['Ver no Breu da Mata', 'Visão no escuro.', () => ({ marca: ['Visão no escuro'] })],
+      ['Pique-Esconde', '3 PM e Furtividade CD 20: esconde-se atrás ou debaixo de qualquer objeto e fica invisível até ser procurado ou se revelar.'],
+      ['Descida Serena', 'Caindo, reação e 1 PM: uma folha korok o faz planar sem dano de queda.']
+    ] });
+  DB({ id: 'medusa-draconica', n: 'Medusa Dracônica', attr: { int: 2, car: 1 }, tipo: 'Monstro',
+    desc: 'Medusa com sangue de dragão e poder elemental.',
+    esc: [{ id: 'natureza', n: 'Natureza Elemental', op: ['Ácido', 'Eletricidade', 'Fogo', 'Frio'].map(e => [e, 'RD 5 de ' + e.toLowerCase() + '; arma encantada e magia do Olhar Místico desse tipo.', { ef: () => ({ marca: ['RD 5 de ' + e.toLowerCase()] }) }]) }],
+    hab: [
+      ['Cria de Megalokk', 'Tipo monstro; visão no escuro.', () => ({ marca: ['Visão no escuro'] })],
+      ['Natureza Elemental', 'Escolha ácido, eletricidade, fogo ou frio: RD 5 desse tipo. Movimento e 1 PM: a arma que usa causa +1d12 desse tipo até acertar um ataque ou acabar a cena.'],
+      ['Olhar Místico', 'Lança uma magia de 1º círculo da energia escolhida (se aprender a magia, custa –1 PM); cega, não consegue lançá-la.']
+    ] });
+  DB({ id: 'qunari', n: 'Qunari', attr: { for: 2, con: 1, int: -1 },
+    desc: 'Adaptação de Dragon Age: gente de chifres e estatura imponente, criada na disciplina do Qun.',
+    hab: [
+      ['Disciplina Militar', '+2 em Iniciativa e Guerra.', () => ({ per: { Iniciativa: 2, Guerra: 2 } })],
+      ['Estatura Intimidadora', 'Usa For no lugar de Car em Intimidação.', () => ({ perAttr: { Intimidação: ['for'] } })],
+      ['Lógica do Qun', '+2 em Vontade e Guerra.', () => ({ per: { Vontade: 2, Guerra: 2 } })]
+    ] });
+  DB({ id: 'rito', n: 'Rito', attr: { des: 2, sab: 1, con: -1 },
+    desc: 'Adaptação de Legend of Zelda: humanoides-pássaro com asas no lugar dos braços (e mãos na ponta delas).',
+    hab: [
+      ['Habitante das Alturas', '+2 em Acrobacia e redução de frio 5.', () => ({ per: { Acrobacia: 2 }, marca: ['Redução de frio 5'] })],
+      ['Visão de Cima', 'Visão na penumbra; voando, +5 em Percepção para observar.', () => ({ marca: ['Visão na penumbra'] })],
+      ['Voo Veloz', '1 PM por rodada: voa com deslocamento 9m (sem PM ou derrubado, cai).']
+    ] });
+  DB({ id: 'tabrachi-teju', n: 'Tabrachi Teju', attr: { con: 2, for: 1, car: -1 },
+    desc: 'Tabrachi lagarto, de língua comprida e membros que se soltam e crescem de novo.',
+    hab: [
+      ['Linguarudo', 'Língua: arma natural (1d4, x2, impacto) com alcance 3m e +2 para desarmar e derrubar; 1x/rodada, ao agredir com outra arma, 1 PM para um ataque extra com ela.', () => ({ arma: ARMA('Língua', '1d4', 'Impacto') })],
+      ['Mecanismo de Defesa', 'Alvo de crítico (ou de algo que deceparia um membro): 3 PM para soltar o membro e sofrer metade do dano. Ele cresce em 2d6 dias.'],
+      ['Urodelo', 'Visão na penumbra e escalada igual ao deslocamento.', () => ({ marca: ['Visão na penumbra', 'Escalada igual ao deslocamento'] })]
+    ] });
+
+  // Vampiro: uma bênção na criação e outras no lugar de poderes de classe
+  const VAMP = [
+    ['Cura Acelerada', 'No início do turno, 1 PM para recuperar 5 PV (a partir do 5º nível, escolher de novo dobra para 10).', '', { rep: true }],
+    ['Dominação Vampírica', 'Ação completa e 3 PM: um humanoide em alcance curto fica confuso, enfeitiçado ou fascinado na cena ou perde a última hora de memória (Vontade CD Car evita; 1x/cena por alvo).', 'Presença Majestosa'],
+    ['Drenar Sangue', 'Ação padrão contra uma criatura viva que esteja agarrando: 2d6 de perfuração por patamar e recupera esse total em PV (conta como alimentação).', ''],
+    ['Forma de Lobo', 'Ação padrão e 3 PM: vira lobo (como Forma Selvagem Feroz básica), Médio, +3m e mordida 1d6.', ''],
+    ['Forma de Morcego', 'Ação padrão e 3 PM: vira morcego Minúsculo (+5 Furtividade, –5 manobras, voo 12m); acaba ao atacar, lançar magia ou sofrer dano.', ''],
+    ['Garras', 'Duas garras (1d6, x2, corte); 1x/rodada, ao agredir com arma, 1 PM para um ataque extra com uma garra livre (ou usá-las como arma secundária).', ''],
+    ['Manto das Sombras', 'Lança Invisibilidade só em si mesmo (se aprender a magia, custa –1 PM).', ''],
+    ['Passo Vampírico', '+3m de deslocamento e escalada igual ao deslocamento.', ''],
+    ['Presença Majestosa', 'Ganha Presença Aristocrática (se já tinha, custa –1 PM e +2 na CD).', ''],
+    ['Resiliência Sombria', 'Redução de dano 5/luz.', 'Presença Majestosa, 5º nível de personagem']
+  ];
+  const vampEf = {
+    'Garras': () => ({ arma: ARMA('Garras', '1d6', 'Corte') }),
+    'Passo Vampírico': () => ({ desl: 3, marca: ['Escalada igual ao deslocamento'] }),
+    'Resiliência Sombria': () => ({ marca: ['RD 5/luz'] })
+  };
+  DB({ id: 'vampiro', n: 'Vampiro', attr: { car: 1, con: -1 }, livre: [1, 1], exceto: ['con'], tipo: 'Morto-vivo',
+    desc: 'Morto-vivo que se alimenta de sangue e perde a humanidade conforme seus poderes crescem.',
+    esc: [{ id: 'bencao', n: 'Bênção Vampírica inicial', op: VAMP.map(([n, t, pre]) => [n, t + (pre ? ' Pré-requisito: ' + pre + '.' : ''), { ef: vampEf[n], nomes: ['Bênção Vampírica: ' + n] }]) }],
+    hab: [
+      ['Bênçãos Vampíricas', 'Uma bênção na criação; outras podem substituir poderes de classe (aba Raça, ao escolher poderes).'],
+      ['Resquícios da Outra Vida', 'Treinado numa perícia de qualquer lista (ou um poder geral). Pode ser vampiro de outra raça: troque por uma habilidade dela, aprovada pelo mestre (e use o tamanho dela).', () => ({ escolhePericias: 1 })],
+      ['Natureza Não Viva', 'Tipo morto-vivo: visão no escuro, imune a cansaço, metabolismo, trevas e veneno; não respira, come nem dorme. Cura mágica de luz o fere e não se beneficia de alimentação; dano de trevas o cura.', () => ({ marca: ['Visão no escuro', 'Imune a cansaço, metabolismo, trevas e veneno'] })],
+      ['Perda da Humanidade', 'Fraquezas que pioram a cada bênção: precisa repousar 8 horas dentro da terra (senão –1 em perícias por bênção), beber sangue toda semana (um dia a menos por bênção extra) e perde 1d6 PV por bênção a cada rodada sob o sol, ofuscado.']
+    ] });
+  rp(VAMP.map(([n, t, pre]) => ['Bênção Vampírica: ' + n, ['Vampiro'], pre ? pre.split(', ').map(x => x === 'Presença Majestosa' ? 'Bênção Vampírica: Presença Majestosa' : x).join(', ') : '', t, vampEf[n]]));
+  T20.poderes.filter(p => p.n === 'Bênção Vampírica: Cura Acelerada').forEach(p => { p.rep = true; });
+
+  DB({ id: 'vanir', n: 'Vanir', attr: { sab: 2, car: 1, con: -1 },
+    desc: 'Adaptação de God of War: povo divino escondido dos Aesir, ligado à magia antiga.',
+    hab: [
+      ['Afinidade Mágica', 'Lança três magias de 1º círculo, arcanas ou divinas (Car), consideradas divinas, com aprimoramentos como um druida do seu nível; se aprender uma delas, custa –1 PM.'],
+      ['Bênção da Magia Ancestral', 'Pode lançar uma magia que conhece numa criatura inteligente com quem se comunica: em vez do efeito, ela ganha o poder de lançá-la uma vez na cena, de graça.'],
+      ['Elusivo', '+2 em Enganação e Intuição.', () => ({ per: { Enganação: 2, Intuição: 2 } })]
+    ] });
+  DB({ id: 'zora', n: 'Zora', attr: { sab: 2, des: 1, int: -1 },
+    desc: 'Adaptação de Legend of Zelda: humanoides aquáticos de guelras e escamas.',
+    esc: [{ id: 'melodias', n: 'Melodias do Povo Zora (escolha 2)', multi: 2, op: ['Área Escorregadia', 'Curar Ferimentos', 'Orientação', 'Primor Atlético', 'Suporte Ambiental'].map(m => [m, 'Lança ' + m + ' (Sab); se aprender a magia, custa –1 PM.']) }],
+    hab: [
+      ['Melodias do Povo Zora', 'Lança duas magias da lista escolhida (Sab).'],
+      ['Um com a Água', 'Natação 9m; fala e lança magias debaixo d\'água.', () => ({ marca: ['Natação 9m'] })]
+    ] });
+
+  // costume sahiri dos dahllan (substitui duas habilidades)
+  const dah = T20.racas.find(r => r.id === 'dahllan');
+  DB({ id: 'dahllan-sahiri', n: 'Dahllan Sahiri', attr: Object.assign({}, dah.attr),
+    desc: 'Costume dos dahllan ligados à terra e à pedra, no lugar das plantas.',
+    hab: [
+      ['Animar Rochas', 'Transforma rochas em criaturas sob seu controle (como Conjurar Monstro, precisando de terra ou rocha equivalente a uma criatura Pequena); se aprender a magia, custa –1 PM. Substitui Amiga das Plantas.'],
+      ['Proteção da Terra', 'Em contato com terra ou pedra, ao sofrer dano, 1 PM para reduzi-lo em 5. Substitui Armadura de Allihanna.'],
+      dah.hab.find(h => h[0] === 'Empatia Selvagem')
+    ] });
+})();
+
+;
 // ---- 30_origens_t20.js
 // Origens — escolha 2 benefícios da lista (perícias e/ou poderes). unico = poder exclusivo da origem [nome, resumo, efeito?]
 const patI = n => n <= 4 ? 1 : n <= 10 ? 2 : n <= 16 ? 3 : 4;
@@ -3221,6 +3468,25 @@ const T2 = (...p) => () => ({ treina: p });
   ['Servo', 'Balde e vassoura (como bordão), tabardo do seu patrono.', 'Treinado em Diplomacia e Ofício (serviçal); +2 em Diplomacia e Enganação com superiores; usa Ofício (serviçal) no lugar de Nobreza.', T2('Diplomacia', 'Ofício (serviçal)')],
   ['Suporte de Tropas', 'Equipamento de viagem, instrumentos de ofício, maleta de medicamentos.', 'Ao ajudar, seu bônus aumenta em +2; ao flanquear, o bônus de ataque seu e dos aliados sobe para +4.']
 ].forEach(([n, itens, ben, ef]) => O({ n, f: 'DH', regional: true, itens, ben, ef: ef || undefined }));
+
+;
+// ---- 33_origens_db.js
+// Origens da revista Dragão Brasil (DB). Resumos com palavras próprias.
+[
+  ['Caçador de Monstros', 'A wiki não lista itens.', ['Atletismo', 'Percepção', 'Sobrevivência'], ['Predador de Predadores'], ['Predador de Predadores', '+1 em todos os testes de perícia ao lidar com criaturas do tipo monstro.'], 'Pode criar troféus de caça com taxidermia e usar as regras de fama, contratos e recompensas.'],
+  ['Discípulo de um Campeão', 'Uma arma marcial; cinco itens alquímicos entre ácido, bálsamo restaurador e fogo alquímico.', ['Atletismo', 'Luta', 'Pontaria', 'Vontade'], ['Atlético', 'Mestre Presente', 'um poder de combate'], ['Mestre Presente', 'Seu velho mestre, veterano da Guerra Artoniana, viaja com você como aliado mentor iniciante. No 7º nível ele vira um aliado veterano de outro tipo (assassino, atirador, combatente, destruidor, fortão, guardião, médico, perseguidor ou vigilante).']],
+  ['Nativo de Midgard', 'Uma arma simples ou marcial que saiba usar; escudo leve, se souber usar escudos.', ['Atletismo', 'Luta', 'Pontaria', 'Sobrevivência'], ['Em Busca do Valhalla', 'Proficiência', 'um poder de combate'], ['Em Busca do Valhalla', 'Contra ameaças de ND maior que o seu nível: +2 em ataque e dano, mas –2 na Defesa e nas resistências.']],
+  ['Retornado de Helheim', 'Um acessório ou arma simples ligado à sua primeira morte: empunhando ou vestindo, +1 PM máximo.', ['Intimidação', 'Sobrevivência', 'Vontade'], ['Mente Calejada', 'Presença Aterradora'], ['Mente Calejada', '+5 nas resistências contra medo e imune a apavorado (o que o deixaria apavorado o deixa abalado).', () => ({ marca: ['Imune a apavorado'] })]],
+  ['Sobrevivente da Névoa', 'Lampião, mochila de aventureiro e capa pesada.', ['Atletismo', 'Furtividade', 'Sobrevivência'], ['Atlético', 'Rastejador de Masmorras'], ['Rastejador de Masmorras', 'Não sofre –5 para se esconder depois de se mover, e a penalidade de armadura não vale em Furtividade.']],
+  ['Súdito dos Aesir', 'Acessório com a runa de um dos Aesir: +1 em Fortitude, Reflexos ou Vontade (escolhido na criação).', ['Conhecimento', 'Diplomacia', 'Religião'], ['Sortudo', 'Súplica aos Aesir'], ['Súplica aos Aesir', 'Num teste de perícia (exceto ataque e resistência), 1 PM para +2; a cada 4 níveis, +1 PM por +1.']]
+].forEach(([n, itens, per, pod, unico, nota]) => O({ n, f: 'DB', itens, per, pod, unico, nota }));
+
+[
+  ['Criança do Crepúsculo (Halak-Tûr)', 'Poção de uma magia de 1º círculo (1 PM).', 'Escolha duas habilidades com custo em PM, uma do dia e uma da noite: sob o sol, a do dia custa –1 PM e a outra +1; na escuridão, o contrário; no crepúsculo, ambas –1. Pode trocar uma vez por patamar. Não serve para construtos e mortos-vivos.'],
+  ['Iniciado Verdugo (Ubani)', 'Água benta ×2, cimitarra ou espada longa, símbolo sagrado (Allihanna, Kallyadranoch, Megalokk ou Wynna), T$ 50.', 'Treinado em Religião; usa Golpe Divino como paladino de 1º nível (se já tem, custa –1 PM).', () => ({ treina: ['Religião'] })],
+  ['Nascido nas Estepes (Halak-Tûr)', 'Arco curto, cavalo de guerra, flechas ×20, veste de seda.', '+2 em Cavalgar e Vontade e no dano com arcos curtos e katanas.', () => ({ per: { Cavalgar: 2, Vontade: 2 } })],
+  ['Nômade Ferani (Halak-Tûr)', 'Lança, manto camuflado (deserto), rações de viagem ×10.', '+2 em Fortitude e Furtividade e no dano contra desprevenidos; ignora terreno difícil (se já ignorava, +3m de deslocamento).', () => ({ per: { Fortitude: 2, Furtividade: 2 } })]
+].forEach(([n, itens, ben, ef]) => O({ n, f: 'DB', regional: true, itens, ben, ef }));
 
 ;
 // ---- 40_poderes_gerais.js
@@ -3479,6 +3745,118 @@ RP([
 ]);
 
 ;
+// ---- 42_poderes_db.js
+// Poderes gerais da Dragão Brasil (DB) e os poderes de fabricação e de montaria que faltavam (T20, AA, DB).
+// Resumos com palavras próprias.
+P('Combate', 'DB', [
+  ['Alcance Ampliado', 'treinado em Luta', 'Com armas alongadas, seu alcance natural triplica (em vez de dobrar).'],
+  ['Alvo Marcado', 'Caçador Profissional', 'Escolha um monstro visível: contra ele, +2 na Defesa e nos ataques.'],
+  ['Arma Natural Aprimorada', 'ter uma arma natural', 'Uma arma natural causa dano como se você fosse uma categoria de tamanho maior.'],
+  ['Ataque com Escudo II', 'Ataque com Escudo', 'Nunca perde o bônus do escudo por atacar com ele, e Ataque com Escudo passa a custar 0 PM.'],
+  ['Ataque Poderoso II', 'Ataque Poderoso, Estilo de Duas Mãos', 'Com arma corpo a corpo de duas mãos, 1 PM para não sofrer –2 no ataque do Ataque Poderoso.'],
+  ['Atirar e Correr', 'Estilo de Arremesso ou Estilo de Disparo', 'Depois de um ataque à distância, 2 PM para uma ação de movimento só para se deslocar.'],
+  ['Bloqueio com Escudo Perfeito', '12º nível de personagem, Bloqueio com Escudo', '1x/dia, no Bloqueio com Escudo, +4 PM (5 no total) para ficar imune ao dano em vez de RD.'],
+  ['Brecha na Guarda', 'treinado em Percepção', '1x/rodada, contra oponente atordoado, caído ou desprevenido: +1d6 no dano.'],
+  ['Caçador de Gigantes', 'Caçador Profissional', 'Contra alvos Grandes ou maiores: +2 na Defesa e suas armas causam dano de uma categoria maior.'],
+  ['Caçador Especialista', 'Caçador Profissional, Sab 2', 'Seus poderes contra monstros passam a valer também contra outro tipo de criatura. Repetível, com tipos diferentes.', null, { rep: true }],
+  ['Caçador Profissional', 'treinado em Sobrevivência', '+2 em Sobrevivência para rastrear e +1 nas resistências contra monstros.'],
+  ['Carga de Cavalaria II', 'Carga de Cavalaria', 'O dano extra da Carga de Cavalaria sobe para 4d8; com lança em investida montada, mais +2d8 (total +4d8 só da lança).'],
+  ['Combatente Sanguinário', 'treinado em Luta ou Pontaria', 'Sangramento que você causa tira 1d8 (em vez de 1d6); 1 PM para acumular sangramentos no mesmo alvo (todos acabam quando ele resistir). Não vale para magias.'],
+  ['Combatente Veterano', 'proficiência com armas marciais', '+1 na margem de ameaça com armas que sabe usar.'],
+  ['Contraguarda', 'Desarmar Aprimorado', 'Com Combate Defensivo ativo, quando erram um ataque corpo a corpo contra você, reação e 2 PM para desarmar o atacante.'],
+  ['Costas Largas II', 'Costas Largas', 'Seu limite de carga aumenta em +15 espaços (20 somando Costas Largas).', () => ({ carga: 15 })],
+  ['Defesa Desarmada I', 'Estilo Desarmado', 'Alvo de um ataque, 3 PM: teste oposto de ataque desarmado; se vencer, o ataque não supera sua Defesa.'],
+  ['Defesa Desarmada II', 'Defesa Desarmada I', 'Como Defesa Desarmada I por 2 PM; se vencer contra corpo a corpo, 2 PM para um ataque desarmado no atacante.'],
+  ['Defesa Desarmada III', 'Defesa Desarmada II', 'Como Defesa Desarmada II, mas cada parte custa só 1 PM.'],
+  ['Economia de Habilidade', 'treinado em Luta ou Pontaria', 'Uma habilidade não mágica escolhida custa –1 PM. Repetível, com habilidades diferentes.', null, { rep: true }],
+  ['Eliminador de Pestes', 'Caçador Profissional', 'Rastreando monstros, ignora penalidades de tamanho; +1 na Defesa e nos ataques contra monstros Pequenos ou menores.'],
+  ['Empunhadura Gigante', 'Empunhadura Poderosa', 'Sem penalidade com armas uma categoria maior; com –5 no ataque, empunha uma arma de duas mãos do seu tamanho com uma mão ou uma duas categorias maior com as duas.'],
+  ['Escudo Fundação', 'Bloqueio com Escudo', 'Usa Bloqueio com Escudo contra dano de queda, com a redução dobrada.'],
+  ['Escudo para Lançamento', 'Estilo de Arma e Escudo', 'Reação e 1 PM: seu escudo lança um aliado que corre até você; ele ganha +5 nos próximos testes de ataque, Acrobacia e Atletismo do turno dele.'],
+  ['Especialista em Arcos e Bestas', 'Estilo de Disparo', 'Mirar com arcos e bestas é ação livre, assim como sacar, guardar e recarregar essas armas.'],
+  ['Especialista em Camuflagens', 'treinado em Luta ou Pontaria', 'Sua camuflagem leve dá 50% de chance de erro (em vez de 20%) e a total, 70% (em vez de 50%).'],
+  ['Especialista em Coberturas', 'treinado em Luta ou Pontaria', 'Cobertura leve dá +10 na Defesa (em vez de +5).'],
+  ['Esquiva II', 'Esquiva', '+3 na Defesa e em Reflexos (total +5 com Esquiva).', () => ({ def: 3, per: { Reflexos: 3 } })],
+  ['Esquiva III', 'Esquiva II', 'Passando em Reflexos contra efeito que reduz dano à metade, não sofre dano. Exige liberdade de movimentos.'],
+  ['Flechada com Rolamento', 'Estilo de Disparo', 'Ação padrão e 2 PM: atira com arco ou besta num alvo corpo a corpo sem penalidade e rola para trás até 6m como ação livre.'],
+  ['Flechada de Impacto I', 'Estilo de Disparo', 'Com arco ou besta, 2 PM: o disparo explode e atinge também quem estiver a 3m (Reflexos CD Des reduz). Pode mirar num ponto, sem rolar ataque.'],
+  ['Flechada de Impacto II', 'Flechada de Impacto I', 'Como a anterior por 3 PM, com raio de 6m.'],
+  ['Flechada de Impacto III', 'Flechada de Impacto II', 'Como a anterior por 4 PM, com raio de 9m.'],
+  ['Flechada de Manobra I', 'Estilo de Disparo', 'Com arco ou besta, troca o dano por uma manobra à distância (derrubar, desarmar, empurrar ou quebrar) com +2.'],
+  ['Flechada de Manobra II', 'Flechada de Manobra I', 'Como a anterior, com +5 na manobra.'],
+  ['Flechada Precisa Distante I', 'Estilo de Disparo', 'Com arco ou besta, 2 PM: +1 passo de alcance e +1 na margem de ameaça.'],
+  ['Flechada Precisa Distante II', 'Flechada Precisa Distante I', 'Como a anterior por 3 PM: +2 passos de alcance e +2 na margem.'],
+  ['Flechada Precisa Distante III', 'Flechada Precisa Distante II', 'Como a anterior por 4 PM: +3 passos de alcance e +3 na margem.'],
+  ['Ginete de Guerra', 'Ginete', 'Sua montaria de combate também dá os benefícios de um parceiro combatente, fortão ou guardião (escolha fixa por criatura).'],
+  ['Golpe Aéreo I', 'treinado em Luta', '1x/rodada, ação padrão: ataque corpo a corpo saltando, com o bônus de posição elevada (+2), contra alvos até uma categoria maior.'],
+  ['Golpe Aéreo II', 'Golpe Aéreo I', 'Como o anterior; se acertar, 2 PM para jogar o alvo ao chão (2d6 de queda e caído).'],
+  ['Golpe Aéreo III', 'Golpe Aéreo II', 'Como o anterior; se acertar, 3 PM para um ataque adicional que joga o alvo ao chão (2d6 de queda e caído).'],
+  ['Golpe Poderoso Explosivo I', 'Ataque Poderoso II', 'Com arma de duas mãos, 2 PM: o golpe atinge também quem estiver a 3m (Reflexos CD For reduz). Pode mirar num ponto ao alcance.'],
+  ['Golpe Poderoso Explosivo II', 'Golpe Poderoso Explosivo I', 'Como o anterior por 3 PM, com raio de 6m.'],
+  ['Golpear e Correr', 'Ataque Furtivo', 'Depois de um ataque furtivo, 2 PM para uma ação de movimento só para se deslocar.'],
+  ['Guardião Cinzento', 'ser iniciado por outro Guardião Cinzento', 'Sente monstros em alcance médio e ganha +2 em todos os testes de resistência.', () => ({ per: { Fortitude: 2, Reflexos: 2, Vontade: 2 } })],
+  ['Mahou-Jutsu', 'Briga ou Estilo Desarmado, lançar magias arcanas', 'Soma For ou Sab (o maior) nos PM; magia de toque lançada com ataque desarmado tem +2 no ataque.', c => ({ pm: Math.max(0, c.at.for, c.at.sab) })],
+  ['Perseguidor Implacável', 'Caçador Profissional', 'Rastreia monstros no deslocamento normal e nunca perde o rastro, mesmo falhando.'],
+  ['Retomar Fôlego', 'treinado em Luta', 'Gasta PM para recuperar PV: cada 2 PM curam 1d8+1.'],
+  ['Torrente de Flechas I', 'Estilo de Disparo', 'Ação completa, 3 PM e toda a aljava: dano automático do arco ou besta em todos num raio de 6m dentro do alcance (Reflexos CD Des reduz).'],
+  ['Torrente de Flechas II', 'Torrente de Flechas I', 'Como a anterior por 4 PM, raio de 9m e CD +5.'],
+  ['Torrente de Flechas III', 'Torrente de Flechas II', 'Como a anterior por 5 PM, raio de 12m, CD +5 e dano como acerto crítico.']
+]);
+
+P('Destino', 'DB', [
+  ['Certificado de Conclusão', 'estudar um mês na Caravana das Três Chamas', 'Única forma de obter: +1 PM e lança uma entre Alarme, Aviso, Criar Elementos e Luz (Int), sem aprimoramentos (se aprender a magia, custa –1 PM e libera aprimoramentos).', () => ({ pm: 1 })],
+  ['Comilão', 'Con 1, treinado em Fortitude', '+3 PV e pode comer dois pratos especiais por dia, com os dois benefícios (pratos iguais não acumulam).', () => ({ pv: 3 })],
+  ['Controlar Licantropia', 'saber que contraiu licantropia', 'Rola dois dados na Vontade para não se transformar. Ação completa e 3 PM: assume a forma híbrida ou de fera mantendo o controle, pelo tempo que quiser. Efeitos sobre Forma Selvagem valem para essas formas.'],
+  ['Espírito Guia', 'treinado em Intuição, 6º nível de personagem', 'Um espírito o acompanha como aliado iniciante (mentor, sábio ou ajudante). No começo da cena, 1 PM e movimento para ele virar outro tipo escolhido (assassino, atirador, combatente, destruidor, fortão, guardião, médico, perseguidor ou vigilante) até o fim da cena.'],
+  ['Previdência da Vigília', 'contribuir com a Vigília das Segundas Chances ou jurar a Thyatis', 'Ganha Dom da Imortalidade, mas só para a primeira vez que morrer na campanha.'],
+  ['Sim, Amo!', 'treinado na perícia do gênio, 6º nível de personagem', 'Um gênio menor ligado a um objeto. Com o objeto nas duas mãos, ação padrão e teste da perícia dele (CD 20 + PM da magia, +5 por pedido no dia): lança uma magia de até 2º círculo das escolas dele. Allaraz (luz; Nobreza), Dabbus (necromancia; Intimidação), Gizzehi (fogo; Atletismo), Jairuan (encantamento e ilusão; Intuição), Kemooz (transmutação; Fortitude), Yazzu (água e convocação; Iniciativa).']
+]);
+
+P('Magia', 'DB', [
+  ['Afinidade com Magia', 'Car 1', 'Bônus de magias e habilidades mágicas em você aumentam em +1 (penalidades também); curas e danos mágicos rolam um dado extra em você.'],
+  ['Arauto de Andraste', '', 'Espíritos sofrem –2 nas resistências contra suas magias e poderes; +5 para dissipar teletransportes. Aprende Dissipar Magia no 5º nível e Âncora Dimensional no 9º.'],
+  ['Carga Elemental: Combustão de Mana', 'três magias de dano de fogo, 6º nível de personagem', '1x/rodada, magia de fogo dá uma carga (até o maior círculo); cada carga põe +1 dado de fogo nas suas magias de fogo. Perde as cargas após uma rodada sem ganhar.'],
+  ['Carga Elemental: Corrosão Concentrada', 'três magias de dano de ácido, 6º nível de personagem', '1x/rodada, magia de ácido dá uma carga (até o maior círculo); cada carga dá +1 na CD das suas magias de ácido.'],
+  ['Carga Elemental: Dínamo Mágico', 'três magias de dano de eletricidade, 6º nível de personagem', '1x/rodada, magia de eletricidade dá uma carga (até o maior círculo); cada carga reduz em –1 PM os aprimoramentos das suas magias elétricas.'],
+  ['Carga Elemental: Véu do Inverno', 'três magias de dano de frio, 6º nível de personagem', '1x/rodada, magia de frio dá uma carga (até o maior círculo); ao lançar magia de frio, 5 PV temporários por carga.'],
+  ['Confluência Elemental', 'dois poderes de carga elemental, 9º nível de personagem', 'Suas cargas elementais diferentes contam como do mesmo elemento para os bônus (o total ainda é limitado pelo maior círculo).'],
+  ['Detetive Arcano', 'treinado em Investigação, lançar magias arcanas', '+5 para resistir a ilusões que avaliou por um minuto; Percepção CD 20 após um minuto de conversa revela encantamento; aprende uma magia de adivinhação de um círculo que lança.'],
+  ['Especialista em Itens Mágicos', 'Car 1', 'A CD das habilidades de itens mágicos que você usa sobe +2 por categoria (menor +2, médio +4, maior +6).'],
+  ['Maestria em Itens Mágicos', 'Especialista em Itens Mágicos', 'Ativar habilidades de itens mágicos custa –1 PM.']
+]);
+
+// fabricação (T20 e DB)
+P('Magia', 'T20', [
+  ['Escrever Pergaminho', 'habilidade de classe Magias, treinado em Ofício (escriba)', 'Fabrica pergaminhos (ou runas, tabuletas etc.) com magias que conhece, usando Ofício (escriba).'],
+  ['Preparar Poção', 'habilidade de classe Magias, treinado em Ofício (alquimista)', 'Fabrica poções de magias de 1º e 2º círculos que conhece, usando Ofício (alquimista).']
+]);
+P('Magia', 'DB', [
+  ['Cozinhar Receita Mágica', 'Alquimista Iniciado ou Preparar Poção, 6º nível de personagem', 'Faz "poções" culinárias com Ofício (cozinheiro): custo = (PM da magia)² × 25; serve 4 criaturas Médias, deve ser comida na hora, e durações não instantâneas viram 1 dia.'],
+  ['Destilar Substrato', 'Alquimista Iniciado ou Preparar Poção, 4º nível de personagem', 'De uma criatura abatida há menos de 2 horas (Sobrevivência ou Misticismo CD 12 + ND), extrai substrato que barateia poções de certas escolas: animais (adivinhação, encantamento), construtos (abjuração, transmutação), espíritos (convocação, ilusão), monstros (evocação), mortos-vivos (necromancia).']
+]);
+P('Destino', 'DB', [
+  ['Cozinheiro Aventureiro', 'Foco em Perícia (Ofício (cozinheiro))', '+2 em Ofício (cozinheiro) e para extrair itens de criaturas. Cada refeição pode levar um aditivo: ervas medicinais (tira enjoado, envenenado ou fatigado e dá vantagem contra doença), restos da última refeição (+2 PV temporários), raiz de mandrágora (+4 PM temporários) ou miúdos de slime (+1 no bônus do prato).']
+]);
+
+// montaria (T20, AA e DB)
+P('Combate', 'T20', [
+  ['Carga de Cavalaria', 'Ginete', 'Investida montada causa +2d8 de dano e você pode continuar se movendo depois do ataque (em linha reta, até o dobro do deslocamento).'],
+  ['Ginete', 'treinado em Cavalgar', 'Passa automaticamente no Cavalgar para não cair ao sofrer dano e não sofre penalidade para atacar à distância ou lançar magias montado.']
+]);
+P('Combate', 'AA', [
+  ['Adestrar Montaria', 'treinado em Adestramento, 7º nível de personagem', '+2 em Adestramento; sua montaria vira veterana ou ganha a habilidade iniciante de outro tipo de parceiro. Uma montaria treinada por vez.', () => ({ per: { Adestramento: 2 } })],
+  ['Combate Montado', 'Ginete', 'Montado, +2 em ataque e dano com armas.'],
+  ['Dois Como Um', 'Ginete', 'Montado, 2 PM em Atletismo, Cavalgar, Iniciativa, Luta, Percepção, Pontaria ou Reflexos para rolar dois dados e usar o melhor.'],
+  ['Resistência Montada', 'Combate Montado', 'Montado, 2 PM para usar Cavalgar num teste de resistência; contra efeito que reduz dano à metade, passar evita todo o dano.']
+]);
+P('Combate', 'DB', [
+  ['Aliado Feérico', 'ter um aliado permanente (companheiro animal, montaria sagrada…)', 'Seu aliado é uma criatura feérica: no início de cada cena você ganha 1 PM temporário a cada 2 níveis.'],
+  ['Conjuração Montada', 'treinado em Cavalgar, Combate Montado', 'Montado, não testa Vontade por movimento vigoroso ao lançar magias e pode se mover antes e depois de lançar, até o deslocamento.'],
+  ['Dividir Fardo', 'habilidade que forneça um aliado montaria', 'Sua Força conta em dobro para a carga, mas pelo menos 1/3 do equipamento fica com a montaria.', c => ({ carga: Math.max(0, 2 * c.at.for) })],
+  ['Montaria Aprimorada', 'habilidade que forneça um aliado montaria, 9º nível de personagem', 'Sua montaria ganha um segundo tipo de parceiro, com os bônus dele.']
+]);
+
+;
 // ---- 50_deuses.js
 // Deuses maiores (Panteão) — obrig = resumo das Obrigações & Restrições
 [
@@ -3658,6 +4036,74 @@ G([
   ['Ushultt', ['Thwor'], 'Escolha um aliado: em alcance curto, ambos ganham +2 em ataque e dano (+3 se ele for duyshidakk).'],
   ['Vitória a Qualquer Custo', ['Arsenal'], '2 PM: rola de novo um teste de ataque, resistência ou Guerra (cada novo uso custa +1 PM).']
 ], 'DH');
+
+;
+// ---- 52_deuses_db.js
+// Deuses menores e poderes concedidos da Dragão Brasil (DB). Resumos com palavras próprias.
+(() => {
+  const menor = d => D(Object.assign({ f: 'DB', menor: true, racas: 'Qualquer raça.', classes: 'Qualquer classe.', simb: '—' }, d));
+  menor({ n: 'Din', areas: 'Poder (deusa dourada de Legend of Zelda).', canal: 'Negativa', arma: 'Qualquer', simb: 'Triângulo do poder da Triforce.',
+    poderes: ['Almejar o Impossível', 'Armas da Ambição', 'Poder Oculto', 'Sangue de Ferro'],
+    obrig: 'Nunca recusar uma oferta de mais poder, sejam quais forem as consequências; sempre agir para chegar mais perto do seu objetivo, por qualquer meio.' });
+  menor({ n: 'Farore', areas: 'Coragem e justiça (deusa dourada de Legend of Zelda).', canal: 'Positiva', arma: 'Espada longa', simb: 'Triângulo da coragem da Triforce.',
+    poderes: ['Coragem Total', 'Espada Justiceira', 'Escudo Mágico', 'Reparar Injustiça'],
+    obrig: 'Nunca recusar ajuda a um inocente; nunca fugir de perigo, oponente ou combate que possa vencer (ND igual ou menor que seu nível).' });
+  menor({ n: 'Hylia', areas: 'Guardiã da Triforce e protetora dos inocentes de Hyrule (Legend of Zelda).', canal: 'Positiva', arma: 'Arco longo',
+    poderes: ['Aura de Paz', 'Aura Restauradora', 'Cura Gentil', 'Curandeira Perfeita'],
+    obrig: 'Proteger a Triforce mesmo à custa da vida e combater sempre quem quiser se apossar dela.' });
+  menor({ n: 'Nayru', areas: 'Sabedoria, lei e verdade (deusa dourada de Legend of Zelda).', canal: 'Qualquer', arma: 'Bordão', simb: 'Triângulo da sabedoria da Triforce.',
+    poderes: ['Centelha Mágica', 'Bênção do Mana', 'Dom da Esperança', 'Dom da Verdade'],
+    obrig: 'Sempre dizer a verdade e agir com sinceridade; nunca usar Ladinagem, Furtividade nem Enganação.' });
+  menor({ n: 'Desejo', areas: 'Paixão, obsessão e satisfação (Perpétuo de Sandman, culto de mistério).', canal: 'Negativa', arma: 'Arco longo', simb: 'Coração de vidro.',
+    racas: 'Qareen, hynne, sílfides, suraggel, elfos.', classes: 'Arcanistas, bardos, bucaneiros, caçadores, ladinos e nobres.',
+    poderes: ['Aparência Adaptável', 'Flecha Cúpida', 'Mestre de Si'],
+    obrig: 'Cativar alguém todo dia (ou a cada sessão). Se for manipulado por alguém, perde os poderes até o fim da cena.' });
+  menor({ n: 'Desespero', areas: 'Sofrimento e dor (Perpétuo de Sandman, culto de mistério).', canal: 'Negativa', arma: 'Foice', simb: 'Gancho ensanguentado.',
+    racas: 'Lefou, suraggel, golens, osteons.', classes: 'Arcanistas, caçadores, druidas, ladinos e nobres.',
+    poderes: ['Detectar Desesperança', 'Drenar Desilusão', 'Espelhos Distantes'],
+    obrig: 'Fica sempre lento. Precisa causar uma condição negativa em outra criatura a cada sessão, ou fica alquebrado na sessão seguinte.' });
+  menor({ n: 'Morte', areas: 'Morte, ritos fúnebres e consolo (Perpétua de Sandman, culto de mistério).', canal: 'Qualquer', arma: 'Gadanho', simb: 'Ankh de prata.',
+    racas: 'Qualquer raça (todos enfrentam a morte).', classes: 'Qualquer classe.',
+    poderes: ['Aparência Adaptável', 'Caçador de Imortais', 'Dom do Psicopompo'],
+    obrig: 'Não saquear tumbas nem templos mortuários; orar antes do combate e dedicar as mortes à deusa.' });
+  menor({ n: 'Sonho', areas: 'Histórias, sonhos e pesadelos (Perpétuo de Sandman, culto de mistério).', canal: 'Qualquer', arma: 'Nenhuma', simb: 'Elmo em forma de máscara cerimonial.',
+    racas: 'Qareen, suraggel, sílfides, sereias, trogs.', classes: 'Arcanistas, bardos, inventores e nobres.',
+    poderes: ['Aparência Adaptável', 'Corvo do Sonhar', 'Fantasmas ou Quimeras'],
+    obrig: 'Os poderes só funcionam à noite ou perto de muitos seres dormindo; nunca acordar quem dorme.' });
+  menor({ n: 'Eucharion', areas: 'Gratidão: retribuir graças, honrar promessas, pagar dívidas morais.', canal: 'Positiva', arma: 'Mangual', simb: 'Coração dourado irradiando luz.',
+    racas: 'Qualquer raça.', classes: 'Qualquer classe.',
+    poderes: ['Dívida Sagrada'],
+    obrig: 'Nunca recusar ajuda a quem já o ajudou; sempre retribuir um favor; não aceitar presente sem resposta (mesmo simbólica); cumprir promessas feitas diante do símbolo sagrado.' });
+  menor({ n: 'Santa Bola de Fogo', areas: 'A magia bola de fogo divinizada: calor, coragem e combate ao frio e à escuridão.', canal: 'Positiva', arma: 'Bola de Fogo', simb: 'Círculo com uma chama amarela, vermelha ou laranja.',
+    racas: 'Golens, qareen.', classes: 'Arcanistas, bardos, druidas e guerreiros.',
+    poderes: ['Bênção da Bola de Fogo'],
+    obrig: 'Lançar bola de fogo pelo menos uma vez ao dia; sempre falhar de propósito para evitar dano dessa magia; nunca causar frio nem escuridão mágica; nunca dormir no escuro total por vontade própria.' });
+
+  G([
+    ['Aparência Adaptável', ['Desejo', 'Morte', 'Sonho'], 'Cada criatura o vê de um jeito familiar ou idealizado: +10 em Diplomacia na primeira interação com alguém.'],
+    ['Bênção da Bola de Fogo', ['Santa Bola de Fogo'], 'Aprende e lança Bola de Fogo (um atributo mental à escolha). Sem acesso ao 2º círculo, pode lançar uma versão de 1º círculo por –2 PM, com valores pela metade. Se aprender a magia de novo, custa –1 PM.'],
+    ['Caçador de Imortais', ['Morte'], '+2 em perícias e dano contra criaturas que não envelhecem (construtos, espíritos, mortos-vivos) e pode falar com elas.'],
+    ['Corvo do Sonhar', ['Sonho'], 'Um pássaro onírico familiar entra nos sonhos de quem dorme e mostra o que a pessoa sonha; também viaja a outros mundos, com risco.'],
+    ['Detectar Desesperança', ['Desespero'], 'Sempre percebe criaturas sob efeitos de medo ou mentais.'],
+    ['Dívida Sagrada', ['Eucharion'], '1x/rodada, ao receber um efeito benéfico, 2 PM para dar o mesmo efeito a um aliado em alcance curto.'],
+    ['Dom do Psicopompo', ['Morte'], 'Se morrer, volta em 3d6 dias: humanoides voltam como osteon, monstros como mortos-vivos, e construtos, espíritos e mortos-vivos perdem 2 PM permanentes. Só clérigos e paladinos.'],
+    ['Drenar Desilusão', ['Desespero'], 'Ação padrão e 1 PM: remove uma condição de medo ou mental de uma criatura adjacente e cura 2d4 PV seus, mas sofre a condição no próximo turno se falhar em Vontade CD 20.'],
+    ['Espelhos Distantes', ['Desespero'], '2 PM: lança Vidência espiando por qualquer superfície espelhada em alcance longo; +5 PM e movimento para passar de um espelho a outro.'],
+    ['Fantasmas ou Quimeras', ['Sonho'], 'Aprende e lança Amedrontar ou Sono; pode aprender Sonho como magia universal de 3º círculo.'],
+    ['Flecha Cúpida', ['Desejo'], 'Treinado em Misticismo ou Ofício (alquimista), imbui flechas: a de ouro faz o alvo se apaixonar pela próxima criatura que vir; a de chumbo o deixa apavorado (Vontade CD Car evita; dura até o fim da sessão).'],
+    ['Canção da Pedra', ['Allihanna', 'Megalokk'], 'Usa Religião no lugar de Ofício em grandes estruturas de pedra e de Pilotagem com veículos de pedra; lança Transmutar Objetos (só pedra) e, com magias divinas de 3º círculo, Controlar Terra. Só druidas.'],
+    ['Percepção de Masmorra', ['Hyninn'], '1x/cena, sucesso automático em Investigação para achar armadilhas no subterrâneo ou numa masmorra.', null, 'Membro da organização Passagem Vulpina']
+  ], 'DB');
+
+  // poderes existentes que a revista também dá a esses deuses, e poderes novos de deuses maiores
+  const darA = (deus, poder) => { const d = T20.deuses.find(x => x.n === deus); if (d && !d.poderes.includes(poder)) d.poderes.push(poder); };
+  darA('Allihanna', 'Canção da Pedra'); darA('Megalokk', 'Canção da Pedra'); darA('Hyninn', 'Percepção de Masmorra');
+  // poderes do livro básico que os deuses menores também concedem: o texto continua o do livro; só anota o deus
+  T20.deuses.filter(d => d.f === 'DB').forEach(d => d.poderes.forEach(p => {
+    const x = T20.poderes.find(y => y.tipo === 'Concedido' && y.n === p);
+    if (x && x.deuses && !x.deuses.includes(d.n)) x.deuses.push(d.n);
+  }));
+})();
 
 ;
 // ---- 60_magias_1.js
@@ -3944,6 +4390,37 @@ Semiplano|A|Cnv|T20|completa|curto|Efeito: semiplano de 30m de lado|1 dia||Cria 
 Sombra Assassina|A|Ilu|T20|padrão|curto|Alvo: 1 criatura|cena|Vontade parcial|Uma duplicata de sombras do alvo o segue e o ataca.|
 Toque da Morte|U|Nec|T20|padrão|toque|Alvo: 1 criatura|instantânea|veja texto|10d8+10 de trevas; se o alvo estiver abaixo da metade dos PV, faz Fortitude ou morre.|
 Katana Celestial|D|Evo|AA|padrão|médio|Área: duas linhas|instantânea|Reflexos parcial|Golpe vindo dos céus em duas linhas (uma de 60m ou em "V"): 10d8 de dano.|
+`);
+
+;
+// ---- 66_magias_db.js
+// Magias da revista Dragão Brasil (DB). Várias usam as condições novas da revista (arrefecido, molhado, eletrificado…).
+MG(1, `
+Armadura Gélida|U|Abj|DB|padrão|pessoal|Alvo: você|cena||Uma armadura grossa de gelo cobre você: sofre os efeitos de congelado, menos a paralisia. Em chamas ou com dano de fogo, Reflexos CD 20 ou ela derrete e você fica arrefecido. Aprimoramentos: reação com RD 10 contra um ataque de fogo, +5 na Defesa ou duração de um dia.|
+Chuva|D|Evo|DB|movimento|curto|Área: cilindro com 9m de raio e 9m de altura|sustentada||Só ao ar livre: uma chuva fraca deixa molhados as criaturas e os objetos na área, até gastarem uma ação padrão (ou sofrerem dano de fogo) para se secar. +2 PM: chuva espessa, –5 em Percepção e em ataques à distância.|
+Detonação Congelante|A|Evo|DB|padrão|pessoal|Área: esfera de 6m|instantânea|Fortitude parcial|Onda de frio: 2d6 de dano de frio e enredado e imóvel por 1d4 rodadas; quem passa sofre metade e fica enredado por 1 rodada. Uma criatura voadora imóvel cai.|
+Geiser Cáustico|A|Evo|DB|padrão|médio|Área: cilindro com 3m de diâmetro e 3m de altura|instantânea|Reflexos reduz à metade|O chão explode em ácido: 2d6 de dano de ácido nas criaturas e nos objetos livres da área. +2 PM: a área borbulha até o fim da cena (terreno difícil e 2d6 de ácido a quem entrar ou começar o turno nela).|
+Nuvem Tempestuosa|A|Cnv|DB|padrão|curto|Efeito: nuvem com 3m de diâmetro|sustentada|Fortitude reduz à metade|Nuvem carregada: 2d8 de dano de eletricidade em quem estiver no espaço dela (uma vez por rodada por criatura); ação de movimento para movê-la 6m. É imune a dano. +2 PM: trovões que atordoam quem falhar por 1 rodada.|
+Toque Congelante|A|Evo|DB|padrão|toque|Alvo: 1 criatura|instantânea|Fortitude parcial|Névoa gélida na mão: 2d8+2 de dano de frio e arrefecido; passando, metade do dano e sem a condição. Alvo molhado sofre –5 na resistência.|
+Ventania Mística|U|Abj|DB|padrão|pessoal|Área: cilindro com 9m de raio e 9m de altura|instantânea||Ventos mágicos limpam condições na área: arrefecido, eletrificado, em chamas e molhado acabam; congelado vira arrefecido; eletrizado vira eletrificado ou molhado (à escolha do mestre).|
+`);
+MG(2, `
+Controlar Ar|D|Trm|DB|padrão|médio|Área: varia|cena|veja texto|Escolha um efeito. Ascender: uma corrente de ar ergue uma criatura ou um objeto Médio (ação de movimento para subir ou descer 6m, até 30m; flutuando, o alvo fica vulnerável e com –2 nos ataques; involuntário testa Fortitude a cada turno). Sopro: lufada em cone de 4,5m, manobra empurrar com o atributo-chave contra criaturas Médias ou menores. Vento: vento forte na área (ou um passo a mais ou a menos num vento que já existe).|
+Memorizar Conhecimento|U|Adv|DB|padrão|pessoal|Alvo: você|permanente até ser descarregada||Grava na memória todos os detalhes de uma cena: +5 em testes ligados a ela. Máximo de memórias igual ao seu patamar (1 a 4) + atributo-chave. +3 PM (4º círculo): o bônus vira +10.|
+Necrofogo|U|Evo|DB|padrão|pessoal|Área: linha de 15m|instantânea|Reflexos parcial|Chamas profanas saem do chão: 3d6 de fogo e 3d6 de trevas; quem falha fica decaído e sangrando (curar decaído cura também o sangramento); passando, metade do dano.|
+`);
+MG(3, `
+Aura Restauradora|D|Evo|DB|padrão|pessoal|Área: esfera com 6m de raio|sustentada||Aura de energia positiva: aliados que terminam o turno nela ficam restaurando e absorvendo até o fim do próximo turno deles (e enquanto continuarem dentro). +5 PM: inimigos que terminam o turno nela ficam decaídos e sangrando.|
+Hálito Peçonhento|U|Evo|DB|padrão|pessoal|Área: cone de 9m|instantânea|Fortitude parcial|Fumaça tóxica e corrosiva: 4d8 de ácido e 4d8 de veneno e cego por 1d4+1 rodadas; passando, metade do dano e sem cegueira.|
+Impacto Fulminante|A|Evo|DB|padrão|curto|Alvo: 1 criatura|sustentada|Fortitude parcial|Um relâmpago cai dos céus: 4d6 de eletricidade e 4d6 de impacto, caído e atordoado por 1 rodada; passando, metade do dano, sem as condições e imune ao atordoamento desta magia na cena. +4 PM (4º círculo): criaturas escolhidas.|
+`);
+MG(4, `
+Bênção da Dragoa Rainha|U|Trm|DB|completa|pessoal|Alvo: você|sustentada||Pele branca, asas e coroa de gelo: voo 18m, imunidade a fogo e frio e resistência a dano não mágico 15. Suas magias de frio causam dano máximo, mas você não pode lançar magias de fogo.|
+Raio de Plasma|A|Evo|DB|padrão|médio|Área: linha|instantânea|Fortitude reduz à metade|Rajada superaquecida: 10d8 de fogo nas criaturas e nos objetos livres da linha; derrete madeira, pedra ou metal e atinge alvos fora da linha de visão. +2 PM: vira uma espada de plasma (ação padrão para causar 10d8 de fogo num alvo adjacente, ignorando a RD de objetos).|
+Velocidade do Relâmpago|A|Trm|DB|padrão|pessoal|Alvo: você|sustentada|Reflexos reduz à metade|Seus olhos soltam faíscas: com uma ação de movimento, teletransporta-se até 12m em linha reta, deixando um rastro elétrico que causa 6d8 de eletricidade em quem atravessar. +5 PM: 15m, podendo fazer curvas.|
+`);
+MG(5, `
+Simulacro de Gelo Eterno|A|Trm|DB|8 horas|médio|Efeito: cópia de gelo e neve|uma semana||Cria uma cópia sua de gelo, mais fraca: –5 nas perícias, metade dos PM, magias só até o 3º círculo e vulnerável a fogo. Tem as suas memórias e vontade própria. Componente: estátua sua de gelo eterno (T$ 1.500). Criada por Karmen Roth; até onde se sabe, só ela a conhece.|
 `);
 
 ;
@@ -4304,7 +4781,7 @@ Orbe cristalina|750|1|T20|Limite de PM para magias arcanas +1.
 Ostensório santificado|750|1|DH|Magias divinas de cura curam +1 dado.
 Rede de almas|600|1|DH|Energia negativa: cada dado máximo de dano em magia divina de trevas dá 1 PV temporário.
 Tomo de guerra|300|1|AA|Magias de evocação: +1 PM para aprimoramentos.
-Tomo do rancor|750|1|AA|Dá um aprimoramento extra às suas magias (veja a wiki).
+Tomo do rancor|750|1|AA|Suas magias ganham o aprimoramento: +1 PM por círculo para causar também 1d8+1 de corte, impacto ou perfuração por círculo (Fortitude reduz à metade).
 Tomo hermético|1500|1|T20|CD de magias arcanas de uma escola +2.
 Turíbulo ungido|100|1|DH|Área das suas magias +1,5m de raio.
 Varinha arcana|100|1|T20|CD das magias arcanas +1.
@@ -4403,6 +4880,262 @@ Seiva necrótica|120|0,5|DH|Contato: perde 2d6 PV por rodada por 3 rodadas; só 
 Veneno batráquio|10|0,5|AA|Contato: perde 1d12 PV e paralisado 1 rodada (1d6 se resistir).
 `);
 T20.itens.push(...T20.municoes);
+
+;
+// ---- 73_equip_db.js
+// Equipamento da revista Dragão Brasil (DB): armas e itens gerais. Resumos com palavras próprias.
+// Preço 0 = a revista não informa (aparece como "sem preço"). Itens que já existiam em outro livro com o mesmo nome
+// (dente de wisphago, estola clerical, tomo do rancor, turíbulo ungido, vela eclesiástica) ficam só na versão já cadastrada.
+AR('simples', `
+Bordão planador|cc|2|100|1d6|x2||I|2|DB||Um botão secreto (ação de movimento) abre asas de seda: um dobrador de ar empunhando-o aberto voa com o deslocamento normal, mas sem usar as mãos nem atacar com ele.
+`);
+AR('marcial', `
+Garra-retrátil|cc|L|0|1d4|19||C|1|DB||+2 em Atletismo para escalar, contando como mão livre; ação livre para retraí-la e liberar a mão.
+Lâmina de espinhos|cc|1|0|1d8|19||C|1|DB||Espada longa vegetal com +5 no dano. Precisa de meio litro de água e duas horas de sol direto por dia; sem isso, perde 1 do bônus a cada dois dias e morre quando ele chega a zero. Não aceita modificações nem encantos.
+`);
+AR('exotica', `
+Atigili|cc|1|150|1d8|x2||C|1|DB||Concha afiada. Na empunhadura defensiva não ataca, mas dá +1 na Defesa (cumulativo com armadura e escudo); trocar de empunhadura é ação de movimento (livre com Saque Rápido).
+At'mokhet|cc|1|180|1d8|19/x3||C|1|DB|agil,versatil|Ataca inimigos a até 4,5m. +2 para derrubar ou desarmar. Errar o ataque por 5 ou mais causa 1d4 de corte em você.
+Bonk|cc|2|300|1d6/1d4|18|médio|I|2|DB||Bordão superior. Ação de movimento para virar arma de arremesso (1d4, 18, alcance de 18m), que volta à mão se você passar em Acrobacia (CD 15); outra ação de movimento para voltar a ser bordão.
+Gythka|cc|2|25|2d4/1d10|x3/x2|curto|P/I|2|DB|dupla,alongada,arremessavel|Lança de duas pontas de pedra ou cristal dasl. Arma dupla e alongada, mas também ataca adjacentes; pode ser arremessada.
+Lâmina de essência|cc|1|500|1d10|19/x3||C/P|0,5|DB|agil|Bracelete que projeta uma lâmina de energia (acioná-lo é sacar a arma, e a lâmina ocupa a mão); causa dano de essência. Sem a proficiência exótica, pode ser usada como arma marcial desbalanceada.
+Wakizashi|cc|1|75|1d6|19||C|1|DB||Versão curta da katana. Empunhando katana e wakizashi, não sofre o –2 de Ambidestria, Dois Céus ou Estilo de Duas Armas com elas.
+`);
+AR('fogo', `
+Bazuca|dp|2|1000|2d8|x2|médio|P|2|DB||Usa bombas como munição: o acerto causa 2d8 mais a explosão da bomba (o alvo sofre –2 no Reflexos contra ela, ou –5 num crítico). Recarregar: duas ações completas.
+`);
+
+IT('Aventura', `
+Semente-espada (curta), saco com 10|30|0,5|DB|1 PM e ação de movimento: atira uma semente ao chão e brota uma espada curta de madeira, com +1 nos ataques, que dura até o fim do dia. Preço de Lysianassa; fora de lá, bem mais cara.
+Semente-espada (longa), saco com 10|50|0,5|DB|Como a semente de espada curta, mas brota uma espada longa.
+Verdura gysahl|2|0,5|DB|Chocobos não resistem: +10 num teste de Adestramento com o animal.
+`);
+IT('Ferramenta', `
+Lançador alquímico|540|1|DB|Cano com gatilho: carregar um alquímico ou poção (granada) é ação padrão; disparar exige as duas mãos e uma ação padrão e leva o item a alcance médio. Não conta como arma para modificações e encantos.
+MPP (multiferramenta de proteção pessoal)|150|1|DB|Bastão de ferro com engrenagens: como arma, conta como espada curta; como ferramenta, como um kit de Ofício definido na fabricação. Trocar de função é ação padrão; aceita melhorias de arma e de ferramenta.
+`);
+IT('Instrumento', `
+Cítola da paz|175|1|DB|Seguindo as Obrigações & Restrições de Marah, sua Inspiração e suas músicas de bardo custam –1 PM e você ganha +5 nos testes para mudar atitude.
+`);
+IT('Vestuário', `
+Bio-máscara|0|1|DB|Cobre o rosto todo: +5 em Percepção e percepção às cegas, que só detecta criaturas com calor corporal.
+Capa esguinha|3000|1|DB|+2 em Enganação e Furtividade.
+Colete à prova de balas|100|1|DB|Vai por cima de qualquer armadura (vestir como armadura leve): penalidade de armadura 2 pior e redução 10 contra perfuração, sem proteger contra críticos. Depois de reduzir dano de perfuração numa cena, precisa de conserto.
+Manopla explosiva|0|1|DB|Como uma manopla; num acerto crítico desarmado, +2d6 de impacto. Carrega um disparo (recarregar: ação completa).
+Traje de proteção|1000|5|DB|Selado, com ar para duas horas: +8 em Fortitude contra radiação e toca objetos contaminados sem teste. Cada 5 de dano de corte ou perfuração de uma fonte tira 1 do bônus (o traje se desfaz no zero). Penalidade de armadura –4; não combina com armadura pesada.
+`);
+IT('Esotérico', `
+Alma de dragão|250|1|DB|Pedra em forma de escama. Reação ao sofrer dano de ácido, eletricidade, fogo, frio, luz ou trevas: reduz o dano em um dado e guarda a energia (vira uma gema); depois, ação livre para somar um dado desse tipo a uma magia que cause o mesmo dano.
+Ampulheta de areia da Perdição|1000|1|DB|Ao lançar uma magia sustentada, guarda até 10 PM extras que a sustentam sozinhos. Acaba se você soltá-la, se ela quebrar ou se a cena terminar.
+Anel de adamante|300|1|DB|Magias pessoais que dão bônus na Defesa ou em resistências dão +1 a mais.
+Bastão de mitral|1000|1|DB|+1 PM para aumentar o alcance da magia em um passo (de curto para médio, de médio para longo).
+Cálice sagrado|200|1|DB|+2 PM para maximizar uma magia de cura em quem beber do cálice.
+Lanterna da culpa|400|1|DB|Profanar custa –1 PM. Não pode ser fabricada (mas aceita aprimoramentos).
+Orbe de cristal|1000|1|DB|+1 PM para dobrar a área de uma magia.
+Rosário da vida|750|1|DB|Seguindo as Obrigações & Restrições de Lena, curas mágicas de luz recuperam um dado extra por patamar.
+Sacrário portátil|1000|1|DB|Funciona como Celebrar Ritual, com limite de PM igual ao valor do sacrário dividido por 30 (um de T$ 300 serve para magias de até 10 PM, que passam a custar 5).
+Tomo de especialista|600|1|DB|Escola escolhida na fabricação: as magias dela têm CD +2.
+Varinha de aço-rubi|1000|1|DB|+2 PM para a magia ignorar qualquer resistência a dano.
+Véu ritualístico|600|1|DB|Magias de adivinhação têm alcance um passo maior.
+`);
+IT('Alquímico', `
+Bomba de tinta|35|0,5|DB|Como uma bomba, mas sem dano: esfera de 6m de raio sob Área Escorregadia simulada até o fim da cena; quem estiver na área na explosão fica lento (Reflexos CD Des evita; ação de movimento e Força CD Des para se livrar).
+Escama companheira|2000|0,5|DB|Ação padrão, encostada no peito: 1d10 PM temporários (2d10 com Coração de Dragão, linhagem dracônica ou se for kallyanach). Só alquimistas ligados a um dragão a fabricam.
+Tinta de acquarella|0|0,5|DB|+1 na CD e –1 PM nas magias de ilusão.
+Vitória líquida|6000|0,5|DB|Exige 2 PM permanentes de uma criatura do subtipo dragão. Até o fim da cena: +5 em ataque, dano, Defesa e CD das suas habilidades, +3m de deslocamento, 50 PV e 25 PM temporários.
+`);
+IT('Catalisador', `
+Elo de ferro|30|0,5|DB|Anel de ferro puro: magias de abjuração custam –1 PM.
+Frasco de amônia|15|0,5|DB|Líquido cáustico: +1d6 de dano de ácido na magia.
+Lágrimas congeladas|0|0|DB|Lágrimas do G.L.E.C.O.: componente opcional de magia com teste de Vontade, que impõe –5 na resistência do alvo.
+Pena de Thyatis|30|0,5|DB|Flor alaranjada de regiões áridas: magias de adivinhação custam –1 PM.
+`);
+IT('Veneno', `
+Morte branca|0|0,5|DB|Contato: a cura acelerada do alvo para de funcionar por 1d4 rodadas (1 rodada se resistir). Só pode ser feito com d'ranikum.
+`);
+
+;
+// ---- 80_distincoes_db.js
+// Distinções da revista Dragão Brasil (DB). Resumos com palavras próprias.
+// Cada distinção: admissão (narrativa), marca (habilidade automática ao conquistar) e poderes exclusivos,
+// escolhidos como poderes gerais a partir do 5º nível de personagem.
+DIST({
+  id: 'andarilho-ocaso', n: 'Andarilho do Ocaso', f: 'DB',
+  desc: 'Ordem secreta de licantropos devotos de Tenebra, que usam a fera interior para proteger os domínios da Mãe Noite.',
+  adm: 'Ser licantropo e provar a devoção a Tenebra no ritual do templo da deusa em Kriegger (Ahlen): entregar-se à transformação por uma noite, passar cinco noites longe de qualquer luz e sobreviver ao licantropo que a deusa envia para testá-lo.',
+  marca: ['Transformação Indolor', 'Assumir a forma híbrida ou de fera custa –1 PM.'],
+  pod: [
+    ['Licantropo Verdadeiro', 'Controlar Licantropia, treinado em Percepção e Sobrevivência', 'Na forma híbrida ou de fera, +1 nos ataques, em Percepção, em Sobrevivência e na Defesa; o bônus sobe +1 a cada dois outros poderes da distinção.'],
+    ['Caçador Noturno', 'Licantropo Verdadeiro', 'Ganha Marca da Presa como um caçador de nível igual a 4× seus poderes da distinção; se já tem o poder, ele custa –1 PM (sem mudar o que depende dos PM gastos nele).'],
+    ['Noite Imortal', 'Licantropo Verdadeiro, outro poder da distinção', 'Ao assumir a forma híbrida ou de fera, 2 PM para ganhar PV temporários iguais a 10× seus poderes da distinção.'],
+    ['Presas de Sombra', 'Caçador Noturno', 'Ao assumir a forma híbrida ou de fera, 1 PM por arma natural para que ela cause +1d6 de trevas até o fim da cena; o dado sobe um passo a cada dois outros poderes da distinção.'],
+    ['Sentidos do Predador', '2 outros poderes da distinção', 'Ao assumir a forma híbrida ou de fera, 2 PM para ter percepção às cegas em alcance médio até o fim da cena.']
+  ]
+});
+DIST({
+  id: 'furioso-cinzento', n: 'Furioso Cinzento', f: 'DB',
+  desc: 'Guerreiro tribal que canaliza a fúria para imitar o Texugo (Tukala) — e que acredita, de verdade, num texugo voador.',
+  adm: 'Conseguir um jeito de voar (habilidade, magia ou aparato) e fazer um voo de combate; apresentar-se a um xamã de Tukala e cumprir os desafios ousados que ele propuser (em geral três); por fim, oferecer comida a um texugo selvagem. Se ele aceitar, você vira um furioso cinzento.',
+  marca: ['Voo do Texugo', '+3m no deslocamento de voo; voando, +1 nas rolagens de dano.'],
+  pod: [
+    ['Fúria Alada', 'Revoada de Texugos, Fúria', 'Em fúria e voando, soma o bônus da Fúria na margem de ameaça dos ataques corpo a corpo e com armas de arremesso.'],
+    ['Escamas do Texugo', 'Fúria Alada', 'Em fúria, soma o bônus da Fúria na Defesa e nos testes de resistência.'],
+    ['Escolhido de Tukala', 'Fúria Alada', 'Revoada de Texugos custa –1 PM e, para cada poder de furioso cinzento, o número de texugos invocados sobe um passo (de 1d4+1 para 1d6+1, por exemplo).'],
+    ['Presas do Texugo', 'Fúria Alada', 'Ao entrar em fúria, ganha uma mordida (1d6, x2, perfuração) — ou a mordida que já tem causa dano dois passos maior. 1x/rodada, ao agredir com outra arma, 1 PM para um ataque extra com ela.'],
+    ['Retaliação do Texugo', 'Fúria Alada', 'Em fúria, na primeira vez em cada rodada que sofre dano de um inimigo, o bônus da Fúria sobe +1 até ela acabar (cumulativo, até o seu número de poderes de furioso cinzento).'],
+    ['Texugo de Rapina', 'Presas do Texugo', 'Pode usar Furtividade em fúria e, numa investida voando, usa a ação agredir (em vez de um único ataque) contra o alvo.']
+  ]
+});
+DIST({
+  id: 'menestrel-maldito', n: 'Menestrel Maldito', f: 'DB',
+  desc: 'Artista que perdeu tudo e trocou parte da alma com o Estranho de Azul por uma segunda chance — breve e trágica.',
+  adm: 'Sofrer uma tragédia pessoal terrível; ir a uma encruzilhada com o seu instrumento e lamentar até surgir o Estranho de Azul; entregar o instrumento para ele afinar com pedaços da sua alma e aceitá-lo de volta.',
+  marca: ['A Maldição do Menestrel', 'Um instrumento escolhido fica afinado com a sua alma: usando-o, +1 em Atuação e +1 na CD das suas habilidades de bardo (se perdê-lo, o Estranho afina outro depois de uma noite em claro numa encruzilhada). Com 0 PV ou menos, faça um teste de Sabedoria (CD 15) no início de cada turno; passando, fica livre disso até cair de novo. Terminar três rodadas assim na mesma cena: você morre, é levado a Venomia e não pode ser revivido.'],
+  pod: [
+    ['Técnica Endiabrada', 'treinado em Atuação, Inspiração', 'Com o instrumento afinado, Inspiração e músicas de bardo têm alcance um passo maior; em testes de Atuação com ele (exceto ataques), 1 PM para escolher 10 ou 5 PM para escolher 20 — escolher 20 assim o deixa alquebrado.'],
+    ['Celeridade Cerúlea', 'Técnica Endiabrada', '1x/rodada, ao usar uma música de bardo com o instrumento afinado, 2 PM para usá-la como ação livre.'],
+    ['Composição Mágica', 'treinado em Misticismo, Técnica Endiabrada', 'Ao lançar uma magia de bardo com teste de resistência, 2 PM para um teste de Atuação (CD 10): passando, a CD da magia sobe +1, e mais +1 a cada 10 pontos acima.'],
+    ['Música: Ária da Tristeza', 'Técnica Endiabrada', 'Atuação contra a Vontade de cada criatura escolhida no alcance: quem falha fica atordoado por uma rodada (uma vez por cena por criatura) e frustrado.'],
+    ['Música: Nota Azul', 'Técnica Endiabrada', 'Atuação contra a Vontade de cada criatura escolhida no alcance: quem falha sofre 1d8 de dano mental (1d12 se já estiver sob uma condição mental); +1 dado para cada outro poder de menestrel maldito que você tenha.']
+  ]
+});
+DIST({
+  id: 'presa-coral', n: 'Presa de Coral', f: 'DB',
+  desc: 'Guerreiros de elite de Khubar que imitam o poder de Benthos, o Dragão-Rei dos Mares, combinando azagaia, espada e lança com a magia do mar.',
+  adm: 'Impressionar um capitão dos Presas de Coral (vencer sozinho muitos oponentes desafiadores, ou um inimigo claramente superior) e aceitar o convite; treinar por semanas (coragem, físico, armas e lealdade a Khubar); cumprir uma missão que prove a lealdade a Benthos, ao arquipélago e à ordem; sobreviver à cerimônia em que bebe o Sangue do Dragão-Rei.',
+  marca: ['Sangue do Dragão-Rei', 'Na iniciação, bebe a poção e faz um teste estendido de Fortitude (CD 20, 3 sucessos): cada falha tira 2d12 PV por veneno, e a falha total mata. Passando, ação de movimento e 2 PM para as armas que empunha causarem +1d4 de ácido até o fim da cena.'],
+  pod: [
+    ['Arsenal de Coral', 'treinado em Atletismo e Luta', '+1 na margem de ameaça com as armas do arsenal de coral (cimitarra, espada curta, espada longa, azagaia e lança). Com Sangue do Dragão-Rei, o ácido extra dessas armas sobe um passo, e mais um a cada três outros poderes de Presa de Coral.'],
+    ['Presa Distante: Azagaia de Água', 'Arsenal de Coral, Estilo de Arremesso', 'Sem penalidade por usar azagaias corpo a corpo, e o alcance dos ataques à distância com azagaias e lanças sobe um passo. Empunhando uma delas, ação padrão e 2 PM: rajada de água salgada numa linha de 9m — um ataque comparado à Defesa de cada criatura na linha e uma rolagem de dano para todos os atingidos, que ficam lentos por 1 rodada.'],
+    ['Presa Dupla: Corte da Correnteza', 'Arsenal de Coral, Estilo de Duas Armas', 'Com duas armas do arsenal, não sofre a penalidade de Estilo de Duas Armas. Ação padrão e 3 PM: redemoinho de água — um ataque com cada arma contra todos os inimigos no seu alcance natural; quem for atingido pelos dois fica sangrando.'],
+    ['Presa Suprema: Arquipélago de Dor', 'Três Se Tornam Um', 'Ação completa e 3 PM: move-se até o seu deslocamento sempre adjacente a um oponente (sem repetir espaços) e então usa a ação agredir contra ele, com +1 em ataque, dano e margem de ameaça (armas do arsenal) por 1,5m percorrido.'],
+    ['Manobra Maremoto', 'Salto Oceânico', 'Numa investida com uma arma do arsenal, 3 PM para virar um maremoto: +6m de deslocamento, ignora terreno difícil natural, atravessa objetos como se fosse água e empurra quem estiver no caminho (teste de empurrar contra cada um; quem perde vai 1,5m para um lado à sua escolha).'],
+    ['Salto Oceânico', 'Arsenal de Coral', 'Natação igual ao deslocamento (ou +3m, se já tiver). Aprende e lança Salto Dimensional (só em si); na chuva ou com metade do corpo na água, lança como ação de movimento.'],
+    ['Três Se Tornam Um', 'Arsenal de Coral', 'Movimento e 1 PM: até o fim da cena, cada arma do arsenal que empunha ganha adaptável, alongada, ágil e/ou arremessável (curto), à escolha, e aproveita bônus específicos que você tenha para qualquer arma do arsenal.']
+  ]
+});
+DIST({
+  id: 'xerife-azgher', n: 'Xerife de Azgher', f: 'DB',
+  desc: 'Viajante, missionário, caçador e juiz ligado à igreja do Deus-Sol, que leva a lei às fronteiras esquecidas pela justiça.',
+  adm: 'Encontrar, prender e entregar às autoridades, à luz do dia, alguém que cometeu um crime grave contra um inocente; seguir o sonho que mostra o caminho até a sede dos xerifes (Império de Tauron) e provar o seu valor lá; acompanhar um xerife num caso, em que ele julga o seu caráter. Aprovado, recebe o Sol Vigilante (é de bom tom oferecer T$ 2.000 à ordem).',
+  marca: ['Sol Vigilante', 'Insígnia de ouro que conta como símbolo sagrado de Azgher. Ostentando-a, +2 em Diplomacia com devotos de Azgher e agentes da lei e +2 em Intimidação com criminosos; é uma autoridade oficial, autorizada a portar armas de fogo no Reinado. Se perdê-la, outra custa um dia de orações e T$ 500.'],
+  pod: [
+    ['Destruir o Crime', 'treinado em Intuição, proficiência com armas de fogo, devoto de Azgher', 'Num ataque corpo a corpo ou com arma de fogo, 2 PM para somar Car no ataque e +1d8 no dano. Se tiver Golpe Divino, em vez disso ele causa um dado extra e pode ser usado com armas de fogo.'],
+    ['Caçador de Bandidos', 'Destruir o Crime', 'Ação de movimento e PM (até o seu número de poderes de xerife) recitando em voz alta os crimes de uma criatura em alcance médio: até o fim da cena, ou até ela se render, +1 por PM na Defesa, em perícias e no dano contra ela.'],
+    ['O Longo Braço da Lei', 'Olho de Azgher, Saque Rápido', '1x/rodada, quando uma criatura a até 9m se move voluntariamente mais de 1,5m, 2 PM para atacá-la com arma de fogo (ou cimitarra, se ela estiver no seu alcance natural), sacando a arma como parte da reação.'],
+    ['Olho de Azgher', 'Pistoleiro Solar', 'Aprende e lança Localização; com dois outros poderes de xerife, também Visão da Verdade. Se aprender uma delas de novo, ela custa –1 PM.'],
+    ['Pistoleiro Solar', 'Destruir o Crime, Espada Solar', 'Armas de fogo contam como armas preferidas de Azgher (além da cimitarra). Pode usar Espada Solar em armas de fogo, e o dado de fogo dela sobe um passo a cada dois outros poderes de xerife.']
+  ]
+});
+DIST({
+  id: 'campeao-guildas', n: 'Campeão das Guildas', f: 'DB',
+  desc: 'Anão de Doherimm tão dedicado e talentoso que domina os ofícios de mais de uma guilda: uma lenda viva entre os trabalhadores da Montanha de Ferro.',
+  adm: 'Ser membro oficial de uma guilda de Doherimm e se dedicar ao ofício por anos; fazer um feito realmente marcante nela (sem exagerar na excentricidade, ou acaba expulso); repetir todo o processo numa segunda guilda, que vai desconfiar de você.',
+  marca: ['Insígnia das Guildas', 'Insígnias de vestuário que não ocupam espaço nem contam no limite de itens vestidos. Usando-as, +2 em Diplomacia, Intuição e Intimidação contra anões e membros de guildas. Novas custam 1 dia e T$ 100.'],
+  pod: [
+    ['Dádiva das Guildas', 'treinado nas perícias das guildas', 'Escolha duas guildas e receba os benefícios delas (cumprindo o pré-requisito de cada uma). Armeiros (Ofício (armeiro)): fabrica armas, armaduras e escudos superiores com uma melhoria, ou uma a mais, até quatro. Cervejeiros (Ofício (cozinheiro)): poções de 1º círculo com alvo 1 criatura, em forma de bebida comum ou especial (especial: CD +5, custo da bebida, os dois efeitos). Construtores (Ofício (engenheiro)): usa-o para analisar terreno em construções. Guerreiros (Luta ou Guerra): com armadura pesada, RD 2, +1 a cada dois poderes de campeão. Mineradores (Ofício (minerador)): escavação igual à metade do deslocamento básico e +2 em perícias no subterrâneo (exceto Luta e Pontaria). Nobres (Nobreza): ação padrão e 1 PM, Nobreza CD 20 — aliados em alcance curto ganham +2 no próximo teste na cena, +1 a cada 10 pontos acima. Pensadores (Atuação, Conhecimento ou Religião): 1x/cena, ao falhar numa perícia (exceto resistências, Luta e Pontaria), 2 PM para trocar por outra perícia treinada apropriada. Provedores (outro Ofício): no sustento, ganha TO 1 e mais TO 1 por ponto acima da CD, em vez de T$ 1. Até quatro vezes, com guildas diferentes.',
+      (c) => {
+        const g = String(c.txt || '');
+        const r = {};
+        if (/guerreir/i.test(g) && c.pesada) r.rd = 2 + Math.floor(c.contaDist('campeao-guildas') / 2);
+        if (/minerad/i.test(g)) r.marca = ['Escavação (metade do deslocamento básico)'];
+        return r;
+      }, { rep: true, txt: 'As duas guildas' }],
+    ['Mestre das Artes', 'Dádiva das Guildas', 'Recebe o benefício avançado das suas dádivas. Armeiros: itens superiores com duas melhorias, uma fora do limite. Cervejeiros: poções também de 2º círculo. Construtores: Ofício (engenheiro) no lugar de Investigação e Ladinagem para achar e desarmar armadilhas. Guerreiros: 2 PM para os aliados adjacentes receberem a sua RD até o fim da cena. Mineradores: 1x/dia, ao passar no sustento com Ofício (minerador), 2 PM para achar pedras preciosas (uma rolagem de riqueza menor). Nobres: +1 a cada 5 pontos acima da CD. Pensadores: pode trocar até resistências, Luta e Pontaria. Provedores: TO 5 e mais TO 5 por ponto acima da CD.'],
+    ['Grão-Mestre por Aclamação', 'Mestre das Artes, dádivas de oito guildas', 'Ganha uma habilidade racial de anão à sua escolha. Se já for anão, em vez disso +1 em Constituição e +2 no dano com machados, martelos, marretas e picaretas.', null,
+      { atr: c => /^an[aã]o/i.test(c.raca || '') ? { con: 1 } : null }]
+  ]
+});
+DIST({
+  id: 'centuriao', n: 'Centurião', f: 'DB',
+  desc: 'Comandante de campo das legiões do Império de Tauron, à frente de uma centúria de uns cem soldados, famoso pela disciplina.',
+  adm: 'Alistar-se nas legiões do Império de Tauron (em território tapistano, sem ser procurado pelos minotauros); servir num posto ativo de campo mostrando disciplina, força e lealdade, em geral por anos (ou liderar a centúria depois da morte do centurião e do assistente, com feitos que chamem a atenção dos generais); ser assistente de um centurião prestes a se aposentar e conquistar a lealdade da tropa até ele julgá-lo pronto. Até hoje, só minotauros chegaram ao posto.',
+  marca: ['Escudo em Formação', '+2 na Defesa enquanto houver um aliado tapistano, ou um aliado com escudo, adjacente a você.'],
+  pod: [
+    ['Comandos Tapistanos', 'Comandar, treinado em Luta', 'Ao usar Comandar, o bônus sobe +1, e mais +1 a cada dois outros poderes de centurião; ele também vale nas rolagens de dano.'],
+    ['É Proibido Morrer', 'Comandos Tapistanos, treinado em Guerra ou Intimidação', '1x/rodada, quando um aliado em alcance curto sofreria dano que o deixaria com 0 PV ou menos, 2 PM como reação para um teste de Guerra ou Intimidação e subtrair o resultado do dano.'],
+    ['Falange Intrespassável', '2 outros poderes da distinção, proficiência com escudos', 'Empunhando um escudo, os aliados adjacentes recebem o bônus na Defesa e os outros efeitos dele.'],
+    ['Liderar pelo Exemplo', 'Comandos Tapistanos, treinado em Guerra', '1x/rodada, quando um aliado em alcance curto falha num teste, 2 PM como reação para um teste de Guerra que substitui o dele.'],
+    ['Formação Inquebrável', '4 outros poderes da distinção', 'No início do dia, escolha aliados até o seu valor de Int ou Car (o maior): até o fim do dia, vocês juntam os PV num total único (dano, cura e perda vão para ele, depois da RD e similares de quem foi atingido). Se o total acabar, todos sofrem os efeitos de ficar com 0 PV, e cada um ainda morre no seu limite individual.']
+  ]
+});
+DIST({
+  id: 'explorador-destemido', n: 'Explorador Destemido', f: 'DB',
+  desc: 'Veterano de incursões a Galrasia e a outros lugares inóspitos, que sempre volta — mesmo que seja o último — com um mapa e uma história.',
+  adm: 'Sozinho, deixar a sua terra e ser aceito por um povo sobre o qual nada sabe, vivendo um mês na cultura dele; sozinho, explorar uma ruína intocada há séculos ou uma zona perigosa sem mapa e voltar com uma prova (tesouro, mapa, amostra, até um bicho de estimação); guiar um grupo por pelo menos duas semanas nas profundezas de Galrasia, trazendo de volta vivos ao menos metade dos protegidos.',
+  marca: ['Sobrevivência Garantida', 'Sempre pode escolher 10 em Sobrevivência em ambientes naturais ou ruínas, e recebe +1 em Sobrevivência para cada poder de explorador destemido (já somado na ficha).', c => ({ per: { Sobrevivência: c.contaDist('explorador-destemido') } })],
+  pod: [
+    ['À Prova de Tudo', 'treinado em Sobrevivência', 'Ao usar Sobrevivência para acampar, pode lançar Suporte Ambiental, como magia simulada (vem do seu conhecimento, não é habilidade mágica).'],
+    ['Sai da Frente!', 'À Prova de Tudo, treinado em Reflexos', 'Não é afetado por terreno difícil. Contra efeitos que permitem Reflexos para reduzir o dano à metade, passar evita todo o dano e falhar reduz à metade. Exige liberdade de movimentos (sem armadura pesada).'],
+    ['Amigo de Todos', 'À Prova de Tudo, Car 1', 'Usa Sobrevivência no lugar de Diplomacia com povos dos ermos. Ao mudar atitude com Sobrevivência, passar por 5 melhora duas categorias, e por 10, até três.'],
+    ['Sempre Atento', '2 outros poderes da distinção', 'Lança Detectar Ameaça como magia simulada, só em ambientes naturais ou ruínas (se aprender a magia, ela custa –1 PM), e usa Sobrevivência no lugar de Investigação para achar armadilhas.'],
+    ['Queixo de Pedra', '4 outros poderes da distinção', '1x/rodada, ao sofrer dano de um perigo (não de ataques), 2 PM para um teste de Sobrevivência e subtrair o resultado do dano.']
+  ]
+});
+DIST({
+  id: 'cavaleiro-silvestre', n: 'Cavaleiro Silvestre', f: 'DB',
+  desc: 'A vanguarda armadurada dos elfos de Lenórienn — esgrima defensiva, armaduras levíssimas, escudos em formação e montarias da floresta. Uma tradição quase extinta.',
+  adm: 'Ser abordado pela Nova Ordem Perene dos Cavaleiros Silvestres, que dizem viver escondida nas copas da Floresta de Greenaria, por encarnar o ideal élfico (combatente ágil, versado em espada e magia, belo, justo e ousado — hoje aceitam combatentes ágeis e habilidosos ou elfos aptos); treinar com eles por algumas semanas e voltar a Greenaria até o inverno seguinte, levando uma oferenda para a ordem.',
+  marca: null,
+  pod: [
+    ['Arte Élfica', 'treinado em Atuação, Defesa Ágil', 'Ao acertar um ataque corpo a corpo com arma leve ou ágil, 1 PM: você e cada aliado em alcance curto ganham +2 em testes de perícia até o início do seu próximo turno. A cada dois outros poderes de cavaleiro silvestre, pode gastar +1 PM para somar mais +2.'],
+    ['Ataque Elegante', 'Defesa Ágil, Foco em Arma (espada longa)', 'Empunha espadas longas como armas leves e recebe +2 no dano com elas; +1 a cada dois outros poderes de cavaleiro silvestre.'],
+    ['Defesa Ágil', 'treinado em Luta e Sobrevivência, Acuidade com Arma, Esquiva', 'Proficiência com armaduras pesadas. Usando armadura pesada, soma 1 ponto da sua Destreza na Defesa e reduz a penalidade de armadura em 1; os dois sobem +1 a cada dois outros poderes de cavaleiro silvestre (já somados na ficha).',
+      c => { const b = 1 + Math.floor(Math.max(0, c.contaDist('cavaleiro-silvestre') - 1) / 2); return { prof: ['pesadas'], def: c.pesada ? Math.max(0, Math.min(c.at.des, b)) : 0, penArmadura: c.pesada ? b : 0 }; }],
+    ['Força da União', 'Defesa Ágil', 'Atacando com arma leve ou ágil um alvo que você está flanqueando, +1 na margem de ameaça; +1 a cada dois outros poderes de cavaleiro silvestre.'],
+    ['Magia Silvestre', 'treinado em Misticismo, Defesa Ágil', 'Aprende e lança uma magia arcana de 1º círculo (Int), e mais uma a cada dois outros poderes de cavaleiro silvestre. Pode lançá-las mesmo de armadura.'],
+    ['Montaria Silvestre', 'treinado em Cavalgar, Defesa Ágil', 'Recebe um parceiro trobo iniciante; ele vira veterano quando você tiver mais dois outros poderes de cavaleiro silvestre e mestre com mais quatro. Montado nele, +5 em Atletismo para correr e saltar.'],
+    ['Naturalmente Furtivo', 'Camuflagem, Explorador (floresta), treinado em Furtividade', 'Soma a sua Inteligência em Furtividade (já somado na ficha). Numa floresta, ou noutro terreno do seu Explorador, ação de movimento para usar Camuflagem sem gastar PM.', c => ({ per: { Furtividade: c.at.int } })]
+  ]
+});
+DIST({
+  id: 'irmao-inseparavel', n: 'Irmão Inseparável', f: 'DB',
+  desc: 'Elo espiritual entre um aventureiro e o seu animal, forjado pela dor da perda e pela volta do companheiro à vida.',
+  adm: 'Perder o companheiro animal ou a montaria (não vale matá-lo só para cumprir a admissão; sacrificá-lo diante de uma doença incurável, ou perdê-lo para um inimigo, vale) e trazê-lo de volta à vida pelas mãos de outra pessoa — em geral com o Dom da Ressurreição de um devoto de Thyatis, cuja igreja costuma pedir um pagamento incomum (que rende uma aventura).',
+  marca: null,
+  pod: [
+    ['Ação Fraterna', 'Elo Eterno, Surto Heroico', 'Surto Heroico custa –2 PM e pode ser usado duas vezes por rodada; nesse caso, uma das ações extras é do seu companheiro inseparável, com as suas estatísticas, mas limitado ao que a espécie dele consegue fazer.'],
+    ['Ataque Conjunto', 'Elo Eterno', 'Ganha uma arma natural que representa o ataque do seu companheiro (1d6, de corte, impacto ou perfuração, escolhido ao pegar o poder). Ao agredir com outra arma, 1 PM para um ataque corpo a corpo extra com ela. O dano sobe um passo a cada dois outros poderes de irmão inseparável (já calculado na ficha).',
+      (c, op) => ({ arma: { n: 'Ataque do companheiro', dano: ['1d6', '1d8', '1d10', '1d12'][Math.min(3, Math.floor(Math.max(0, c.contaDist('irmao-inseparavel') - 1) / 2))], crit: 'x2', tipo: op || 'Corte', natural: true } }),
+      { op: ['Corte', 'Impacto', 'Perfuração'] }],
+    ['Elo Eterno', 'Companheiro Animal ou Montaria', 'Ganha Empatia Selvagem (se já tem, +2 em Adestramento). Com o companheiro inseparável em alcance curto, +2 nos testes de resistência. Os bônus sobem +1 a cada dois outros poderes de irmão inseparável. Pré-requisito: uma habilidade que dê um parceiro animal.'],
+    ['Defesa Coordenada', 'Elo Eterno', 'Com o companheiro em alcance curto, +2 na Defesa; ao sofrer dano, 2 PM para reduzi-lo à metade — role 1d6: no 1, o companheiro fica muito ferido e não ajuda até o fim da cena (esse dado sobe um passo a cada dois outros poderes de irmão inseparável).'],
+    ['Presença Revigorante', 'Elo Eterno', 'No início de cada cena em que estiver com o companheiro, recebe 20 PV temporários, +5 a cada dois outros poderes de irmão inseparável.'],
+    ['Que Gracinha', 'Elo Eterno', 'Em testes de Enganação ou Diplomacia com o companheiro em alcance curto, 2 PM para somar a sua Sabedoria; +1 a cada dois outros poderes de irmão inseparável.'],
+    ['Treinamento Intensivo', 'Elo Eterno', 'Escolha um poder de bucaneiro, guerreiro ou ladino cujos pré-requisitos você cumpra (como se tivesse nessas classes o seu nível de personagem) e que não peça atributo mental: com o companheiro em alcance curto, você pode usá-lo. A cada seis outros poderes de irmão inseparável, mais um poder.', null, { txt: 'O poder escolhido' }]
+  ]
+});
+DIST({
+  id: 'lobo-lunar', n: 'Lobo Lunar', f: 'DB',
+  desc: 'Licantropos devotos de Tenebra que transformaram a maldição em bênção e controlam a fera; solitários, territoriais e competitivos entre si.',
+  adm: 'Ser licantropo e provar a devoção a Tenebra: entregar-se à transformação por uma noite, passar cinco noites longe de qualquer luz e sobreviver ao lobisomem que a deusa envia para testá-lo (o ritual cantado pelo bardo Hars Yammet).',
+  nota: 'Versão anterior do Andarilho do Ocaso, com a mesma admissão: na mesa, use uma ou outra.',
+  marca: null,
+  pod: [
+    ['Caçador Noturno', 'Marca da Presa, Licantropo Verdadeiro', 'Em ataques e testes de Percepção contra alvos da sua Marca da Presa, 1 PM para rolar de novo (uma vez por teste); +1 no dano das armas naturais contra eles a cada dois outros poderes de lobo lunar.'],
+    ['Garras Lunares', 'Carícia Sombria, Licantropo Verdadeiro', 'Na forma de lobisomem, ganha garras (1d6). 1x/rodada, ao agredir com as garras, 1 PM para um ataque extra de mordida; e 1 PM para as garras causarem +1d6 de trevas até o fim da cena (o dado sobe um passo a cada dois outros poderes de lobo lunar).'],
+    ['Licantropo Verdadeiro', 'devoto de Tenebra, Sentidos Aguçados, treinado em Percepção e Sobrevivência', 'Assume a forma de lobo ou de lobisomem, como a Forma Selvagem do druida, com uma mordida nas duas. Como lobisomem, fala, lança magias e empunha itens, e recebe +2 nos ataques, na Defesa e em Percepção (+1 a cada dois outros poderes de lobo lunar).'],
+    ['Noite Imortal', 'outro poder da distinção', '1x/rodada, 1 PM para curar 10 PV; a cada dois outros poderes de lobo lunar, pode gastar +1 PM para curar +5.'],
+    ['Sentidos do Predador', 'outro poder da distinção', '2 PM para ter percepção às cegas em alcance curto até o fim da cena; a cada dois outros poderes de lobo lunar, +1 PM aumenta o alcance uma categoria.'],
+    ['Toque Lunar', 'Garras Lunares', 'Aprende e lança Toque Vampírico; depois de um acerto crítico com as garras, pode lançá-lo como ação livre (sem aprimoramentos). As vítimas sofrem –1 na resistência a cada dois outros poderes de lobo lunar.'],
+    ['Uivo Assustador', 'Licantropo Verdadeiro', 'Aprende e lança Amedrontar (Sab), com aprimoramentos como um druida do seu nível de personagem. As vítimas sofrem –1 na resistência a cada dois outros poderes de lobo lunar.']
+  ]
+});
+DIST({
+  id: 'mestre-furia-fria', n: 'Mestre da Fúria Fria', f: 'DB',
+  desc: 'Membro da reclusa Ordem da Fúria Fria, das Montanhas Uivantes: furiosos que mantêm a razão, mais precisos e traiçoeiros que brutais, tocados pelo frio de Beluhga. O treinamento deixa os cabelos brancos.',
+  adm: 'Questionar o mecanismo da fúria, encerrando-a por vontade própria para fazer algo que ela não permite; descobrir que a Ordem existe e achar sozinho a caverna dela nas Uivantes; aguentar semanas de provações (nadar em lagos congelados, partir geleiras na cabeçada, comer só neve por três dias…) até os cabelos ficarem brancos; receber no coração um pedaço de gelo eterno tratado com magia.',
+  marca: null,
+  pod: [
+    ['Alma de Gelo Eterno', 'Alma de Bronze, Fúria Fria', 'Ao usar Alma de Bronze, +5 PV temporários por poder de mestre da fúria fria; enquanto tiver esses PV temporários, é imune a frio.'],
+    ['Aura Congelante', 'Fúria Fria', 'Em fúria, os espaços a 1,5m de você são terreno difícil e causam 1d6 de frio a quem terminar o turno neles; a cada dois outros poderes de mestre da fúria fria, +1,5m de área e +1d6 de dano.'],
+    ['Defesa Cruel', 'Fúria Fria, Pele de Ferro', 'Em fúria, ao causar dano corpo a corpo num oponente, +4 na Defesa contra os ataques dele por 1 rodada; +1 a cada dois outros poderes de mestre da fúria fria.'],
+    ['Fúria Fria', 'Fúria ou Fúria Divina, Vontade de Ferro, treinado em Atletismo, Sobrevivência e Vontade', 'Em fúria, seus olhos ficam azuis e você pode fazer ações que exigem calma e concentração (como Furtividade e lançar magias); a fúria não acaba por falta de ataques ou de efeitos hostis; e seus ataques têm +1 na margem de ameaça, +1 a cada dois outros poderes de mestre da fúria fria.'],
+    ['Golpe Congelante', 'Fúria Fria, Golpe Poderoso', 'Golpe Poderoso causa +1d6 de frio; o dado sobe um passo a cada dois outros poderes de mestre da fúria fria.'],
+    ['Investida Avalanche', 'treinado em Furtividade, Fúria Fria, Investida Imprudente', 'Em Investida Imprudente, 2 PM para não sofrer a penalidade na Defesa e se mover em qualquer direção. Ignora terreno difícil na investida e pode fazer Furtividade (sem redutores) contra a Percepção do alvo: se passar, ele fica desprevenido contra o ataque.'],
+    ['Lâmina da Geleira', 'Foco em Arma (espada bastarda), Fúria Fria', 'Proficiência com espada bastarda (exótica) e +2 nos ataques para manobras e no dano com ela; o dano sobe +1 a cada dois outros poderes de mestre da fúria fria.', () => ({ prof: ['Espada bastarda'] })]
+  ]
+});
 
 </script>
 <script>
@@ -4554,6 +5287,7 @@ function novoPersonagem() {
     pv: { atual: null, temp: 0 }, pm: { atual: null, temp: 0 },
     ajustes: { pv: 0, pm: 0, def: 0, desl: 0, carga: 0, rd: 0, per: {} },
     condicoes: [],
+    distincoes: [],
     notas: { aparencia: '', personalidade: '', historia: '', anotacoes: '' },
     retrato: null,
     criado: Date.now(), atualizado: Date.now()
@@ -4580,6 +5314,7 @@ function normalizarPersonagem(src) {
   ['classes', 'poderes', 'magias', 'inv', 'condicoes'].forEach(k => { if (!Array.isArray(ch[k])) ch[k] = []; });
   ch.escolhas = ch.escolhas || {};
   ch.escolas = ch.escolas || {};
+  ch.distincoes = unico((Array.isArray(s.distincoes) ? s.distincoes : []).filter(id => typeof id === 'string' && T20.distincoes.some(d => d.id === id)));
   const raizes = new Set();
   ch.classes = ch.classes.filter(c => c && CLASSE(c.id)).filter(c => { const r = raizClasse(c.id); if (raizes.has(r)) return false; raizes.add(r); return true; })
     .map(c => ({ id: c.id, niveis: limitar(+c.niveis || 1, 1, 20), esc: c.esc || {} }));
@@ -4617,8 +5352,11 @@ function defPoder(p) {
     if (o && o.unico && mesmo(o.unico[0], p.n)) return { n: o.unico[0], pre: '', r: o.unico[1], ef: o.unico[2], tipo: 'Origem', f: o.f };
     return { n: p.n, pre: '', r: 'Poder de origem de outro suplemento; consulte o livro.', tipo: 'Origem', f: o ? o.f : 'T20' };
   }
+  // poderes de distinção podem ter o mesmo nome em distinções diferentes (Lobo Lunar e Andarilho do Ocaso)
+  if (p.tipo === 'Distinção') { const x = T20.poderes.find(x => x.tipo === 'Distinção' && x.n === p.n && (!p.dist || x.dist === p.dist)); if (x) return x; }
   return T20.poderes.find(x => x.n === p.n && x.tipo === p.tipo) || T20.poderes.find(x => mesmo(x.n, p.n)) || null;
 }
+const DISTINCAO = id => T20.distincoes.find(d => d.id === id) || null;
 function poderesDeClasse(id, paraClasse) {
   const c = CLASSE(id); if (!c) return [];
   const quem = CLASSE(paraClasse || id) || c;
@@ -4657,21 +5395,35 @@ const mediaDado = d => { const m = /^(\d+)d(\d+)$/.exec(String(d || '')); return
 
 // ----- pré-requisitos (avaliação aproximada) -----
 const PROF_MAP = { 'armas marciais': 'marciais', 'armas de fogo': 'fogo', 'armaduras pesadas': 'pesadas', 'escudos': 'escudos', 'armas exoticas': 'exoticas' };
-function checarPre(pre, D) {
+function checarPre(pre, D, proprio) {
   if (!pre) return { ok: true, itens: [] };
-  const itens = pre.split(/;|,(?![^(]*\))/).map(s => s.trim()).filter(Boolean).map(t => ({ t, ok: avaliarTok(t, D) }));
+  // "treinado em Atletismo, Sobrevivência e Vontade": junta as perícias soltas ao "treinado em" anterior
+  const toks = [];
+  pre.split(/;|,(?![^(]*\))/).map(s => s.trim()).filter(Boolean).forEach(t => {
+    const ant = toks[toks.length - 1];
+    if (ant && /^treinad[oa]s? em /i.test(ant) && t.split(/\s+e\s+|\s+ou\s+/i).every(n => perValida(n.trim()))) toks[toks.length - 1] = ant + ', ' + t;
+    else toks.push(t);
+  });
+  const itens = toks.map(t => ({ t, ok: avaliarTok(t, D, proprio) }));
   const ok = itens.some(i => i.ok === false) ? false : itens.every(i => i.ok === true) ? true : null;
   return { ok, itens };
 }
-function avaliarTok(t, D) {
+function avaliarTok(t, D, proprio) {
   if (!/^treinad/i.test(t) && /\s+ou\s+/i.test(t)) {
-    const rs = t.split(/\s+ou\s+/i).map(a => avaliarTok1(a.trim(), D));
+    const rs = t.split(/\s+ou\s+/i).map(a => avaliarTok1(a.trim(), D, proprio));
     return rs.includes(true) ? true : rs.includes(null) ? null : false;
   }
-  return avaliarTok1(t, D);
+  return avaliarTok1(t, D, proprio);
 }
-function avaliarTok1(t, D) {
+function avaliarTok1(t, D, proprio) {
   let m;
+  if ((m = t.match(/^Distinção: (.+)$/i))) return (D.distincoes || []).some(d => mesmo(d.n, m[1]));
+  // "outro poder de X" / "2 outros poderes de X": poderes da distinção X além do que está sendo avaliado
+  if ((m = t.match(/^(?:(\d+) outros poderes|outro poder) de (.+)$/i)) && T20.distincoes.some(d => mesmo(d.n, m[2]))) {
+    const d = T20.distincoes.find(d => mesmo(d.n, m[2]));
+    const n = (D.pods || []).filter(x => x.def && x.def.tipo === 'Distinção' && x.def.dist === d.id).length - (proprio && proprio.dist === d.id ? 1 : 0);
+    return n >= (m[1] ? +m[1] : 1);
+  }
   if ((m = t.match(/^(For|Des|Con|Int|Sab|Car)\s*(-?\d+)$/i))) return D.at[m[1].toLowerCase()] >= +m[2];
   if ((m = t.match(/^(\d+)º nível de personagem$/i))) return D.nivel >= +m[1];
   if ((m = t.match(/^(\d+)º nível de (.+)$/i))) {
@@ -4683,7 +5435,7 @@ function avaliarTok1(t, D) {
   }
   if ((m = t.match(/^treinad[oa]s? em (.+)$/i))) {
     const ou = /\s+ou\s+/i.test(m[1]);
-    const rs = m[1].split(/\s+e\s+|\s+ou\s+/i).map(s => s.trim()).map(n => {
+    const rs = m[1].split(/,\s*|\s+e\s+|\s+ou\s+/i).map(s => s.trim()).filter(Boolean).map(n => {
       if (n === 'Ofício') return D.oficios.length > 0;
       if (ehOficio(n)) return D.trein.has(n);
       return PERN[n] ? D.trein.has(n) : null;
@@ -4707,6 +5459,10 @@ function avaliarTok1(t, D) {
     if (citados.length) return citados.some(x => x.n === D.deus.n);
     return null;
   }
+  if ((m = t.match(/^(?:lançar magias|habilidade de classe Magias)( arcanas| divinas)?$/i))) return (D.conj || []).some(c => !m[1] || normal(c.t) === normal(m[1].trim()).replace(/s$/, ''));
+  if (/^ter uma arma natural$/i.test(t)) return !!(D.acc && D.acc.armas.length);
+  // "Foco em Arma (espada longa)", "Foco em Perícia (Ofício (cozinheiro))": o poder com essa escolha
+  if ((m = t.match(/^(Foco em (?:Arma|Perícia)) \((.+)\)$/i))) return (D.pods || []).some(x => mesmo(x.p.n, m[1]) && x.p.txt && (normal(x.p.txt) === normal(m[2]) || normal(x.p.txt).startsWith(normal(m[2]))));
   if (D.temNome(t)) return true;
   if (/^Afinidade (\((água|ar|fogo|luz|terra|trevas)\)|Expandida|Concentrada)$/i.test(t)) return false;
   const existe = T20.poderes.some(p => mesmo(p.n, t)) || T20.classes.some(c => [...(c.pod || []), ...(c.podDH || []), ...(c.podV || [])].some(x => mesmo(x[0], t)));
@@ -4770,7 +5526,12 @@ const ITEM_EF = {
   'Elmo pesado': (ch, D, acc) => acc.prof.has('pesadas') ? { per: { Iniciativa: -2, 'Percepção': -2 } } : { per: { Iniciativa: -5, 'Percepção': -5 } },
   'Rondel': (ch, D) => D.armadura ? { def: 1 } : {},
   'Patuá': (ch, D) => D.deus ? { marca: ['RD 2/mundano', 'Resistência a magia +1'] } : {},
-  'Sandálias': (ch, D) => D.cls.some(c => c.def.mag && c.def.mag.t === 'Divina') ? { pm: 1 } : {}
+  'Sandálias': (ch, D) => D.cls.some(c => c.def.mag && c.def.mag.t === 'Divina') ? { pm: 1 } : {},
+  // Dragão Brasil
+  'Bio-máscara': { per: { 'Percepção': 5 }, marca: ['Percepção às cegas (só criaturas com calor corporal)'] },
+  'Capa esguinha': { per: { 'Enganação': 2, Furtividade: 2 } },
+  'Colete à prova de balas': { penArmadura: -2, marca: ['Redução de perfuração 10 (colete; não protege de críticos)'] },
+  'Traje de proteção': { penArmadura: -4 }
 };
 const SEM_LIMITE_VESTIDO = ['Mochila', 'Traje de viajante'];
 function itensVestidos(ch) {
@@ -4850,6 +5611,10 @@ function derivar(ch) {
 
   const pods = ch.poderes.map(p => ({ p, def: defPoder(p) }));
   D.pods = pods;
+  // distinções conquistadas e quantos poderes de cada uma o personagem tem
+  D.distincoes = (ch.distincoes || []).map(DISTINCAO).filter(Boolean);
+  const contaDist = id => pods.filter(x => x.def && x.def.tipo === 'Distinção' && x.def.dist === id).length;
+  D.contaDist = contaDist;
 
   // opções de raça escolhidas
   const racaOps = [];
@@ -4897,6 +5662,13 @@ function derivar(ch) {
     if (ATR.includes(p.op)) brk[p.op].poderes += 1;
     else D.pend.push({ txt: 'Escolha o atributo do Aumento de Atributo', alvo: 'habilidades' });
   });
+  // outros poderes que dão atributo (campo atr: objeto ou função)
+  pods.forEach(({ p, def }) => {
+    if (!def || !def.atr) return;
+    let a = def.atr;
+    if (typeof a === 'function') { try { a = a({ raca: raca && raca.n, nt, op: p.op }); } catch (e) { a = null; } }
+    Object.entries(a || {}).forEach(([k, v]) => { if (brk[k]) brk[k].poderes += +v || 0; });
+  });
   const torm = pods.filter(x => x.p.tipo === 'Tormenta');
   // lefou: bônus de Deformidade trocados por poderes da Tormenta não reduzem Carisma
   let trocasLefou = 0;
@@ -4927,7 +5699,8 @@ function derivar(ch) {
   const ctx0 = {
     nt, at, pesada: D.pesada, armadura: armI, escudo: escI, nTormenta,
     conta: re => nomesPod.filter(n => re.test(n)).length,
-    contaPre: nm => pods.filter(x => x.def && (x.def.pre || '').includes(nm)).length
+    contaPre: nm => pods.filter(x => x.def && (x.def.pre || '').includes(nm)).length,
+    contaDist
   };
   const run = (fn, nc, fonte, chave, op, extra) => {
     if (typeof fn !== 'function') return;
@@ -4949,11 +5722,13 @@ function derivar(ch) {
     run(c.def.ef, c.niveis, c.def.n, 'classe:' + c.id, undefined, exC);
     if (i === 0) (c.def.prof || []).forEach(p => acc.prof.add(p));
   });
+  // marca de cada distinção conquistada
+  D.distincoes.forEach(d => { if (d.marca && d.marca[2]) run(d.marca[2], nt, d.marca[0], 'dist:' + d.id); });
   pods.forEach(({ p, def }) => {
     if (!def) return;
     const nc = p.tipo === 'Classe' ? (D.nivelDe(p.classe) || nt) : nt;
     const dona = p.tipo === 'Classe' ? (cls.find(x => x.id === p.classe) || cls.find(x => p.slot === 'classe:' + x.id)) : null;
-    run(def.ef, nc, def.n, 'pod:' + p.uid, p.op, dona ? { esc: dona.esc } : null);
+    run(def.ef, nc, def.n, 'pod:' + p.uid, p.op, Object.assign({ txt: p.txt || '' }, dona ? { esc: dona.esc } : {}));
     if (def.treinaEscolha && p.txt && perValida(p.txt)) addTreina(acc, p.txt, def.n);
   });
   efeitosItens(ch, D, acc);
@@ -5127,7 +5902,7 @@ function derivar(ch) {
   };
   const armas = ch.inv.filter(i => i.tipo === 'arma' && i.equip).map(i => Object.assign({}, i));
   acc.armas.forEach(a => armas.push({ n: a.n, natural: true, cat: 'natural', prop: 'cc', emp: 'L', dano: a.dano, crit: a.crit || 'x2', dt: a.tipo, alc: '—', hab: [], nota: 'Arma natural (' + a.fonte + ')' }));
-  const manopla = ch.inv.some(i => i.equip && /^(Manopla|Garra feroz)$/.test(i.n));
+  const manopla = ch.inv.some(i => i.equip && /^(Manopla|Manopla explosiva|Garra feroz)$/.test(i.n));
   const estDes = tem('Estilo Desarmado');
   const danoDes = [acc.desarmado, estDes ? '1d6' : '1d3'].reduce((a, b) => mediaDado(b) > mediaDado(a) ? b : a);
   armas.push({ n: 'Ataque desarmado', desarmado: true, cat: 'natural', prop: 'cc', emp: 'L', dano: danoDes, crit: 'x2', dt: 'Impacto' + (acc.desarmado ? ', letal ou não letal' : manopla || estDes ? '' : ', não letal'), alc: '—', hab: [] });
@@ -5239,11 +6014,12 @@ function derivar(ch) {
   });
   pods.forEach(x => { if (x.def && x.def.opNome && x.p.op) conhecidos.add(normal(x.def.opNome(x.p.op))); });
   if (raca) raca.hab.forEach(h => conhecidos.add(normal(h[0])));
-  racaOps.forEach(o => conhecidos.add(normal(o.op[0])));
+  racaOps.forEach(o => { conhecidos.add(normal(o.op[0])); (o.x.nomes || []).forEach(n => conhecidos.add(normal(n))); });
+  D.distincoes.forEach(d => { if (d.marca) conhecidos.add(normal(d.marca[0])); });
   ch.magias.forEach(m => conhecidos.add(normal(m.n)));
   D.temNome = t => conhecidos.has(normal(t));
   D.preDe = def => checarPre(def && def.pre, D);
-  pods.forEach(x => { if (x.def && x.def.pre && x.p.slot !== 'origem') { const r = checarPre(x.def.pre, D); x.pre = r; if (r.ok === false) D.avisos.push(x.def.n + ': pré-requisito não atendido (' + r.itens.filter(i => i.ok === false).map(i => i.t).join(', ') + ').'); } });
+  pods.forEach(x => { if (x.def && x.def.pre && x.p.slot !== 'origem') { const r = checarPre(x.def.pre, D, x.def.tipo === 'Distinção' ? { dist: x.def.dist } : null); x.pre = r; if (r.ok === false) D.avisos.push(x.def.n + ': pré-requisito não atendido (' + r.itens.filter(i => i.ok === false).map(i => i.t).join(', ') + ').'); } });
 
   D.marcas = unico(acc.marca);
   return D;
@@ -5542,7 +6318,7 @@ function painelDeus() {
   const semDevocao = DV.cls.find(c => c.def.naoDevoto);
   if (semDevocao) aviso += `<p class="desc">${esc(semDevocao.def.n)} não pode ter devoção a nenhum deus.</p>`;
   if (!d) return aviso + vazioPainel(DV.semDeus ? 'Sua devoção não envolve um deus específico.' : 'Ser devoto é opcional e dá um poder concedido (dois para clérigos, druidas, paladinos e frades).', 'Ver divindades', 'abrir-deus');
-  let h = cabPainel(d.n, 'Energia ' + d.canal.toLowerCase() + ', arma preferida: ' + d.arma, 'Trocar', 'abrir-deus');
+  let h = cabPainel(d.n, (d.menor ? 'Deus menor (' + fonteNomeCurto(d.f) + '). ' : '') + 'Energia ' + d.canal.toLowerCase() + ', arma preferida: ' + d.arma, 'Trocar', 'abrir-deus');
   h += aviso;
   h += `<p class="desc">${esc(d.areas)} Símbolo: ${esc(d.simb)}</p>`;
   const n = DV.concedidos.n;
@@ -5626,8 +6402,16 @@ function secVitais() {
     <div class="dado"><span>Redução de dano</span><b>${DV.rd || '—'}</b></div>
   </div>`;
   const ativas = ch.condicoes;
-  h += `<details class="cond nao-imprime"${ativas.length ? ' open' : ''}><summary>Condições${ativas.length ? ' (' + ativas.length + ')' : ''}</summary><div class="chips">${T20.condicoes.map(c => chip(esc(c), 'condicao', `data-c="${esc(c)}"`, ativas.includes(c))).join('')}</div></details>`;
-  if (ativas.length) h += `<p class="cond-ativas">Condições: ${esc(ativas.join(', '))}</p>`;
+  const descDB = Object.fromEntries(T20.condicoesDB.map(([n, d]) => [n, d]));
+  const extrasDB = T20.condicoesDB.map(x => x[0]).filter(n => !T20.condicoes.includes(n) && (fonteOk('DB') || ativas.includes(n)));
+  const soltas = ativas.filter(n => !T20.condicoes.includes(n) && !extrasDB.includes(n));
+  const chipCond = c => chip(esc(c), 'condicao', `data-c="${esc(c)}"`, ativas.includes(c), false, fonteOk('DB') && descDB[c] ? descDB[c] : '');
+  h += `<details class="cond nao-imprime"${ativas.length ? ' open' : ''}><summary>Condições${ativas.length ? ' (' + ativas.length + ')' : ''}</summary><div class="chips">${[...T20.condicoes, ...soltas].map(chipCond).join('')}</div>` +
+    (extrasDB.length ? `<p class="cond-sub">Condições da Dragão Brasil</p><div class="chips">${extrasDB.map(chipCond).join('')}</div>` : '') + `</details>`;
+  if (ativas.length) {
+    const comDesc = ativas.filter(n => descDB[n] && (fonteOk('DB') || !T20.condicoes.includes(n)));
+    h += `<p class="cond-ativas">Condições: ${esc(ativas.join(', '))}</p>` + (comDesc.length ? `<ul class="cond-desc">${comDesc.map(n => `<li><b>${esc(n)}.</b> ${esc(descDB[n])}</li>`).join('')}</ul>` : '');
+  }
   return `<section class="sec" id="sec-vitais" style="margin-top:22px">${h}</section>`;
 }
 function secAtaques() {
@@ -5676,10 +6460,16 @@ function secHabilidades() {
   });
   let h = `<div class="habs">`;
   h += grupos.map(g => `<div class="hab-grupo"><h3>${esc(g.tit)}</h3>${g.itens.map(i => `<div class="hab"><div class="hab-cab"><span class="hab-nome">${esc(i.n)}${i.nv ? `<span class="hab-nv">${esc(i.nv)}</span>` : ''}</span></div><div class="hab-txt">${esc(i.r)}</div></div>`).join('')}</div>`).join('');
+  DV.distincoes.forEach(d => {
+    const n = DV.contaDist(d.id);
+    h += `<div class="hab-grupo"><h3>Distinção: ${esc(d.n)}</h3><div class="hab"><div class="hab-cab"><span class="hab-nome">${d.marca ? esc(d.marca[0]) + '<span class="hab-nv">marca da distinção</span>' : 'Sem marca<span class="hab-nv">publicada antes das regras de marca</span>'}</span><button class="btn-remover nao-imprime" data-act="distincao-remover" data-id="${esc(d.id)}" aria-label="Remover a distinção ${esc(d.n)}">remover</button></div>
+      <div class="hab-txt">${d.marca ? esc(d.marca[1]) : esc(d.desc)} <span class="mudo">${plural(n, 'poder', 'poderes')} da distinção${DV.nivel < 5 ? '; os poderes só podem ser escolhidos a partir do 5º nível' : ''}.</span></div></div></div>`;
+  });
   h += `<div class="hab-grupo"><h3>Poderes escolhidos</h3>${DV.pods.length ? DV.pods.map(poderHtml).join('') : '<p class="vazio-msg">Nenhum poder ainda.</p>'}</div>`;
   if (DV.deus && !DV.semDeus) h += `<div class="hab-grupo"><h3>Devoto de ${esc(DV.deus.n)}</h3><div class="hab"><div class="hab-txt">${esc(DV.deus.obrig)}</div></div></div>`;
   h += `</div>`;
-  return `<section class="sec" id="sec-habilidades">${titSec('Habilidades e poderes', `<button class="btn btn-mini" data-act="abrir-poder" data-slot="livre">Adicionar poder</button>`)}${h}</section>`;
+  const btDist = fonteOk('DB') || DV.distincoes.length ? `<button class="btn btn-mini" data-act="abrir-distincao">Distinções</button>` : '';
+  return `<section class="sec" id="sec-habilidades">${titSec('Habilidades e poderes', btDist + `<button class="btn btn-mini" data-act="abrir-poder" data-slot="livre">Adicionar poder</button>`)}${h}</section>`;
 }
 function poderHtml(x) {
   const { p, def } = x;
@@ -5697,7 +6487,7 @@ function poderHtml(x) {
     if (p.txt) extra += `<span class="mudo">${esc(p.txt)}</span>`;
   }
   const pre = x.pre && x.pre.itens.length ? `<div class="pre">Pré-requisitos: ${x.pre.itens.map(i => `<span class="${i.ok === true ? 'ok' : i.ok === false ? 'no' : 'q'}">${esc(i.t)}</span>`).join(', ')}</div>` : '';
-  return `<div class="hab"><div class="hab-cab"><span class="hab-nome">${esc(p.n)}<span class="hab-nv">${esc(SLOT_NOME(p.slot))}${p.tipo && !['Classe', 'Origem', 'Concedido'].includes(p.tipo) ? ', ' + esc(p.tipo.toLowerCase()) : ''}</span></span><button class="btn-remover nao-imprime" data-act="pod-remover" data-uid="${p.uid}" aria-label="Remover ${esc(p.n)}">remover</button></div>
+  return `<div class="hab"><div class="hab-cab"><span class="hab-nome">${esc(p.n)}<span class="hab-nv">${esc(SLOT_NOME(p.slot))}${def && def.distN ? ', ' + esc(def.distN) : p.tipo && !['Classe', 'Origem', 'Concedido'].includes(p.tipo) ? ', ' + esc(p.tipo.toLowerCase()) : ''}</span></span><button class="btn-remover nao-imprime" data-act="pod-remover" data-uid="${p.uid}" aria-label="Remover ${esc(p.n)}">remover</button></div>
     <div class="hab-txt">${esc(r || 'Descrição não disponível.')}</div>${pre}${extra ? `<div class="hab-extra nao-imprime">${extra}</div>` : ''}</div>`;
 }
 
@@ -6349,15 +7139,15 @@ const GAVETAS = {
     return { tit: multi ? 'Adicionar classe' : 'Classes', sub: multi ? 'O novo nível vem dessa classe; o nível total não passa de 20.' : 'Toque numa classe para ver a progressão completa.', filtros: filtroFontesHtml(), itens };
   },
   deus(g) {
-    const itens = T20.deuses.map(d => ({
-      k: d.n, tit: d.n, f: 'T20', escolhido: d.n === ch.deus,
-      sub: d.areas, busca: d.poderes.join(' '),
+    const itens = T20.deuses.filter(d => fonteOk(d.f || 'T20') || d.n === ch.deus).map(d => ({
+      k: d.n, tit: d.n, f: d.f || 'T20', escolhido: d.n === ch.deus,
+      sub: (d.menor ? 'Deus menor. ' : '') + d.areas, busca: d.poderes.join(' ') + (d.menor ? ' deus menor' : ''),
       det: () => dl([['Símbolo', esc(d.simb)], ['Energia', esc(d.canal)], ['Arma preferida', esc(d.arma)], ['Devotos (raças)', esc(d.racas)], ['Devotos (classes)', esc(d.classes)]]) +
         `<h4>Poderes concedidos</h4>` + ul(concedidosDe(d).map(p => `<b>${esc(p.n)}</b>${p.f !== 'T20' ? ' (' + p.f + ')' : ''}: ${esc(p.r)}`)) +
         `<h4>Obrigações e restrições</h4><p>${esc(d.obrig)}</p>`,
       acao: () => d.n === ch.deus ? `<span class="pend-ok">Divindade atual</span>` : `<button class="btn btn-pri" data-act="escolher-deus" data-n="${esc(d.n)}">Ser devoto de ${esc(d.n)}</button>`
     }));
-    return { tit: 'Divindades', sub: 'Confira se sua raça e classe podem ser devotas desse deus.', itens };
+    return { tit: 'Divindades', sub: 'Confira se sua raça e classe podem ser devotas desse deus.', filtros: filtroFontesHtml(), itens };
   },
   poder(g) {
     const slot = g.slot;
@@ -6376,25 +7166,28 @@ const GAVETAS = {
       abas.push(['Combate', 'Combate'], ['Destino', 'Destino'], ['Magia', 'Magia'], ['Tormenta', 'Tormenta']);
       if (DV.raca) abas.push(['Raça', 'Raça']);
       if (DV.deus) abas.push(['Concedido', 'Concedidos']);
+      if (DV.distincoes.length) abas.push(['Distinção', 'Distinções']);
     }
     const aba = g.aba && abas.some(a => a[0] === g.aba) ? g.aba : abas[0][0];
     let lista;
     if (aba.startsWith('Classe:')) lista = poderesDeClasse(aba.slice(7), classeSlot || aba.slice(7));
     else if (aba === 'Concedido') lista = DV.deus ? concedidosDe(DV.deus) : [];
     else if (aba === 'Raça') lista = T20.poderes.filter(p => p.tipo === 'Raça' && DV.raca && p.racas.some(r => normal(DV.raca.n).startsWith(normal(r)) || r === 'Várias'));
+    else if (aba === 'Distinção') lista = T20.poderes.filter(p => p.tipo === 'Distinção' && DV.distincoes.some(d => d.id === p.dist));
     else lista = T20.poderes.filter(p => p.tipo === aba);
     lista = lista.filter(p => fonteOk(p.f));
     const itens = lista.map(p => {
-      const ja = ch.poderes.filter(x => x.n === p.n && x.tipo === p.tipo && (p.tipo !== 'Classe' || x.classe === p.classe));
+      const ja = ch.poderes.filter(x => x.n === p.n && x.tipo === p.tipo && (p.tipo !== 'Classe' || x.classe === p.classe) && (p.tipo !== 'Distinção' || !x.dist || x.dist === p.dist));
       const rep = p.rep || p.n === 'Aumento de Atributo' || /Repetível|repetível/.test(p.r);
       const pre = checarPre(p.pre, DV);
-      const k = p.tipo + ':' + (p.classe || '') + ':' + p.n;
+      const k = p.tipo + ':' + (p.classe || p.dist || '') + ':' + p.n;
+      const preTxt = p.tipo === 'Distinção' ? p.distN + '. ' + (p.preTxt ? 'Pré-requisitos: ' + p.preTxt : 'Sem outros pré-requisitos') : p.pre ? 'Pré-requisitos: ' + p.pre : 'Sem pré-requisitos';
       return {
         k, tit: p.n, f: p.f, escolhido: ja.length > 0,
-        sub: p.pre ? 'Pré-requisitos: ' + p.pre : 'Sem pré-requisitos', busca: p.r,
+        sub: preTxt, busca: p.r,
         det: () => `<p>${esc(p.r)}</p>` + (pre.itens.length ? `<p class="pre">Pré-requisitos: ${pre.itens.map(i => `<span class="${i.ok === true ? 'ok' : i.ok === false ? 'no' : 'q'}">${esc(i.t)}${i.ok === true ? ' (ok)' : i.ok === false ? ' (falta)' : ' (confira)'}</span>`).join(', ')}</p>` : ''),
         acao: () => (ja.length && !rep) ? `<span class="pend-ok">Já escolhido</span>` :
-          `<button class="btn btn-pri" data-act="escolher-poder" ${dataAttrs({ n: p.n, tipo: p.tipo, classe: p.classe || '', slot: slot === 'origem-gen' ? 'origem' : slot })}>${ja.length ? 'Adicionar de novo' : 'Adicionar'}</button>${pre.ok === false ? ' <span class="desc">Você ainda não cumpre todos os pré-requisitos.</span>' : ''}`
+          `<button class="btn btn-pri" data-act="escolher-poder" ${dataAttrs({ n: p.n, tipo: p.tipo, classe: p.classe || '', dist: p.dist || '', slot: slot === 'origem-gen' ? 'origem' : slot })}>${ja.length ? 'Adicionar de novo' : 'Adicionar'}</button>${pre.ok === false ? ' <span class="desc">Você ainda não cumpre todos os pré-requisitos.</span>' : ''}`
       };
     });
     const titulos = { origem: 'Poder da origem', 'origem-gen': 'Poder da origem', concedido: 'Poder concedido', livre: 'Adicionar poder' };
@@ -6404,6 +7197,24 @@ const GAVETAS = {
       filtros: filtroFontesHtml() + (abas.length > 1 ? filtroChips(abas, aba, 'gav-aba') : ''),
       itens
     };
+  },
+  distincao(g) {
+    const atuais = ch.distincoes;
+    const itens = T20.distincoes.filter(d => fonteOk(d.f) || atuais.includes(d.id)).map(d => {
+      const pods = T20.poderes.filter(p => p.tipo === 'Distinção' && p.dist === d.id);
+      return {
+        k: d.id, tit: d.n, f: d.f, escolhido: atuais.includes(d.id),
+        sub: d.desc, busca: (d.marca ? d.marca[0] + ' ' : '') + pods.map(p => p.n).join(' ') + ' ' + d.adm,
+        det: () => `<p><b>Admissão:</b> ${esc(d.adm)}</p>` +
+          (d.marca ? `<p><b>Marca da distinção — ${esc(d.marca[0])}:</b> ${esc(d.marca[1])}</p>` : `<p class="desc">Sem marca: esta distinção saiu antes das regras de marca.</p>`) +
+          (d.nota ? `<p class="desc">${esc(d.nota)}</p>` : '') +
+          `<h4>Poderes da distinção</h4>` + ul(pods.map(p => `<b>${esc(p.n)}</b>${p.preTxt ? ' (' + esc(p.preTxt) + ')' : ''}: ${esc(p.r)}`)),
+        acao: () => atuais.includes(d.id)
+          ? `<span class="pend-ok">Conquistada</span> <button class="btn" data-act="distincao-remover" data-id="${esc(d.id)}">Remover da ficha</button>`
+          : `<button class="btn btn-pri" data-act="escolher-distincao" data-id="${esc(d.id)}">Conquistar ${esc(d.n)}</button>`
+      };
+    });
+    return { tit: 'Distinções', sub: 'A admissão acontece na história, combinada com o mestre. Conquistada, a distinção dá a marca na hora; os poderes dela entram como poderes gerais a partir do 5º nível.', filtros: filtroFontesHtml(), itens };
   },
   magia(g) {
     const cj = DV.conj.find(x => x.id === g.id);
@@ -6442,7 +7253,7 @@ const GAVETAS = {
       const cat = g.cat || 'todas';
       filtros += filtroChips([['todas', 'Todas'], ['simples', 'Simples'], ['marcial', 'Marciais'], ['exotica', 'Exóticas'], ['fogo', 'De fogo']], cat, 'gav-cat');
       itens = T20.armas.filter(a => fonteOk(a.f) && (cat === 'todas' || a.cat === cat)).map(a => ({
-        k: 'a:' + a.n, tit: a.n, f: a.f, sub: `${a.dano} ${a.crit}, ${tipoDano(a.tipo).toLowerCase()}${a.alc !== '—' ? ', ' + a.alc : ''}. ${fmtT(a.preco)}, ${fmtNum(a.esp)} esp.`,
+        k: 'a:' + a.n, tit: a.n, f: a.f, sub: `${a.dano} ${a.crit}, ${tipoDano(a.tipo).toLowerCase()}${a.alc !== '—' ? ', ' + a.alc : ''}. ${a.preco ? fmtT(a.preco) : 'sem preço'}, ${fmtNum(a.esp)} esp.`,
         busca: a.nota + ' ' + a.hab.join(' '),
         det: () => dl([['Categoria', ({ simples: 'Simples', marcial: 'Marcial', exotica: 'Exótica', fogo: 'Arma de fogo' })[a.cat]], ['Empunhadura', { L: 'Leve', 1: 'Uma mão', 2: 'Duas mãos' }[a.emp]], ['Tipo', { cc: 'Corpo a corpo', ar: 'Arremesso', dp: 'Disparo' }[a.prop]], ['Habilidades', esc(a.hab.filter(h => !['somaFor', 'des', 'naoLetal', 'arremessavel'].includes(h)).join(', '))]]) + (a.nota ? `<p>${esc(a.nota)}</p>` : ''),
         acao: () => acaoItem('arma', a.n, a.preco)
@@ -6532,6 +7343,7 @@ const GAVETAS = {
       <h4>Criando a ficha</h4><p>Siga as caixas do topo: raça, origem, classe e divindade. O painel abaixo delas mostra o que falta escolher. Os números da ficha são calculados conforme você escolhe.</p>
       <h4>Retrato</h4><p>Clique no quadro ao lado do nome para escolher uma imagem do computador, ou arraste a imagem até ele. Depois, arraste a foto dentro do quadro (ou use as setas do teclado) para enquadrar o rosto. A imagem é reduzida para ocupar pouco espaço e vai junto quando você exporta a ficha.</p>
       <h4>Na mesa</h4><p>Clique no nome de uma perícia, numa resistência ou num ataque para rolar. Os botões de PV e PM descontam ou recuperam a quantidade do campo do meio.</p>
+      <h4>Distinções</h4><p>Com o livro Dragão Brasil ligado, o botão <b>Distinções</b>, em Habilidades e poderes, mostra as distinções da revista. Marque a que o personagem conquistou na história: a marca entra na ficha na hora, e os poderes dela aparecem numa aba própria ao escolher poderes, a partir do 5º nível.</p>
       <h4>O que não é automático</h4><p>Bônus condicionais (contra certos inimigos, em certos terrenos, ao usar uma habilidade) aparecem só no texto. Para o resto, use <b>Ajustes manuais</b>, em Anotações.</p>
       <h4>Imprimir</h4><p>${MODO === 'claude' ? 'Aqui o botão Imprimir baixa uma cópia da ficha (.html). Abra o arquivo e a janela de impressão aparece; escolha “Salvar como PDF” para ter um PDF.' : 'O botão Imprimir gera uma versão limpa da ficha. Escolha “Salvar como PDF” para ter um arquivo.'}</p>
       <h4>Créditos</h4><p>Ferramenta de fã, gratuita e não oficial, sem vínculo com a Jambô Editora. As regras foram resumidas a partir da Tormenta Collab Wiki; consulte os livros oficiais para o texto completo.</p></div>`;
@@ -6754,6 +7566,7 @@ const ACOES = {
   'abrir-item'() { abrirGaveta({ modo: 'item' }); },
   'abrir-inicial'() { abrirGaveta({ modo: 'inicial' }); },
   'abrir-ajustes'() { abrirGaveta({ modo: 'ajustes' }); },
+  'abrir-distincao'() { abrirGaveta({ modo: 'distincao' }); },
 
   // raça
   'escolher-raca'(el) {
@@ -6910,11 +7723,27 @@ const ACOES = {
     mudou();
   },
 
+  // distinções (os poderes ficam na ficha se a distinção sair: o aviso de pré-requisito mostra o problema)
+  'escolher-distincao'(el) {
+    const id = el.dataset.id;
+    if (!DISTINCAO(id) || ch.distincoes.includes(id)) return;
+    ch.distincoes.push(id);
+    fecharGaveta(); mudou();
+    status('Distinção conquistada: ' + DISTINCAO(id).n);
+  },
+  'distincao-remover'(el) {
+    const id = el.dataset.id;
+    ch.distincoes = ch.distincoes.filter(x => x !== id);
+    mudou();
+    status('Distinção removida: ' + ((DISTINCAO(id) || {}).n || id));
+  },
+
   // poderes
   'escolher-poder'(el) {
     const ds = el.dataset;
     const p = { uid: novoId(), n: ds.n, tipo: ds.tipo, slot: ds.slot };
     if (ds.classe) p.classe = ds.classe;
+    if (ds.dist) p.dist = ds.dist;
     if (ds.slot === 'origem') p.origem = ch.origem.n;
     ch.poderes.push(p);
     fecharGaveta(); mudou();
