@@ -4,7 +4,7 @@ Uma ficha do tormenta 20 para criar o personagem incluindo os livros como DH,AA 
 
 Criador de fichas de **Tormenta20** gratuito e em português. Funciona direto no navegador, no computador ou no celular, e continua funcionando sem internet. Você escolhe raça, origem, classe e divindade, e a ficha calcula sozinha atributos, perícias, PV, PM, Defesa e ataques.
 
-👉 **Abrir a ficha:** [<https://SEU-USUARIO.github.io/NOME-DO-REPOSITORIO/>](https://luizaugustobertidalbello.github.io/Ficha-Personagem-Tormenta-20/)
+👉 **Abrir a ficha:** [[<https://SEU-USUARIO.github.io/NOME-DO-REPOSITORIO/>](https://luizaugustobertidalbello.github.io/Ficha-Personagem-Tormenta-20/)]
 
 > Ferramenta de fã, não oficial e sem vínculo com a Jambô Editora. Veja [Créditos](#créditos-e-aviso).
 
