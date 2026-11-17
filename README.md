@@ -1,5 +1,3 @@
-# Ficha-Personagem-Tormenta-20
-Uma ficha do tormenta 20 para criar o personagem incluindo os livros como DH,AA e etc. Alem do livro base
 # Ficha T20
 
 Criador de fichas de **Tormenta20** gratuito e em português. Funciona direto no navegador, no computador ou no celular, e continua funcionando sem internet. Você escolhe raça, origem, classe e divindade, e a ficha calcula sozinha atributos, perícias, PV, PM, Defesa e ataques.
@@ -32,7 +30,7 @@ Criador de fichas de **Tormenta20** gratuito e em português. Funciona direto no
 
 - Guia a criação passo a passo e avisa o que ainda falta escolher.
 - Calcula atributos, perícias, PV, PM, Defesa, deslocamento, carga, CD de magias e ataques.
-- Inclui 16 classes, 19 classes variantes, 60 raças, 132 origens, poderes, deuses, magias e equipamentos (detalhes em [Conteúdo incluído](#conteúdo-incluído)).
+- Inclui 18 classes, 19 classes variantes, 60 raças, 132 origens, poderes, deuses, magias e equipamentos (detalhes em [Conteúdo incluído](#conteúdo-incluído)).
 - Tem multiclasse, retrato do personagem, rolagem de dados com um clique, controle de PV e PM, condições e inventário.
 - Guarda vários personagens, salva sozinha e exporta e importa fichas em arquivo.
 - Tem tema claro e escuro e versão para imprimir ou salvar em PDF.
@@ -44,7 +42,7 @@ Criador de fichas de **Tormenta20** gratuito e em português. Funciona direto no
 3. **Siga as quatro caixas do topo:** Raça → Origem → Classe → Divindade.
 4. O quadro **"Faltam N escolhas"** lista tudo o que ainda está pendente. Clique num item para ir direto até ele.
 
-> 💡 Para usar **sem internet**, baixe o arquivo `index.html` deste repositório (abra o arquivo e clique em **Download raw file**) e abra no navegador com dois cliques. Tudo vem dentro dele.
+> 💡 Para usar **sem internet**, baixe o [`index.html`](https://github.com/LuizAugustoBertiDalBello/Ficha-Personagem-Tormenta-20/blob/main/index.html) deste repositório (no arquivo, clique em **Download raw file**) e abra no navegador com dois cliques. Tudo vem dentro dele.
 
 ## Criando o personagem
 
@@ -156,11 +154,11 @@ Clique em **Imprimir**. A ficha gera uma versão limpa, sem botões, em páginas
 
 | Tipo | O que vem na ficha |
 | --- | --- |
-| **Classes** | 16: Arcanista, Bárbaro, Bardo, Bucaneiro, Caçador, Cavaleiro, Clérigo, Druida, Guerreiro, Inventor, Ladino, Lutador, Nobre, Paladino, Frade e Treinador |
+| **Classes** | 18: Arcanista, Bárbaro, Bardo, Bucaneiro, Caçador, Cavaleiro, Clérigo, Druida, Guerreiro, Inventor, Ladino, Lutador, Nobre, Paladino, Frade, Treinador, Místico e Samurai |
 | **Classes variantes** | 19: Necromante, Sentinela, Machado de Pedra, Magimarcialista, Duelista, Miragem, Seteiro, Vassalo, Usurpador, Cruzado, Ermitão, Inovador, Alquimista, Ventanista, Capanga, Atleta, Burguês, Comandante e Santo |
 | **Raças** | 60 |
 | **Origens** | 132 (97 regionais) |
-| **Poderes** | 147 gerais, 634 de classe, 148 concedidos e 77 de raça |
+| **Poderes** | 147 gerais, 749 de classe, 148 concedidos e 77 de raça |
 | **Deuses** | 20 |
 | **Magias** | 256, do 1º ao 5º círculo |
 | **Equipamento** | 96 armas, 23 armaduras, 7 escudos e 261 itens |
@@ -188,7 +186,7 @@ Só para abrir o link. Depois de carregada, a ficha funciona offline. Se preferi
 
 ### Encontrei um erro numa regra, e agora?
 
-Abra uma *issue* aqui no GitHub contando qual é a regra e onde ela aparece.
+Abra uma [*issue*](https://github.com/LuizAugustoBertiDalBello/Ficha-Personagem-Tormenta-20/issues) aqui no GitHub contando qual é a regra e onde ela aparece.
 
 ## Para quem mantém este repositório
 
@@ -197,7 +195,8 @@ Abra uma *issue* aqui no GitHub contando qual é a regra e onde ela aparece.
 1. Coloque o `index.html` (e este `README.md`) na raiz do repositório, pelo botão **Add file → Upload files**.
 2. Vá em **Settings → Pages**.
 3. Em **Build and deployment**, escolha **Deploy from a branch**, depois a branch **main** e a pasta **/ (root)**, e clique em **Save**.
-4. Em cerca de um minuto, o site fica em `https://SEU-USUARIO.github.io/NOME-DO-REPOSITORIO/`. Troque o link no topo deste README pelo endereço certo.
+4. Em cerca de um minuto, o site fica em <https://luizaugustobertidalbello.github.io/Ficha-Personagem-Tormenta-20/>.
+5. Para o link aparecer na página do repositório, clique na engrenagem de **About** e marque **Use your GitHub Pages website**.
 
 ### Atualizar a ficha
 
