@@ -2282,6 +2282,229 @@ C({
 })();
 
 ;
+// ---- 19_classes_db.js
+// Classes da revista Dragão Brasil (DB): Místico e Samurai. Resumos com palavras próprias.
+(() => {
+  // ---------- MÍSTICO ----------
+  // os seis elementos: tipo de dano, escola de magia e perícia ligada
+  const EL = {
+    'Água': { tipo: 'frio', escola: 'Encantamento', per: 'Diplomacia' },
+    'Ar': { tipo: 'eletricidade', escola: 'Ilusão', per: 'Enganação' },
+    'Fogo': { tipo: 'fogo', escola: 'Transmutação', per: 'Acrobacia' },
+    'Luz': { tipo: 'luz', escola: 'Abjuração', per: 'Cura' },
+    'Terra': { tipo: 'ácido', escola: 'Convocação', per: 'Investigação' },
+    'Trevas': { tipo: 'trevas', escola: 'Necromancia', per: 'Intimidação' }
+  };
+  const NOMES_EL = Object.keys(EL);
+  // círculos que o místico lança (Ditame Absoluto conta o 5º para todos os efeitos, menos aprender magias)
+  const circulos = c => [1, 6, 10, 14].filter(l => l <= c.nc).length + (c.conta && c.conta(/^Ditame Absoluto$/) ? 1 : 0);
+  const reducao = (c, nome) => ({ marca: ['Redução de ' + EL[nome].tipo + ' ' + 5 * circulos(c)] });
+  const elementos = cx => {
+    const lista = [];
+    if (cx.esc && EL[cx.esc.afinidade]) lista.push(cx.esc.afinidade);
+    const ev = cx.esc && cx.esc.evoluida;
+    if (ev && /^Expandida: /.test(ev)) lista.push(ev.slice(11));
+    (cx.pods || []).forEach(p => { if (p.n === 'Afinidade Maior' && EL[p.op]) lista.push(p.op); });
+    return lista;
+  };
+  const tradicao = nc => nc >= 13 ? 6 : nc >= 9 ? 4 : nc >= 3 ? 2 : 0;
+  // ditames: magias aprendidas e o nível em que chegam
+  const DITAMES = {
+    'Ditame da Chuva': [['Área Escorregadia', 1], ['Tempestade Divina', 6], ['Controlar Água', 10]],
+    'Ditame da Cura': [['Curar Ferimentos', 1], ['Purificação', 6], ['Sopro da Salvação', 10]],
+    'Ditame da Manhã': [['Luz', 1], ['Raio Solar', 6], ['Coluna de Chamas', 10]],
+    'Ditame da Montanha': [['Primor Atlético', 1], ['Controlar Terra', 10], ['Terremoto', 14]],
+    'Ditame da Profecia': [['Augúrio', 1], ['Lendas e Histórias', 10], ['Vidência', 10]],
+    'Ditame das Brumas': [['Névoa', 1], ['Camuflagem Ilusória', 6], ['Miasma Mefítico', 6]],
+    'Ditame das Chamas': [['Explosão de Chamas', 1], ['Controlar Fogo', 6], ['Lança Ígnea de Aleph', 10]],
+    'Ditame do Breu': [['Escuridão', 1], ['Anular a Luz', 10], ['Manto de Sombras', 10]],
+    'Ditame do Crepúsculo': [['Consagrar', 1], ['Profanar', 1], ['Crânio Voador de Vladislav', 6]],
+    'Ditame do Espadachim': [['Concentração de Combate', 1], ['Velocidade', 6], ['Transformação de Guerra', 10]],
+    'Ditame dos Portais': [['Salto Dimensional', 1], ['Teletransporte', 10], ['Viagem Planar', 14]],
+    'Ditame dos Ventos': [['Queda Suave', 1], ['Controlar Ar', 6], ['Controlar o Clima', 14]],
+    'Contramágica Elemental': [['Dissipar Magia', 1]],
+    'Propulsão': [['Voo', 10]]
+  };
+  const ditameTxt = n => DITAMES[n].map(([m, nv]) => m + (nv > 1 ? ' (' + nv + 'º)' : '')).join(', ');
+  const af = (...els) => els.map(e => 'Afinidade (' + e + ')').join(' ou ');
+
+  C({
+    id: 'mistico', n: 'Místico', f: 'DB', attr: 'Sabedoria',
+    desc: 'Conjurador que domina uma força primordial (água, ar, fogo, luz, terra ou trevas) por meio de uma magia antiga e muito específica.',
+    pv: 16, pvn: 4, pm: 4,
+    per: { fix: ['Misticismo', 'Vontade'], n: 4, de: ['Acrobacia', 'Atletismo', 'Conhecimento', 'Cura', 'Diplomacia', 'Fortitude', 'Iniciativa', 'Luta', 'Ofício', 'Percepção', 'Pontaria', 'Reflexos'] },
+    perExtra: esc => EL[esc.afinidade] ? [EL[esc.afinidade].per] : [],
+    perNota: '(mais a perícia do elemento da Afinidade)',
+    prof: ['marciais'], profTxt: 'Armas marciais',
+    mag: {
+      t: 'Arcana', circ: [1, 6, 10, 14], ini: 3, ritmo: 'par', attr: 'sab', pm: true, escolas: 1,
+      escolasFixas: cx => ['Evocação', ...elementos(cx).map(e => EL[e].escola)],
+      extras: cx => cx.pods.flatMap(p => (DITAMES[p.n] || []).filter(([, nv]) => nv <= cx.nc).map(([m]) => m)),
+      extraLivre: cx => cx.pods.some(p => p.n === 'Ditame Absoluto') ? 1 : 0,
+      filtro: (m, cx) => m.n === 'Criar Elementos' || cx.extras.includes(m.n) || ((m.t === 'Arcana' || m.t === 'Universal') && (cx.fixas.includes(m.e) || cx.escolas.includes(m.e))),
+      tiposTxt: 'Arcanas de evocação, da escola da Afinidade e de uma escola à escolha (mais Criar Elementos e as dos ditames)',
+      aprende: 'Começa com Criar Elementos e mais 2 magias de 1º círculo; aprende 1 a cada nível par. Ditames dão magias extras'
+    },
+    niv: ['Afinidade, ataque elemental +1d8, magias (1º círculo)', 'Língua primordial, P', 'Tradição oral +2, P', 'Sexto sentido, P', 'P', 'Afinidade evoluída, ataque elemental +2d8, magias (2º círculo), P', 'P', 'P', 'Tradição oral +4, P', 'Ataque elemental +3d8, magias (3º círculo), P', 'P', 'P', 'Tradição oral +6, P', 'Ataque elemental +4d8, magias (4º círculo), P', 'P', 'P', 'P', 'P', 'P', 'Comunhão suprema, P'],
+    esc: [
+      { id: 'afinidade', n: 'Afinidade', nivel: 1, op: NOMES_EL.map(e => [e, 'Dano de ' + EL[e].tipo + ', escola ' + EL[e].escola.toLowerCase() + ', perícia ' + EL[e].per + '.', { ef: c => reducao(c, e), nomes: ['Afinidade (' + e.toLowerCase() + ')'] }]) },
+      { id: 'evoluida', n: 'Afinidade Evoluída', nivel: 6, op: [
+        ['Afinidade Concentrada', '+2 na CD das habilidades de místico e nos ataques com Ataque Elemental.', { ef: () => ({ nota: '+2 na CD de místico e nos ataques do Ataque Elemental' }), nomes: ['Afinidade Concentrada'] }],
+        ...NOMES_EL.map(e => ['Expandida: ' + e, 'Segundo elemento (' + e.toLowerCase() + '): treinado em ' + EL[e].per + ', redução de ' + EL[e].tipo + ' e acesso à escola ' + EL[e].escola.toLowerCase() + '. Não escolha o mesmo elemento da Afinidade.', { ef: c => Object.assign({ treina: [EL[e].per] }, reducao(c, e)), nomes: ['Afinidade Expandida', 'Afinidade (' + e.toLowerCase() + ')'] }])
+      ] }
+    ],
+    hab: [
+      ['Afinidade', 1, 'Escolha um elemento (não muda depois). Por círculo de magia que lança, redução 5 contra o dano do elemento; 1 PM transforma o dano de uma magia de outro elemento no seu; o elemento põe uma perícia na sua lista de classe. Água: frio, encantamento, Diplomacia. Ar: eletricidade, ilusão, Enganação. Fogo: fogo, transmutação, Acrobacia. Luz: luz, abjuração, Cura. Terra: ácido, convocação, Investigação. Trevas: trevas, necromancia, Intimidação.'],
+      ['Ataque Elemental', 1, 'Num ataque corpo a corpo, gasta PM (até o maior círculo que lança): +1d8 de dano do tipo da Afinidade por PM.'],
+      ['Magias', 1, 'Magias arcanas de evocação, da escola da Afinidade e de uma terceira escola à escolha (2º círculo no 6º, 3º no 10º, 4º no 14º). Começa com Criar Elementos e mais 2 magias de 1º círculo; aprende 1 a cada nível par; de armadura leve, sem teste. Atributo-chave Sab, somado nos PM. Os ditames ensinam magias extras (se já conhecia uma, troque por outra do mesmo círculo) e, em contato com bastante do seu elemento, elas custam –1 PM.'],
+      ['Língua Primordial', 2, 'Comunica-se com espíritos do seu elemento (como Voz Divina) e ganha +5 em testes de Carisma com eles.'],
+      ['Tradição Oral', 3, '+2 em Misticismo (+4 no 9º, +6 no 13º).', c => ({ per: { Misticismo: tradicao(c.nc) } })],
+      ['Sexto Sentido', 4, 'Soma Sab na Defesa (limitada pelo nível). Exige liberdade de movimentos.', c => c.pesada ? {} : { def: Math.min(c.at.sab, c.nt) }],
+      ['Afinidade Evoluída', 6, 'Escolha: Afinidade Concentrada (+2 na CD de místico e nos ataques do Ataque Elemental) ou Afinidade Expandida (um segundo elemento, com todos os benefícios dele e treino na perícia ligada).'],
+      ['Comunhão Suprema', 20, 'Imune ao dano da sua Afinidade; magias desse tipo de dano ou da escola ligada custam metade dos PM.', c => EL[c.esc && c.esc.afinidade] ? { marca: ['Imunidade a ' + EL[c.esc.afinidade].tipo] } : {}]
+    ],
+    pod: [
+      ['Absorver Elemento', '', '1x/cena, em contato com seu elemento, movimento: PM temporários iguais ao maior círculo que lança, até o fim da cena.'],
+      ['Afinidade Maior', '12º nível de místico, Afinidade Expandida', 'Um terceiro elemento para a Afinidade (escolha a opção).', (c, op) => EL[op] ? reducao(c, op) : {}, NOMES_EL, op => 'Afinidade (' + String(op).toLowerCase() + ')'],
+      ['Andar pelas Paredes', af('terra'), 'Escalada igual ao deslocamento, sem ficar desprevenido.', () => ({ marca: ['Escalada igual ao deslocamento'] })],
+      ['Armadura Rochosa', '4º nível de místico, ' + af('terra'), 'Movimento e 2 PM (+2 PM por esfera a cada círculo além do 1º): esferas de pedra orbitam você até o fim da cena. Gaste uma ao sofrer dano para RD 30, ou com movimento para 4d6 + Sab de impacto em alcance curto (Reflexos reduz). Precisa do seu elemento por perto.'],
+      ['Aumento de Atributo', '', '+1 em um atributo (repetível; uma vez por patamar para o mesmo atributo).'],
+      ['Auréola Celeste', af('luz'), 'Ao lançar magia de abjuração ou de luz, movimento e PM: um aliado em alcance curto ganha 5 PV temporários por PM e +1 nas resistências até o fim da cena.'],
+      ['Contramágica Elemental', '6º nível de místico', 'Aprende Dissipar Magia e soma Sab em Misticismo ao usá-la contra magias do seu elemento ou da escola ligada.'],
+      ['Corpo Elemental', '', '1x/cena, movimento: 5 PV temporários por círculo que lança (o dobro em contato com o seu elemento), até o fim da cena.'],
+      ['Ditame Absoluto', '18º nível de místico, dois poderes de ditame', 'Aprende uma magia de 5º círculo de uma escola que lança e tem acesso ao 5º círculo para todos os efeitos, menos aprender magias.'],
+      ['Ditame da Chuva', af('água'), 'Aprende ' + ditameTxt('Ditame da Chuva') + '.'],
+      ['Ditame da Cura', af('luz'), 'Aprende ' + ditameTxt('Ditame da Cura') + '.'],
+      ['Ditame da Manhã', af('fogo', 'luz'), 'Aprende ' + ditameTxt('Ditame da Manhã') + ' (Luz com todos os aprimoramentos, arcanos e divinos).'],
+      ['Ditame da Montanha', af('terra'), 'Aprende ' + ditameTxt('Ditame da Montanha') + '.'],
+      ['Ditame da Profecia', '6º nível de místico', 'Aprende ' + ditameTxt('Ditame da Profecia') + '. Augúrio em contato com bastante do seu elemento (Grande ou maior) não falha.'],
+      ['Ditame das Brumas', af('água', 'ar'), 'Aprende ' + ditameTxt('Ditame das Brumas') + '.'],
+      ['Ditame das Chamas', af('fogo'), 'Aprende ' + ditameTxt('Ditame das Chamas') + '.'],
+      ['Ditame do Breu', af('trevas'), 'Aprende ' + ditameTxt('Ditame do Breu') + '.'],
+      ['Ditame do Crepúsculo', af('luz', 'trevas'), 'Aprende ' + ditameTxt('Ditame do Crepúsculo') + '.'],
+      ['Ditame do Espadachim', 'treinado em Luta', 'Aprende ' + ditameTxt('Ditame do Espadachim') + '.'],
+      ['Ditame dos Portais', '6º nível de místico', 'Aprende ' + ditameTxt('Ditame dos Portais') + '.'],
+      ['Ditame dos Ventos', af('ar'), 'Aprende ' + ditameTxt('Ditame dos Ventos') + ' (Controlar Ar não está na lista de magias desta ficha; anote à parte).'],
+      ['Disparo Elemental', 'treinado em Pontaria', 'Pode usar o Ataque Elemental com armas de ataque à distância.'],
+      ['Disparo em Linha', 'Disparo Elemental', 'No Disparo Elemental, 2 PM: um ataque comparado à Defesa de cada inimigo numa linha de 9m e uma só rolagem de dano para todos os atingidos.'],
+      ['Elementalismo Marcial', '10º nível de místico, treinado em Luta', 'Ao usar Ataque Elemental, 2 PM: lança como ação livre uma magia de execução padrão ou menor.'],
+      ['Elemento Penetrante', '', 'Ao causar dano do seu elemento, gasta PM (até o maior círculo): cada PM ignora 10 de redução de dano.'],
+      ['Elemento Poderoso', '6º nível de místico', '+2 na CD das suas habilidades de místico.', () => ({ nota: '+2 na CD das habilidades de místico' })],
+      ['Empuxo', af('água', 'ar'), 'Anda sobre a água e ganha natação igual ao deslocamento.', () => ({ marca: ['Natação igual ao deslocamento; anda sobre a água'] })],
+      ['Escavador', af('terra'), 'Escavação igual ao deslocamento.', () => ({ marca: ['Escavação igual ao deslocamento'] })],
+      ['Escudo Elemental', '', 'No Ataque Elemental, cada PM gasto também dá +1 na Defesa e nas resistências por 1 rodada.'],
+      ['Estabilidade Terrena', af('terra'), 'Bônus igual ao maior círculo que lança para resistir a manobras e efeitos de movimento.'],
+      ['Flagelo Elemental', '', 'Com Ataque Elemental, o multiplicador de crítico aumenta em +1.'],
+      ['Golpe Ardente', af('fogo'), 'Ataque Elemental que acerta deixa o alvo em chamas (Reflexos CD Sab evita).'],
+      ['Golpe Congelante', af('água'), 'Ataque Elemental que acerta deixa o alvo lento por 1 rodada (Reflexos CD Sab evita).'],
+      ['Golpe Cortante', af('ar'), 'Ataque Elemental que acerta deixa o alvo sangrando (Reflexos CD Sab evita).'],
+      ['Golpe Ofuscante', af('ar', 'fogo', 'luz'), 'Ataque Elemental que acerta deixa o alvo cego por 1 rodada (Reflexos CD Sab evita).'],
+      ['Golpe Pujante', af('água', 'terra', 'trevas'), 'Ataque Elemental que acerta derruba o alvo (Reflexos CD Sab evita).'],
+      ['Hidratação', af('água'), 'Ao lançar magia de encantamento ou de frio, gasta PM para curar 5 PV por PM.'],
+      ['Oito Nuvens', af('ar'), 'Ao lançar magia de ilusão ou de eletricidade, movimento e até 8 PM: uma nuvem por PM (+1 na Defesa cada; com 5 ou mais, camuflagem) até o fim da cena. Cada ataque que erra você dissipa uma.'],
+      ['Pacto Elemental', '6º nível de místico', 'Vínculo com uma manifestação elemental do seu elemento (parceiro): evocar custa movimento e 2 PM (precisa do elemento por perto) e dura a cena; ordens custam ação de movimento; nos testes, bônus igual ao maior círculo (+2 por PM até Sab; +5 se combinar com o elemento). Água: bolha (+4 Defesa e respira na água), empurrão hidráulico (2 PM, 3d6 impacto e caído), surfar (natação 12m). Ar: barreira eólica (camuflagem contra distância e +2 Reflexos), conduzir ao solo (reação: Queda Suave em você), planar (2 PM, voo 12m). Fogo: aura de calor (2d6+2 em quem termina adjacente), chicote de chamas (2 PM, 4d6 fogo), labareda propulsora (+10 em Atletismo para correr e saltar). Luz: brilhar (ofusca), curar (2 PM, 4d8 PV), cegar (1 rodada). Terra: arremesso de rocha (2 PM, 5d6 impacto), muralha (RD 10 a corte, impacto e perfuração), tunelar (escalada 12m ou escavar 9m). Trevas: manto de sombras (+10 para se esconder), tentáculo obscuro (2 PM, agarra), apavorar (abalado).'],
+      ['Pacto Cooperativo', 'Pacto Elemental', '1x/rodada, ordem à manifestação como ação livre; ela dá bônus de flanquear contra um inimigo por rodada.'],
+      ['Pacto Mágico', 'Pacto Elemental', 'Movimento: a manifestação busca uma magia (arcana ou divina, de um círculo a que tem acesso) em 1d4 + círculo rodadas (+2 se divina, +2 se de escola que você não lança). Misticismo CD 15 + círculo (+5 por pedido no dia): aprende a magia por um dia; se falhar, ela só volta no dia seguinte.'],
+      ['Perícia Mística', '3º nível de místico', 'O bônus da Tradição Oral vale também na perícia do elemento da Afinidade.', c => { const e = EL[c.esc && c.esc.afinidade]; const b = tradicao(c.nc); return e && b ? { per: { [e.per]: b } } : {}; }],
+      ['Propulsão', af('ar', 'fogo'), '1 PM: voo 12m por uma rodada (cai se não terminar sobre algo firme). No 10º nível, aprende Voo.'],
+      ['Resistência Tenebrosa', af('trevas'), 'Num teste de resistência, 1 PM para somar o maior círculo que lança.'],
+      ['Supernova', af('fogo'), 'Numa magia de fogo, cada 5 PV gastos (perda de vida) dá +1d12 de dano.'],
+      ['Sustento Primordial', '', 'Descansando numa área do seu elemento, a condição de descanso melhora um passo.'],
+      ['Visão Noturna', af('trevas'), '+2 em Percepção e visão no escuro (se já tinha, o alcance sobe um passo).', () => ({ per: { Percepção: 2 }, marca: ['Visão no escuro'] })]
+    ]
+  });
+
+  // ---------- SAMURAI ----------
+  const desp = (nome, pre, txt, ef) => ['Despertar: ' + nome, pre, 'Despertar Ancestral (habilidade mágica; uma opção nova por patamar). ' + txt, ef];
+  C({
+    id: 'samurai', n: 'Samurai', f: 'DB', attr: 'Força e Sabedoria',
+    desc: 'Guerreiro de elite de Tamura, com uma arma ancestral poderosa e uma honra inabalável.',
+    pv: 20, pvn: 5, pm: 3,
+    per: { fix: ['Luta', 'Vontade'], n: 2, de: ['Acrobacia', 'Adestramento', 'Atletismo', 'Cavalgar', 'Conhecimento', 'Diplomacia', 'Fortitude', 'Guerra', 'Iniciativa', 'Intimidação', 'Intuição', 'Nobreza', 'Ofício', 'Percepção', 'Pontaria'] },
+    prof: ['marciais', 'pesadas'], profTxt: 'Armas marciais e armaduras pesadas (e katana, pela arma ancestral)',
+    niv: ['Arma ancestral (1 melhoria), código do samurai, grito de kiai (+1d4)', 'P', 'Olhar assustador +1, P', 'Arma ancestral (2 melhorias), P', 'Grito de kiai (+1d6), P', 'Arma ancestral (3 melhorias), P', 'P', 'Arma ancestral (4 melhorias), P', 'Grito de kiai (+1d8), olhar assustador +2, P', 'Arma espiritual (1 encanto), P', 'P', 'Arma espiritual (2 encantos), P', 'Grito de kiai (+1d10), P', 'Arma espiritual (3 encantos), P', 'Olhar assustador +3, P', 'P', 'Grito de kiai (+1d12), P', 'P', 'P', 'Shogun, P'],
+    hab: [
+      ['Arma Ancestral', 1, 'Proficiência com katana e uma arma ancestral: katana superior com uma melhoria (até T$ 500), que ganha nova melhoria no 4º, 6º e 8º níveis. Com outra pessoa funciona como arma comum. Se a perder, perde os PM até o dia seguinte; reforjar leva uma semana e o preço básico da arma.', () => ({ prof: ['Katana'] })],
+      ['Código do Samurai', 1, 'Sempre cumpre a palavra e nunca recusa ajuda a um inocente; nunca mente, trapaceia ou rouba. Se violar, perde todos os PM até o dia seguinte.'],
+      ['Grito de Kiai', 1, 'Num ataque corpo a corpo, 2 PM: rola dois dados e usa o melhor; se acertar, +1d4 de dano (multiplicado no crítico). Sobe a cada 4 níveis: 1d6, 1d8, 1d10, 1d12.'],
+      ['Olhar Assustador', 3, '+1 em Intimidação e Intuição; +1 a cada 6 níveis.', c => { const b = 1 + Math.floor((c.nc - 3) / 6); return { per: { Intimidação: b, Intuição: b } }; }],
+      ['Arma Espiritual', 10, 'A arma ancestral vira mágica com um encanto à escolha; mais um encanto no 12º e no 14º.'],
+      ['Shogun', 20, 'O multiplicador de crítico da arma ancestral aumenta em 2 e você recupera PV iguais a esse dano extra.']
+    ],
+    pod: [
+      ['Arma Ancestral Adicional', '', 'Mais uma arma ancestral de qualquer tipo, com a mesma progressão de melhorias e encantos (escolhas próprias).'],
+      ['Arma Reverberante', '5º nível de samurai', 'No Grito de Kiai com a arma ancestral, +1 PM: +1 dado de dano do grito.'],
+      ['Arma Veloz', '6º nível de samurai', '1x/rodada, ao agredir com a arma ancestral, 2 PM: um ataque adicional com ela.'],
+      ['Ataque Disciplinado', 'Sab 1', 'Soma Sab no dano com a arma ancestral (limitado pelo nível).'],
+      ['Aumento de Atributo', '', '+1 em um atributo (repetível; uma vez por patamar para o mesmo atributo).'],
+      ['Avalanche das Três Mãos', 'Con 1', 'Com a arma ancestral nas duas mãos, soma Con no dano (limitado pelo nível).'],
+      ['Corte da Correnteza', '', 'Arma ancestral corpo a corpo numa mão e nada na outra: +2 na margem de ameaça e +1d6 de dano nos críticos.'],
+      ['Daisho', '', 'Proficiência com wakizashi e uma como arma ancestral adicional, com a mesma progressão (escolhas próprias).', () => ({ prof: ['Wakizashi'] })],
+      ['Dois Céus', 'Des 2', 'Com a arma ancestral e outra arma (uma leve), ao agredir faz um ataque com cada, com –2 nos ataques até seu próximo turno. Com Estilo de Duas Armas, +1 PM aplica o Grito de Kiai às duas.'],
+      ['Emblema do Império de Jade', 'Sab 1', 'Soma Sab em Diplomacia, Guerra e Nobreza.', c => ({ per: { Diplomacia: c.at.sab, Guerra: c.at.sab, Nobreza: c.at.sab } })],
+      ['Equilíbrio Interior', 'treinado em Vontade', 'Ao tirar 1 natural num teste, rola o dado de novo (uma vez por teste).'],
+      ['Espírito Incisivo', '', '+1 no multiplicador de crítico com a arma ancestral.'],
+      ['Honra dos Ancestrais', '12º nível de samurai', '1x/cena, movimento: Diplomacia, Intimidação ou Nobreza CD 10; se passar, +1 em perícias de Carisma na cena (+1 a cada 5 acima da CD), ou o bônus no próximo ataque da cena.'],
+      ['Honra Inabalável', 'Sab 1', 'Soma Sab nos PV e fica imune a medo (não remove fobias raciais).', c => ({ pv: c.at.sab, marca: ['Imune a medo'] })],
+      ['Iaijutsu', 'treinado em Iniciativa', 'Soma Sab em Iniciativa e saca ou guarda armas como ação livre. A cada 10 no teste de Iniciativa, +1 em ataque e dano com arma na 1ª rodada.', c => ({ per: { Iniciativa: c.at.sab } })],
+      ['Ira Gentil', 'Serenidade dos Kami', 'Com PV temporários da Serenidade dos Kami, soma o bônus de Olhar Assustador em ataque e dano com a arma ancestral.'],
+      ['Kiai Assustador', 'treinado em Intimidação', 'No Grito de Kiai, +1 PM: se acertar, oponentes em alcance curto ficam abalados por 1 rodada.'],
+      ['Kiai Estremecedor', '', 'No Grito de Kiai, +1 PM: se acertar, oponentes em alcance curto do alvo caem (Fortitude CD Sab evita).'],
+      ['Kyudo', 'treinado em Pontaria', 'Grito de Kiai vale em ataques à distância e usa Sab no lugar de Des nesses ataques (e no dano, com Estilo de Disparo).', () => ({ perAttr: { Pontaria: ['sab'] } })],
+      ['Limiar da Tempestade', 'Serenidade dos Kami', 'Num ataque, gasta todos os PV temporários da Serenidade dos Kami para somar metade deles no dano.'],
+      ['Meditação Artística', '8º nível de samurai, treinado em Ofício (calígrafo)', '1 hora e 5 PM escrevendo um poema: 5d6 de concentração; nas próximas 24 horas, gasta um d6 para somar num teste de perícia.'],
+      ['Montanha Serena', 'Avalanche das Três Mãos, Serenidade dos Kami', 'Com PV temporários da Serenidade dos Kami, soma Con nas manobras e na CD das habilidades de samurai.'],
+      ['Nuvem Serena', 'Dois Céus, Serenidade dos Kami', 'Com PV temporários da Serenidade dos Kami, o dano da arma ancestral aumenta um passo.'],
+      ['Rio Sereno', 'Corte da Correnteza, Serenidade dos Kami', 'Com PV temporários da Serenidade dos Kami, +3m de deslocamento e terreno difícil natural não o atrasa.'],
+      ['Ronin', '', 'Não precisa mais seguir o Código do Samurai e a arma ancestral pode ser de outro tipo além de katana.'],
+      ['Serenidade dos Kami', '', 'Movimento e 3 PM: PV temporários iguais a nível + Sab (sem custo na 1ª rodada do combate).'],
+      desp('Acima do Bem e do Mal', '10º nível de samurai, arma ancestral profana ou sagrada', '2 PM: o dano extra do encanto profano ou sagrado vale contra qualquer criatura.'),
+      desp('Ancestral Dançarino', '10º nível de samurai, arma ancestral dançarina', 'Ao usar dançarina, 2 PM: um espírito ancestral empunha a arma enquanto durar (parceiro veterano fortão e guardião, fora do limite).'),
+      desp('Aspecto Assustador', 'arma ancestral macabra', 'No ataque corpo a corpo, 1 PM: se acertar, o alvo fica abalado (Vontade CD Sab evita).'),
+      desp('Aspecto Dourado', 'arma ancestral banhada a ouro', '1 PM: troca um teste de resistência por um de Diplomacia.'),
+      desp('Aspecto Opulento', 'arma ancestral cravejada de gemas', '1x/rodada, 1 PM: finta como ação de movimento (livre com Finta Aprimorada).'),
+      desp('Avalanche Súbita', 'arma ancestral cruel', 'No ataque corpo a corpo, 1 PM: se acertar, o alvo fica atordoado 1 rodada (Fortitude CD Sab evita; 1x/cena por criatura; +2 na CD se a arma for atroz).'),
+      desp('Cortar Magia', '10º nível de samurai, arma ancestral energética', 'Empunhando a arma, usa Dissipar Magia como contramágica contra magias que o tenham como alvo.'),
+      desp('Corte do Vácuo', 'arma ancestral precisa', 'No ataque corpo a corpo, 1 PM: o ataque ganha alcance curto e o dano vira essência.'),
+      desp('Cortador de Cavalos', 'arma ancestral maciça', 'No ataque corpo a corpo, 1 PM: +1 dado de dano do tipo da arma.'),
+      desp('Dança dos Elementos', '10º nível de samurai, arma ancestral congelante, corrosiva, elétrica, flamejante ou tumular', 'Ao causar dano de frio, ácido, eletricidade, fogo ou trevas com a arma, 1 PM: cada dado de dano sobe um passo.'),
+      desp('Dor Infinita', '10º nível de samurai, arma ancestral excruciante', 'Ao acertar construto ou morto-vivo, 2 PM: aplica o efeito do encanto excruciante.'),
+      desp('Engenhosidade Alquímica', 'arma ancestral injeção alquímica', 'Ao usar a injeção alquímica, 1 PM: +1 dado de dano do preparado.'),
+      desp('Escudo Ancestral', 'arma ancestral defensora', 'Ao atacar com a arma, 2 PM: um aliado adjacente ganha +5 na Defesa por 1 rodada.'),
+      desp('Essência Fluida', 'arma ancestral de mitral', 'Num crítico com a arma, 1 PM: move-se até o seu deslocamento.'),
+      desp('Essência Gélida', 'arma ancestral de gelo eterno', 'No teste de Iniciativa, 1 PM: redução de frio igual a nível + Sab até o fim da cena.'),
+      desp('Essência Invencível', 'arma ancestral de adamante', 'Ao atacar com a arma, 1 PM: o dano sobe um passo.'),
+      desp('Essência Lefeu', 'arma ancestral de matéria vermelha, Ronin', 'Empunhando a arma, 3 PM: soma Sab nos ataques, em Reflexos e na Defesa por 1 rodada.'),
+      desp('Essência Marinha', 'arma ancestral de lanajuste', 'Soma Sab em Atletismo; ao nadar, 1 PM para rolar dois dados e ficar com o melhor.', c => ({ per: { Atletismo: c.at.sab } })),
+      desp('Essência Monstruosa', 'arma ancestral de casco de monstro', 'Num crítico com a arma, 1 PM: PV temporários iguais a metade do nível + Sab.'),
+      desp('Essência Prateada', 'arma ancestral de prata', 'Ao acertar com a arma, 1 PM: o alvo perde a cura acelerada por 1 rodada.'),
+      desp('Essência Rubi', 'arma ancestral de aço-rubi', 'Ao atacar com a arma, 1 PM: ignora toda a redução de dano do alvo.'),
+      desp('Essência Virente', 'arma ancestral de madeira tollon', 'Empunhando a arma, 1 PM: resistência a magia igual a Sab por 1 rodada.'),
+      desp('Fulgor Púrpura', '10º nível de samurai, arma ancestral drenante', 'No ataque corpo a corpo, gasta PV temporários (até Sab): +1d8 de essência a cada 2 PV.'),
+      desp('Golpe Fantasma', 'arma ancestral penetrante', 'Ao atacar com a arma, 1 PM: ignora as imunidades do alvo.'),
+      desp('Instinto Destruidor', '10º nível de samurai, arma ancestral destruidora', '+2 na manobra quebrar; ao reduzir um item a 0 PV assim, recupera 1 PM.'),
+      desp('Lâmina Invertida', '10º nível de samurai, arma ancestral piedosa', 'Liga e desliga o encanto piedosa sem gastar PM.'),
+      desp('Lâmina Sedenta', '10º nível de samurai, arma ancestral sanguinária', 'Contra alvo sangrando, 2 PM: +5 no ataque e no dano.'),
+      desp('Mistério Nebuloso', 'arma ancestral harmonizada', 'No ataque corpo a corpo, 1 PM: camuflagem leve por um turno.'),
+      desp('Nada Além de Um Assassino', '10º nível de samurai, arma ancestral assassina, Ronin', 'Ataque Furtivo +1d6 (repetível uma vez por patamar; acumula).'),
+      desp('Paradoxo Absoluto', '10º nível de samurai, arma ancestral dilacerante ou lancinante', 'Num crítico, 2 PM: soma Sab no dano (o dobro se a arma for lancinante).'),
+      desp('Paradoxo da Celeridade', '10º nível de samurai, arma ancestral veloz', '1x/rodada, num crítico com a arma, 2 PM: um ataque adicional contra o mesmo inimigo.'),
+      desp('Paradoxo da Extinção', '10º nível de samurai, arma ancestral anticriatura', 'Num crítico com a arma, 2 PM: o dano extra do encanto anticriatura também é multiplicado.'),
+      desp('Paradoxo da Extremidade', '10º nível de samurai, arma ancestral caçadora', '1x/rodada, num crítico com a arma, 2 PM: ataca outra criatura adjacente.'),
+      desp('Paradoxo da Magia', '10º nível de samurai, arma ancestral conjuradora', 'Num crítico com uma magia guardada descarregada, PM iguais ao círculo dela: a magia volta a ficar guardada na arma.'),
+      desp('Paradoxo do Gume', '10º nível de samurai, arma ancestral ameaçadora', 'No ataque corpo a corpo, 2 PM: soma Sab na margem de ameaça.'),
+      desp('Paradoxo Viperino', '10º nível de samurai, arma ancestral venenosa', 'Num crítico com a arma, 1 PM: ignora imunidade ou resistência a veneno do alvo.'),
+      desp('Perfeição Marcial', '10º nível de samurai, arma ancestral formidável ou magnífica', 'Movimento e 2 PM: soma o bônus de Olhar Assustador no próximo ataque e, se acertar, no dano (o dobro se a arma for magnífica).'),
+      desp('Roda Fluvial', 'arma ancestral equilibrada', 'Ao atacar com a arma, 2 PM: faz uma manobra de combate como ação livre.'),
+      desp('Tiro Perfeito', 'arma ancestral mira telescópica', 'No ataque à distância com a arma, 1 PM: ignora camuflagem e cobertura.'),
+      desp('Trovão Incessante', '10º nível de samurai, arma ancestral trovejante', 'Num crítico, 2 PM: ativa o encanto trovejante mesmo que já o tenha usado na cena.'),
+      desp('Venha Cá', '10º nível de samurai, arma ancestral de arremesso', 'No ataque corpo a corpo com a arma de arremesso, 2 PM: puxa o inimigo para o espaço livre mais próximo de você (Reflexos CD Sab).'),
+      desp('Voo da Andorinha', 'arma ancestral certeira', '1x/rodada, quando um inimigo erra um ataque corpo a corpo contra você, 1 PM: ataca-o com a arma (+2 se ela for pungente).')
+    ]
+  });
+})();
+
+;
 // ---- 20_racas_t20.js
 // Raças — attr: modificadores fixos; livre: bônus para distribuir (atributos diferentes); exceto: atributos proibidos nos bônus livres
 // hab: [nome, resumo, efeito?] — efeito retorna {pv, pm, def, desl, per:{}, perAttr:{}, rd, prof:[], treina:[], escolhePericias, bonusPericias, marca:[], arma:{}}
@@ -4387,7 +4610,7 @@ function defPoder(p) {
     const x = fontesPoder(c).find(x => x.r[0] === p.n);
     if (!x) return null;
     const row = x.r;
-    return { n: row[0], pre: row[1] || '', r: row[2], ef: row[3], tipo: 'Classe', classe: c.id, f: x.f, op: row[0] === 'Aumento de Atributo' ? ATR : undefined };
+    return { n: row[0], pre: row[1] || '', r: row[2], ef: row[3], tipo: 'Classe', classe: c.id, f: x.f, op: row[0] === 'Aumento de Atributo' ? ATR : row[4], opNome: row[5] };
   }
   if (p.tipo === 'Origem') {
     const o = ORIGEM(p.origem);
@@ -4485,6 +4708,7 @@ function avaliarTok1(t, D) {
     return null;
   }
   if (D.temNome(t)) return true;
+  if (/^Afinidade (\((água|ar|fogo|luz|terra|trevas)\)|Expandida|Concentrada)$/i.test(t)) return false;
   const existe = T20.poderes.some(p => mesmo(p.n, t)) || T20.classes.some(c => [...(c.pod || []), ...(c.podDH || []), ...(c.podV || [])].some(x => mesmo(x[0], t)));
   return existe ? false : null;
 }
@@ -4705,9 +4929,9 @@ function derivar(ch) {
     conta: re => nomesPod.filter(n => re.test(n)).length,
     contaPre: nm => pods.filter(x => x.def && (x.def.pre || '').includes(nm)).length
   };
-  const run = (fn, nc, fonte, chave, op) => {
+  const run = (fn, nc, fonte, chave, op, extra) => {
     if (typeof fn !== 'function') return;
-    let r; try { r = fn(Object.assign({}, ctx0, { nc }), op); } catch (e) { console.warn('efeito', fonte, e); return; }
+    let r; try { r = fn(Object.assign({}, ctx0, { nc }, extra || {}), op); } catch (e) { console.warn('efeito', fonte, e); return; }
     aplicar(acc, r, fonte, chave);
   };
   if (raca) {
@@ -4716,18 +4940,20 @@ function derivar(ch) {
   }
   if (origem && origem.regional) run(origem.ef, nt, origem.n, 'origem:' + origem.n);
   cls.forEach((c, i) => {
-    c.def.hab.forEach(h => { if (h[1] <= c.niveis) run(h[3], c.niveis, h[0], 'classe:' + c.id + ':' + h[0]); });
+    const exC = { esc: c.esc };
+    c.def.hab.forEach(h => { if (h[1] <= c.niveis) run(h[3], c.niveis, h[0], 'classe:' + c.id + ':' + h[0], undefined, exC); });
     (c.def.esc || []).forEach(e => {
       if ((e.nivel || 1) > c.niveis) return;
-      escolhidasDe(c, e).forEach(op => { if (op[2]) run(op[2].ef, c.niveis, c.def.n, 'classe:' + c.id + ':' + e.id + (e.multi ? ':' + op[0] : '')); });
+      escolhidasDe(c, e).forEach(op => { if (op[2]) run(op[2].ef, c.niveis, c.def.n, 'classe:' + c.id + ':' + e.id + (e.multi ? ':' + op[0] : ''), undefined, exC); });
     });
-    run(c.def.ef, c.niveis, c.def.n, 'classe:' + c.id);
+    run(c.def.ef, c.niveis, c.def.n, 'classe:' + c.id, undefined, exC);
     if (i === 0) (c.def.prof || []).forEach(p => acc.prof.add(p));
   });
   pods.forEach(({ p, def }) => {
     if (!def) return;
     const nc = p.tipo === 'Classe' ? (D.nivelDe(p.classe) || nt) : nt;
-    run(def.ef, nc, def.n, 'pod:' + p.uid, p.op);
+    const dona = p.tipo === 'Classe' ? (cls.find(x => x.id === p.classe) || cls.find(x => p.slot === 'classe:' + x.id)) : null;
+    run(def.ef, nc, def.n, 'pod:' + p.uid, p.op, dona ? { esc: dona.esc } : null);
     if (def.treinaEscolha && p.txt && perValida(p.txt)) addTreina(acc, p.txt, def.n);
   });
   efeitosItens(ch, D, acc);
@@ -4753,9 +4979,10 @@ function derivar(ch) {
       if (par.includes(v)) addT(v, c0.def.n);
       else D.pend.push({ txt: 'Escolha entre ' + par.join(' ou ') + ' (' + c0.def.n + ')', alvo: 'classe' });
     });
-    const escolhidas = ch.pericias.classe.filter(n => pc.de.includes(n) || (ehOficio(n) && pc.de.includes('Ofício'))).slice(0, pc.n);
+    const deC = pc.de.concat(c0.def.perExtra ? c0.def.perExtra(c0.esc).filter(n => n && !pc.de.includes(n)) : []);
+    const escolhidas = ch.pericias.classe.filter(n => deC.includes(n) || (ehOficio(n) && deC.includes('Ofício'))).slice(0, pc.n);
     escolhidas.forEach(n => addT(n, c0.def.n));
-    D.perClasse = { n: pc.n, de: pc.de, escolhidas };
+    D.perClasse = { n: pc.n, de: deC, escolhidas };
     if (escolhidas.length < pc.n) D.pend.push({ txt: 'Escolha ' + plural(pc.n - escolhidas.length, 'perícia') + ' de ' + c0.def.n, alvo: 'classe' });
   }
   const nInt = Math.max(0, at.int);
@@ -4843,14 +5070,18 @@ function derivar(ch) {
     const k = atributoMagia(c);
     const circ = m.circ.filter(l => l <= c.niveis).length;
     const conhecidas = ch.magias.filter(x => x.classe === c.id).length;
-    const limite = limiteMagias(c, pods);
     const escolas = m.escolas ? (ch.escolas[c.id] || []).slice(0, m.escolas) : null;
+    const podsC = pods.filter(x => x.def && x.p.tipo === 'Classe' && (x.p.classe === c.id || x.p.slot === 'classe:' + c.id)).map(x => ({ n: x.p.n, op: x.p.op }));
+    const cx = { esc: c.esc, nc: c.niveis, pods: podsC, escolas: escolas || [] };
+    cx.fixas = m.escolasFixas ? m.escolasFixas(cx).filter(Boolean) : [];
+    cx.extras = m.extras ? unico(m.extras(cx)).filter(n => MAGIA(n)) : [];
+    const limite = limiteMagias(c, pods) + cx.extras.length + (m.extraLivre ? m.extraLivre(cx) : 0);
     if (m.escolas && escolas.length < m.escolas) D.pend.push({ txt: 'Escolha ' + plural(m.escolas - escolas.length, 'escola') + ' de magia de ' + c.def.n, alvo: 'classe' });
     const semLimite = !isFinite(limite);
     if (m.regra) { const r = m.regra(ch.magias.filter(x => x.classe === c.id).map(x => MAGIA(x.n)).filter(Boolean)); if (r) D.avisos.push(c.def.n + ': ' + r); }
     if (!semLimite && conhecidas < limite) D.pend.push({ txt: 'Escolha ' + plural(limite - conhecidas, 'magia') + ' de ' + c.def.n, alvo: 'magias' });
     if (!semLimite && conhecidas > limite) D.avisos.push(c.def.n + ': ' + plural(conhecidas, 'magia') + ' conhecidas, acima das ' + limite + ' previstas para o nível.');
-    return { id: c.id, n: c.def.n, t: m.t, k, circ, cd: k ? 10 + D.meio + at[k] : null, conhecidas, limite, semLimite, escolas, nEsc: m.escolas || 0, aprende: m.aprende, somaPM: !!m.pm, filtro: m.filtro || null, tiposTxt: m.tiposTxt || null };
+    return { id: c.id, n: c.def.n, t: m.t, k, circ, cd: k ? 10 + D.meio + at[k] : null, conhecidas, limite, semLimite, escolas, nEsc: m.escolas || 0, aprende: m.aprende, somaPM: !!m.pm, filtro: m.filtro ? (x => m.filtro(x, cx)) : null, tiposTxt: m.tiposTxt || null, fixas: cx.fixas, extras: cx.extras };
   });
   D.limitePM = nt;
 
@@ -5004,7 +5235,9 @@ function derivar(ch) {
     c.def.hab.forEach(h => { if (h[1] <= c.niveis) conhecidos.add(normal(h[0])); });
     Object.values(c.esc || {}).forEach(v => (Array.isArray(v) ? v : [v]).forEach(x => conhecidos.add(normal(x))));
     (c.def.contaComo || []).forEach(([nome, nv]) => { if ((nv || 1) <= c.niveis) conhecidos.add(normal(nome)); });
+    (c.def.esc || []).forEach(e => { if ((e.nivel || 1) <= c.niveis) escolhidasDe(c, e).forEach(op => ((op[2] && op[2].nomes) || []).forEach(n => conhecidos.add(normal(n)))); });
   });
+  pods.forEach(x => { if (x.def && x.def.opNome && x.p.op) conhecidos.add(normal(x.def.opNome(x.p.op))); });
   if (raca) raca.hab.forEach(h => conhecidos.add(normal(h[0])));
   racaOps.forEach(o => conhecidos.add(normal(o.op[0])));
   ch.magias.forEach(m => conhecidos.add(normal(m.n)));
@@ -5250,7 +5483,7 @@ function painelClasse() {
       (pc.ou || []).forEach((par, k) => { per += `<div class="chips" style="margin-bottom:8px">${par.map(n => chip(esc(n), 'classe-ou', `data-k="${k}" data-per="${esc(n)}"`, ch.pericias.ou[k] === n)).join('')}</div>`; });
       const escol = DV.perClasse.escolhidas;
       const cheio = escol.length >= pc.n;
-      per += `<div class="chips">${pc.de.map(n => {
+      per += `<div class="chips">${DV.perClasse.de.map(n => {
         if (n === 'Ofício') {
           const of = ch.pericias.classe.find(ehOficio);
           return chip(esc(of || 'Ofício'), 'classe-per', `data-per="Ofício"`, !!of, cheio && !of);
@@ -5282,7 +5515,9 @@ function painelClasse() {
     });
     if (d.mag && d.mag.escolas) {
       const sel = (ch.escolas[c.id] || []);
-      h += bloco('Escolas de magia', `<div class="chips">${T20.escolasMagia.map(s => chip(esc(s), 'classe-escola', `data-id="${c.id}" data-s="${esc(s)}"`, sel.includes(s), !sel.includes(s) && sel.length >= d.mag.escolas)).join('')}</div>`, `escolha ${d.mag.escolas}`);
+      const cj = DV.conj.find(x => x.id === c.id);
+      const fixas = cj ? cj.fixas : [];
+      h += bloco('Escolas de magia', (fixas.length ? `<p class="desc" style="margin-bottom:8px">Já vêm com a classe: ${esc(fixas.join(', '))}.</p>` : '') + `<div class="chips">${T20.escolasMagia.map(s => fixas.includes(s) && !sel.includes(s) ? chip(esc(s), 'classe-escola', `data-id="${c.id}" data-s="${esc(s)}"`, true, true) : chip(esc(s), 'classe-escola', `data-id="${c.id}" data-s="${esc(s)}"`, sel.includes(s), !sel.includes(s) && sel.length >= d.mag.escolas)).join('')}</div>`, `escolha ${d.mag.escolas}` + (fixas.length ? ' a mais' : ''));
     }
     const sl = DV.slotsClasse[i];
     const pods = ch.poderes.filter(p => p.slot === 'classe:' + c.id);
@@ -6090,7 +6325,7 @@ const GAVETAS = {
         let h = `<p>${esc(c.desc)}</p>`;
         if (c.base) h += `<p class="desc">Variante de ${esc(nomeBase(c).toLowerCase())}: troca as habilidades da classe básica pelas abaixo, usa a mesma lista de poderes (mais os exclusivos da variante) e conta como ${esc(nomeBase(c).toLowerCase())} para pré-requisitos. Não dá para fazer multiclasse entre as duas.</p>`;
         h += dl([
-          ['Perícias', esc(pc.fix.join(', ') + ((pc.ou || []).length ? ', ' + pc.ou.map(p => p.join(' ou ')).join(', ') : '') + ' e mais ' + pc.n + ' entre ' + pc.de.join(', '))],
+          ['Perícias', esc(pc.fix.join(', ') + ((pc.ou || []).length ? ', ' + pc.ou.map(p => p.join(' ou ')).join(', ') : '') + ' e mais ' + pc.n + ' entre ' + pc.de.join(', ') + (c.perNota ? ' ' + c.perNota : ''))],
           ['Proficiências', esc(c.profTxt || 'Nenhuma')],
           c.mag ? ['Magias', esc(c.mag.t + '; ' + c.mag.aprende)] : null,
           c.devoto ? ['Devoção', 'Precisa escolher uma devoção no 1º nível.'] : null
@@ -6176,9 +6411,12 @@ const GAVETAS = {
     const tipos = [cj.t, 'Universal'];
     const circ = g.circ || 'ate';
     const escola = g.escola || 'todas';
+    // com filtro próprio e escolas fixas (místico), o filtro da classe já decide as escolas
+    const escolaOk = m => escola === 'todas'
+      ? ((cj.filtro && cj.fixas && cj.fixas.length) || !cj.escolas || !cj.escolas.length || cj.escolas.includes(m.e) || (cj.extras || []).includes(m.n))
+      : m.e === escola;
     const lista = T20.magias.filter(m => (cj.filtro ? cj.filtro(m) : tipos.includes(m.t)) && fonteOk(m.f) &&
-      (circ === 'todos' || (circ === 'ate' ? m.c <= cj.circ : m.c === +circ)) &&
-      (escola === 'todas' ? (!cj.escolas || !cj.escolas.length || cj.escolas.includes(m.e)) : m.e === escola));
+      (circ === 'todos' || (circ === 'ate' ? m.c <= cj.circ : m.c === +circ)) && escolaOk(m));
     const conhecidas = ch.magias.filter(x => x.classe === cj.id).map(x => x.n);
     const itens = lista.map(m => ({
       k: m.n, tit: m.n, f: m.f, escolhido: conhecidas.includes(m.n),
